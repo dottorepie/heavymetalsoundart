@@ -58,6 +58,14 @@ s.meter;
 	 ~b = Buffer.loadCollection(s, ~a.getSetsAndMatrices);
 );*/
 
+/////tetrahedron
+		/*(
+~a = VBAPSpeakerArray .new3,(
+[[45.degrad,35.264390.neg.degrad], [135.neg.degrad,35.264390.neg.degrad], [45.neg.degrad,35.264390.degrad], [135.degrad,35.264390.degrad]]);
+	 ~b = Buffer.loadCollection(s, ~a.getSetsAndMatrices);
+);*/
+
+///three channel setup
 		(
 ~a = VBAPSpeakerArray.new(3,
 				[[0,0],[0,pi/2],[pi/2,0]]);
