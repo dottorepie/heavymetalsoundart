@@ -244,9 +244,9 @@ sig1 = sig1 + (sig1 * BrownNoise.ar(noise*loc1)); sig2 = sig2 + (sig2 * BrownNoi
 
 
 
-//Out.ar(0,VBAP.ar(6,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.01),room.lag(0.01),mul:env*loc1.abs)),0.9,0.01),~b,spx.theta.raddeg,spx.phi.raddeg,width:spread));
-//Out.ar(0,VBAP.ar(6,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.01),room.lag(0.01),mul:env*loc2.abs)),0.9,0.01),~b,spy.theta.raddeg,spy.phi.raddeg,width:spread));
-//Out.ar(0,VBAP.ar(6,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.01),room.lag(0.01),mul:env*loc3.abs)),0.9,0.01),~b,spz.theta.raddeg,spz.phi.raddeg,width:spread));
+//Out.ar(0,VBAP.ar(6,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.01),room.lag(0.01),mul:env*loc1.abs)),0.9,0.01),~b,spx.theta.raddeg,spx.phi.raddeg,spread:spread));
+//Out.ar(0,VBAP.ar(6,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.01),room.lag(0.01),mul:env*loc2.abs)),0.9,0.01),~b,spy.theta.raddeg,spy.phi.raddeg,spread:spread));
+//Out.ar(0,VBAP.ar(6,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.01),room.lag(0.01),mul:env*loc3.abs)),0.9,0.01),~b,spz.theta.raddeg,spz.phi.raddeg,spread:spread));
 
 			// Out.kr(~controlBus_1.index,A2K.kr(sig1*env*loc1.abs*1000));
 			//	Out.kr(~controlBus_2.index,A2K.kr(sig2*env*loc2.abs*1000));
