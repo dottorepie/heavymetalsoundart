@@ -44,57 +44,6 @@ s.meter;
 }).play;
 );*/
 
-		///vbap
-
-		///octahedron
-		(
-~az=[0.degrad,0.degrad,90.degrad,180.degrad,90.neg.degrad,0.degrad];
-~el=[90.neg.degrad,0.degrad,0.degrad,0.degrad,0.degrad,90.degrad];
-);
-
-(
-~a = VBAPSpeakerArray.new(3,
-[[~az.[0],~el.[0]], [~az.[1],~el.[1]], [~az.[2],~el.[2]], [~az.[3],~el.[3]],[~az.[4],~el.[4]],[~az.[5],~el.[5]]]);
-	 ~b = Buffer.loadCollection(s, ~a.getSetsAndMatrices);
-);
-
-
-///animation buses
-		~controlBus_1a = Bus.control(s, 1);
-		~controlBus_2a = Bus.control(s, 1);
-		~controlBus_3a = Bus.control(s, 1);
-
-	//	~controlBus_1b = Bus.control(s, 1);
-	//	~controlBus_2b = Bus.control(s, 1);
-	//	~controlBus_3b = Bus.control(s, 1);
-
-	//	~controlBus_1c = Bus.control(s, 1);
-	//	~controlBus_2c = Bus.control(s, 1);
-		//~controlBus_3c = Bus.control(s, 1);
-
-	//	~controlBus_1d = Bus.control(s, 1);
-	//	~controlBus_2d = Bus.control(s, 1);
-	//	~controlBus_3d = Bus.control(s, 1);
-
-	//	~controlBus_1e = Bus.control(s, 1);
-	//	~controlBus_2e = Bus.control(s, 1);
-	//	~controlBus_3e = Bus.control(s, 1);
-
-	//	~controlBus_1f = Bus.control(s, 1);
-	//	~controlBus_2f = Bus.control(s, 1);
-	//	~controlBus_3f = Bus.control(s, 1);
-
-	//	~controlBus_1g = Bus.control(s, 1);
-	//	~controlBus_2g = Bus.control(s, 1);
-	//	~controlBus_3g = Bus.control(s, 1);
-
-	//	~controlBus_1k = Bus.control(s, 1);
-	//	~controlBus_2k = Bus.control(s, 1);
-	//	~controlBus_3k = Bus.control(s, 1);
-
-		~controlBus_x = Bus.control(s, 1);
-		~controlBus_y = Bus.control(s, 1);
-		~controlBus_z = Bus.control(s, 1);
 
 ////// wavetables
 
@@ -120,15 +69,6 @@ wt = signal.asWavetable;
 );
 
 
-		/////distortion table
-		(
-		~transfer_function= Env([0.8.neg,0,0.8],[1,1],[8,8.neg]).asSignal(1024);
-			~transfer_function=~transfer_function+(Signal.sineFill(~signalSize,~array,~ph)/8);
-		~transfer_function=~transfer_function.normalize;
-		//	~transfer_function.plot;
-			~dist=Buffer.loadCollection(s,~transfer_function.asWavetableNoWrap);
-		);
-
 		////sound
 
 
@@ -136,51 +76,26 @@ wt = signal.asWavetable;
 
  (
 SynthDef(\kick, {
-	arg gain=1/8,tone=12,pan=1,low=0,noise=0.001,decay=1/2,attack=0.001,az=0,azr=0,el=0,m=1,rz=100,
-			fu=32,mix=1,room=1,drive=1,panx=1,pany=1,panz=1,spread=1;
+	arg gain=1,tone=32,pan=1,low=0,noise=0.001,decay=1/2,attack=0.001,az=0,azr=0,el=0,m=1,rz=1000,
+			fu=16,mix=1,room=1,drive=1,t=1;
     var env,freq,anglex,angley,anglez,mod_anglex,mod_angley,mod_anglez,mx,my,mz,magx,magz,magy;
 	var sph,phase,threshold,ton,phase1,phase2,phase3,sph1,loc1,loc2,loc3,mag,fund,freqq;
-	var sig1,sig2,sig3,phasex,phasey,phasez,control1,control2,control3,axis1,axis2,axis3,lfo;
-	var amb_w,amb_x,amb_y,amb_z,out,amb_sig1,amb_sig2,amb_sig3,axisx,axisy,axisz,az1,az2,az3,el1,el2,el3,cx,cy,cz,tensor;
-	var axi1,axi2,axi3,ds1,ds2,ds3,f1,f2,f3,g1,g2,g3,sph_object,lfon,spx,spy,spz,axis;
-	var  axisx1=1,axisy1=1,axisz1=1,axisx2=1,axisy2=1,axisz2=1,axisx3=1,axisy3=1,axisz3=1,v1,v2,cross;
+	var sig1,sig2,sig3,phasex,phasey,phasez,control1,control2,control3,lfo;
+	var amb_w,amb_x,amb_y,amb_z,out,amb_sig1,amb_sig2,amb_sig3;
 
 
-			ton=2.pow(tone/992);
+				ton=2.pow(tone/992);
 					fund=fu*(9/8);
 	freqq = fund*ton;
 					lfo=2.pow(pan/992);
 
-				spx=Spherical(1,az,el);spy=Spherical(1,azr,el);
 
-				v1=[spx.x,spx.y,spx.z]; v2=[spy.x,spy.y,spy.z];
-
-cross = [
-    v1[1]*v2[2] - v1[2]*v2[1],
-    v1[2]*v2[0] - v1[0]*v2[2],
-    v1[0]*v2[1] - v1[1]*v2[0]
-];
-				spz=Cartesian(cross.[0],cross.[1],cross.[2]);
-
-				axisx=[spx.x,spx.y,spx.z];
-				axisy=[spy.x,spy.y,spy.z];
-				axisz=[spz.x,spz.y,spz.z];
-
-				tensor=axisx+axisy+axisz;
-
-				sph_object=Cartesian(tensor.[0],tensor.[1],tensor.[2]);
-
-
-				freq = EnvGen.kr(Env([freqq, fund], [decay*2], curve: -8)); // pitch drop
-	env= EnvGen.kr(Env.perc(attack, decay, curve: -4),doneAction:2,levelScale:gain*ton.reciprocal);
+				freq = EnvGen.kr(Env([freqq, fu*ton], [decay*2], curve: -8)); // pitch drop
+				env= EnvGen.kr(Env.perc(attack, decay, curve: -8),doneAction:2,levelScale:gain*8);
 
 			threshold=(((343/0.3)/freq).reciprocal.ampdb/2.sqrt).dbamp;
 
-
-					axis=Spherical(992,sph_object.theta, sph_object.phi);
-
-				sph=Cartesian(axis.x,axis.y,axis.z);
-
+					sph=Spherical(t,az, el);
 
 anglex=exp(Complex(0,1)*sph.theta).real*exp(Complex(0,1)*sph.phi).real;
 angley=exp(Complex(0,1)*sph.theta).imag*exp(Complex(0,1)*sph.phi).real;
@@ -213,9 +128,9 @@ phasez=Complex(1,mz.value).theta;
 		//	loc1=sph1.x;  loc2=sph1.y;  loc3=sph1.z;
 					loc1=mx;  loc2=my;  loc3=mz;
 
-sig1=(LPF.ar((Osc.ar(~w1.bufnum,freq,phase:phasex,mul:rz).abs*SinOsc.ar(freq,phase:phasex)),freq*2.pow(low.lag(0.01)/992),ton.reciprocal))*drive.reciprocal;
-sig2=(LPF.ar((Osc.ar(~w1.bufnum,freq,phase:phasey,mul:rz).abs*SinOsc.ar(freq,phase:phasey)),freq*2.pow(low.lag(0.01)/992),ton.reciprocal))*drive.reciprocal;
-sig3=(LPF.ar((Osc.ar(~w1.bufnum,freq,phase:phasez,mul:rz).abs*SinOsc.ar(freq,phase:phasez)),freq*2.pow(low.lag(0.01)/992),ton.reciprocal))*drive.reciprocal;
+sig1=(LPF.ar((Osc.ar(~w1.bufnum,freq,phase:phasex,mul:rz).abs*SinOsc.ar(freq,phase:phasex)),freq*2.pow(low.lag(0.01)/992),ton.reciprocal));
+sig2=(LPF.ar((Osc.ar(~w1.bufnum,freq,phase:phasey,mul:rz).abs*SinOsc.ar(freq,phase:phasey)),freq*2.pow(low.lag(0.01)/992),ton.reciprocal));
+sig3=(LPF.ar((Osc.ar(~w1.bufnum,freq,phase:phasez,mul:rz).abs*SinOsc.ar(freq,phase:phasez)),freq*2.pow(low.lag(0.01)/992),ton.reciprocal));
 
 control1=SinOsc.ar(freq,phasex,ton.reciprocal)*env;
 control2=SinOsc.ar(freq,phasey,ton.reciprocal)*env;
@@ -231,41 +146,14 @@ sig1 = sig1 + (sig1 * BrownNoise.ar(noise*loc1)); sig2 = sig2 + (sig2 * BrownNoi
 		sig1=tanh(sig1*drive);sig2=tanh(sig2*drive);sig3=tanh(sig2*drive);
 
 
-	//amb_sig1= Limiter.ar(LeakDC.ar(FreeVerb.ar((sig1),mix.lag(0.01),room.lag(0.01),mul:env*loc1.abs)),0.9,0.01);
-	/////amb_sig2=Limiter.ar( LeakDC.ar(FreeVerb.ar((sig2),mix.lag(0.01),room.lag(0.01),mul:env*loc2.abs)),0.9,0.01);
-	//amb_sig3=Limiter.ar( LeakDC.ar(FreeVerb.ar((sig3),mix.lag(0.01),room.lag(0.01),mul:env*loc3.abs)),0.9,0.01);
-
-			//				amb_w=(amb_sig1+amb_sig2+amb_sig3)/2.sqrt;
-				//	amb_x=amb_sig1;
-				///	amb_y=amb_sig2;
-				////	amb_z=amb_sig3;
-
-				///	out= Out.ar(0,BFDecode1.ar1(amb_w, amb_x, amb_y, amb_z, [sph1.theta, sph1.theta], [sph1.phi,sph1.phi],4 ));
-
-
-
-//Out.ar(0,VBAP.ar(6,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.01),room.lag(0.01),mul:env*loc1.abs)),0.9,0.01),~b,spx.theta.raddeg,spx.phi.raddeg,spread:spread));
-//Out.ar(0,VBAP.ar(6,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.01),room.lag(0.01),mul:env*loc2.abs)),0.9,0.01),~b,spy.theta.raddeg,spy.phi.raddeg,spread:spread));
-//Out.ar(0,VBAP.ar(6,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.01),room.lag(0.01),mul:env*loc3.abs)),0.9,0.01),~b,spz.theta.raddeg,spz.phi.raddeg,spread:spread));
-
-			// Out.kr(~controlBus_1.index,A2K.kr(sig1*env*loc1.abs*1000));
-			//	Out.kr(~controlBus_2.index,A2K.kr(sig2*env*loc2.abs*1000));
-			//	Out.kr(~controlBus_3.index,A2K.kr(sig3*env*loc3.abs*1000));
-
-					//Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar((sig1 ),mix.lag(0.01),room.lag(0.01),mul:env*loc1.abs)),0.9,0.01));
-				///Out.ar(1,Limiter.ar(LeakDC.ar(FreeVerb.ar((sig2),mix.lag(0.01),room.lag(0.01),mul:env*loc2.abs)),0.9,0.01));
-					//	Out.ar(2,Limiter.ar(LeakDC.ar(FreeVerb.ar((sig3),mix.lag(0.01),room.lag(0.01),mul:env*loc3.abs)),0.9,0.01));
-
-			Out.ar(0,PanAz.ar(2,Limiter.ar(LeakDC.ar(FreeVerb.ar((sig1 ),mix.lag(0.01),room.lag(0.01),mul:env*loc1.abs)),0.9,0.01),SinOsc.ar(panx,phasex),width:spread));
-			Out.ar(0,PanAz.ar(2,Limiter.ar(LeakDC.ar(FreeVerb.ar((sig2),mix.lag(0.01),room.lag(0.01),mul:env*loc2.abs)),0.9,0.01),SinOsc.ar(pany,phasey),width:spread));
-			Out.ar(0,PanAz.ar(2,Limiter.ar(LeakDC.ar(FreeVerb.ar((sig3),mix.lag(0.01),room.lag(0.01),mul:env*loc3.abs)),0.9,0.01),SinOsc.ar(panz,phasez),width:spread));
-
+			Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar((sig1 ),mix.lag(0.01),room.lag(0.01),mul:env*loc1.abs)),0.9,0.01));
+			Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar((sig2),mix.lag(0.01),room.lag(0.01),mul:env*loc2.abs)),0.9,0.01));
+			Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar((sig3),mix.lag(0.01),room.lag(0.01),mul:env*loc3.abs)),0.9,0.01));
 
 }).add);
 
 	10.wait;
 	/////solid
-(
 
 ///quaterion rhtyhm solid rotation
 /*(var i=Quaternion(0,
@@ -281,11 +169,15 @@ axis=i+j+k;
 )*/
 
 	////durs
+		(
+~az=[0.degrad,0.degrad,90.degrad,180.degrad,90.neg.degrad,0.degrad];
+~el=[90.neg.degrad,0.degrad,0.degrad,0.degrad,0.degrad,90.degrad];
+);
 	({var m1=1.neg, m2=1.neg, m3=1.neg,a,b,c,n=0,bank=6,time=32.reciprocal,beat=1,r=0;
 
-~dur1=[];~dur2=[];~dur3=[]; ~dx=[];~dy=[]; ~dz=[];
+			~dur1=[];~dur2=[];~dur3=[]; ~dx=[];~dy=[]; ~dz=[]; ~durx=[]; ~dury=[]; ~durz=[]; ~dur=[];
 
-					3.do{
+					1.do{
 ~x=bank.collect{
 m1=m1+1;
 					b=Spherical(beat,~az.[m1],~el.[m1]).rotate(r).tilt(r).tumble(r).x.round(0.00001);
@@ -302,210 +194,104 @@ m3=m3+1;
 	2.pow(d).round(time);
 }; m1=1.neg; m2=1.neg; m3=1.neg; ~dx=~dx++~x; ~dy=~dy++~y;  ~dz=~dz++~z;   ~x=[]; ~y=[]; ~z=[];  r=r+90.degrad; };
 
-				18.do{ ~dur1=~dur1++~dx.[n];n=n+1;};n=0;
-		18.do{ ~dur2=~dur2++~dy.[n];n=n+1;};n=0;
-		18.do{ ~dur3=~dur3++~dz.[n];n=n+1;};n=0;
-	//	bank.do{~durs=~durs++~x.[n]++~y.[n]++~z.[n];n=n+1;}
-//	~dur = ~duri.collect { |x|
-  //  if (x == 0) { Rest(2) } { x }
-//	}
+				6.do{ ~dur1=~dur1++~dx.[n];n=n+1;};n=0;
+		//	~durx = ~dur1.collect { |x| if (x == 0) { Rest(2) } { x }};
+
+		6.do{ ~dur2=~dur2++~dy.[n];n=n+1;};n=0;
+			//	~dury = ~dur2.collect { |x| if (x == 0) { Rest(2) } { x }};
+
+		6.do{ ~dur3=~dur3++~dz.[n];n=n+1;};n=0;
+			//	~durz = ~dur3.collect { |x| if (x == 0) { Rest(2) } { x }};
+
+			~dur=~dur++~dur1++~dur2++~dur3;
+
 }.value;
 );
-
-
-	(
-				//	thisThread.randSeed = ~val;
-
-		~dr=Pdef(\1, Pbind(\instrument, \kick,
-			\dur,Pseq(~dur1,inf),
-				\gain,0,
-				\tone,992*0,
-				\pan,992*1,
-					\m,1,
-			\low,0,
-				\noise,0.0001,
-\az,pi/4,
-	\azr,pi/2,
-	\el,pi/2,
-				\decay,2,
-				\attack,0.001,
-					\spread,4,
-					\panx,1,
-	\pany,1,
-	\panz,1,
-
-					\rz,100,
-					\mix,0.2,
-					\room,0.5;
-		))
-);
-
-
-);
-(
-~seq = Pseq([1/2] ,inf).asStream;
-	~s= Routine({loop{
-
-
-	~synth.set(\tone, ~s1)	;
-
-    ~seq.next.wait;
-
-	~synth.set(\tone, ~s2)	;
-
-	    ~seq.next.wait;
-
-	~synth.set(\tone, ~s3)	;
-
-	    ~seq.next.wait;
-
-	~synth.set(\tone, ~s4)	;
-
-	    ~seq.next.wait;
-
-	~synth.set(\tone, ~s5)	;
-
-	    ~seq.next.wait;
-
-	~synth.set(\tone, ~s6)	;
-
-	    ~seq.next.wait;
-
-	~synth.set(\tone, ~s7)	;
-
-	    ~seq.next.wait;
-
-	~synth.set(\tone, ~s8)	;
-
-	    ~seq.next.wait;
-};
-});
-);
-	~s.play;
-	});
-	Tdef(\drone).play;
-}
-)
-)
-
 
 (
 MIDIClient.init;
 MIDIIn.connectAll;
-)
+);
 
 (
 
 (
 MIDIdef.cc(\midi_slider5,{ |val, num, chan, src|
-		var rx;
-	rx=val.linlin(0,127,1.neg,1).round(0.0001);
-		rx.postln;
-		if(~synth.isPlaying,{~synth.set(\rx,rx)});
+		var gain;
+	gain=val.linlin(0,127,0.0001,1).round(0.0001);
+		gain.postln;
+~gain=gain;
 },49);
 			);
 
 											(
 MIDIdef.cc(\midi_slider7,{ |val, num, chan, src|
-		var ry;
-	ry=val.linlin(0,127,1.neg,1).round(0.0001);
-		ry.postln;
-		if(~synth.isPlaying,{~synth.set(\ry,ry)});
+		var low;
+		low=val.linlin(0,127,0,992*3).round(1).asInteger;
+		low.postln;
+~tone=low;
 },53);
 	);
 
 (
 MIDIdef.cc(\midi_slider8,{ |val, num, chan, src|
-		var rz;
-	rz=val.linlin(0,127,1.neg,1).round(0.0001);
-		rz.postln;
-		if(~synth.isPlaying,{~synth.set(\rz,rz)});
+		var az;
+	az=val.linlin(0,127,pi.neg,pi).round(0.0001);
+		az.postln;
+~az=az
 },57);
 	);
 
 	(
 MIDIdef.cc(\midi_slider9,{ |val, num, chan, src|
-		var gain;
-			gain=val.linlin(0,127,0,0,1).round(0.00011);
-		gain.postln;
-~gain=gain;
+		var el;
+		el=val.linlin(0,127,(pi/2).neg,(pi/2)).round(0.0001);
+		el.postln;
+~el=el;
 },61);
 	);
+
 (
 MIDIdef.cc(\midi_switch9,{ |val, num, chan, src|
 		var a;
-				if(val>0,a=9);
+				if(val>0,a=1);
 a.postln;
-		if(~synth.isPlaying,{~synth.set(\a, a)});
+	~tone=a;
 
 },13);
 	);
 	(
 MIDIdef.cc(\midi_switch10,{ |val, num, chan, src|
 		 var a;
-					if(val>0,a=10);
+					if(val>0,a=2);
 a.postln;
-		if(~synth.isPlaying,{~synth.set(\a, a)});
+		~tone=a;
 
 },15);
 	);
+
+);
+
 (
-MIDIdef.cc(\midi_switch11,{ |val, num, chan, src|
-		var a;
-				if(val>0,a=9);
-a.postln;
-		if(~synth.isPlaying,{~synth.set(\a, a)});
+~seq = Pseq(~dur ,inf).asStream;
+	~s= Routine({loop{
 
-},13);
-	);
-	(
-MIDIdef.cc(\midi_switch12,{ |val, num, chan, src|
-		 var a;
-					if(val>0,a=10);
-a.postln;
-		if(~synth.isPlaying,{~synth.set(\a, a)});
-
-},15);
-	);
-(
-MIDIdef.cc(\midi_switch13,{ |val, num, chan, src|
-		var a;
-				if(val>0,a=9);
-a.postln;
-		if(~synth.isPlaying,{~synth.set(\a, a)});
-
-},13);
-	);
-	(
-MIDIdef.cc(\midi_switch14,{ |val, num, chan, src|
-		 var a;
-					if(val>0,a=10);
-a.postln;
-		if(~synth.isPlaying,{~synth.set(\a, a)});
-
-},15);
-	);
-(
-MIDIdef.cc(\midi_switch15,{ |val, num, chan, src|
-		var a;
-				if(val>0,a=9);
-a.postln;
-		if(~synth.isPlaying,{~synth.set(\a, a)});
-
-},13);
-	);
-	(
-MIDIdef.cc(\midi_switch16,{ |val, num, chan, src|
-		 var a;
-					if(val>0,a=10);
-a.postln;
-		if(~synth.isPlaying,{~synth.set(\a, a)});
-
-},15);
-	);
-
+		Synth(\kick, [\gain,~gain, \tone,~tone, \m,1,	\low,~pass=0, \noise,0.0001, \az,~az, \t,992, \el,~el, \decay,~d,\attack,0.01,\rz,10000,\mix,0.2,\room,0.1])	;
+    ~seq.next.wait;
+};
+});
+);
+	~s.play;
+	//	~s.pause;
+	});
+	Tdef(\drone).play;
+}
+)
 )
 
+{SinOsc.ar()}.play
+
+		TempoClock.default.tempo_(2);
 
 
 

@@ -348,7 +348,7 @@ threshold3=(((343/0.3)/fund).reciprocal.ampdb/2.sqrt).dbamp;
 					////azimuthal multichannel expansion
 
 //Out.ar(0,PanAz.ar(2,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.01),room.lag(0.01),mul:gain1*loc1.abs)),0.9,0.01),SinOsc.ar(panx,phasex),width:spread));	//Out.ar(0,PanAz.ar(2,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.01),room.lag(0.01),mul:gain2*loc2.abs)),0.9,0.01),SinOsc.ar(pany,phasey),width:spread));
-/Out.ar(0,PanAz.ar(2,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.01),room.lag(0.01),mul:gain3*loc3.abs)),0.9,0.01),SinOsc.ar(panz,phasez),width:spread));
+//Out.ar(0,PanAz.ar(2,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.01),room.lag(0.01),mul:gain3*loc3.abs)),0.9,0.01),SinOsc.ar(panz,phasez),width:spread));
 
 				/////3d vbap expansion
 					Out.ar(0,VBAP.ar(3,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.01),room.lag(0.01),mul:gain1*loc1.abs)),0.9,0.01),~b,(spx.theta.raddeg+SinOsc.ar(panx,phasex).range(180,180.neg)).wrap(180,180.neg),
@@ -398,9 +398,9 @@ Out.ar(0,VBAP.ar(3,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.01),room.lag(
 ////durs
 	({var m1=1.neg, m2=1.neg, m3=1.neg,a,b,c,n=0,bank=6,time=32.reciprocal,beat=1,r=0;
 
-~dur1=[];~dur2=[];~dur3=[]; ~dx=[];~dy=[]; ~dz=[];
+			~dur1=[];~dur2=[];~dur3=[]; ~dx=[];~dy=[]; ~dz=[]; ~durx=[]; ~dury=[]; ~durz=[]; ~dur=[];
 
-					3.do{
+					1.do{
 ~x=bank.collect{
 m1=m1+1;
 					b=Spherical(beat,~az.[m1],~el.[m1]).rotate(r).tilt(r).tumble(r).x.round(0.00001);
@@ -417,13 +417,17 @@ m3=m3+1;
 	2.pow(d).round(time);
 }; m1=1.neg; m2=1.neg; m3=1.neg; ~dx=~dx++~x; ~dy=~dy++~y;  ~dz=~dz++~z;   ~x=[]; ~y=[]; ~z=[];  r=r+90.degrad; };
 
-				18.do{ ~dur1=~dur1++~dx.[n];n=n+1;};n=0;
-		18.do{ ~dur2=~dur2++~dy.[n];n=n+1;};n=0;
-		18.do{ ~dur3=~dur3++~dz.[n];n=n+1;};n=0;
-	//	bank.do{~durs=~durs++~x.[n]++~y.[n]++~z.[n];n=n+1;}
-//	~dur = ~duri.collect { |x|
-  //  if (x == 0) { Rest(2) } { x }
-//	}
+				6.do{ ~dur1=~dur1++~dx.[n];n=n+1;};n=0;
+		//	~durx = ~dur1.collect { |x| if (x == 0) { Rest(2) } { x }};
+
+		6.do{ ~dur2=~dur2++~dy.[n];n=n+1;};n=0;
+			//	~dury = ~dur2.collect { |x| if (x == 0) { Rest(2) } { x }};
+
+		6.do{ ~dur3=~dur3++~dz.[n];n=n+1;};n=0;
+			//	~durz = ~dur3.collect { |x| if (x == 0) { Rest(2) } { x }};
+
+			~dur=~dur++~dur1++~dur2++~dur3;
+
 }.value;
 );
 
