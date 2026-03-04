@@ -5,12 +5,11 @@ var az=0,el=0;
 var m=600,sph,az1,el1,pl=0,daz,del,harm,mag,r;
 var r1,harm1,r2,harm2,rad;
 var run = true,n=12;
-var ot=0.degrad,mk=0,size=2000;
+var ot=0.degrad,mk=0,size=500;
 ~data=[];
 
-1.do{
 
-data = (1*2*1*4).collect{
+data = (4*2*2*4).collect{
 
 	az=~az.[pl];
 	el=~el.[pl];
@@ -22,19 +21,18 @@ data = (1*2*1*4).collect{
 	pl=pl+1;
 			mk=(mk+((size*2.pow(n/12))-((size*2.pow(n/12))/1.6180339887499))).wrap(0,size*2.pow(n/12));
 		//mk=(mk+1);
-		sph=Spherical(mag*(size/2),az,el).asCartesian.asArray;
+		sph=Spherical(mag*(size),az,el).asCartesian.asArray;
 };
 	//pl=0;
 	//mk=(mk+(1200-(1200/1.6180339887499))).wrap(0,1200);
 	~data=~data++data;
-};
 
 w = Window.new("3D Scatterplot", Rect(40,40, 800, 800)).front;
 
-~v = UserView.new(w,Rect(0,0,800,800)).background_(Color.black);
-a = ScatterView3d(~v, Rect(0,0, 800,800), ~data, [-1000, 1000].asSpec,[-1000, 1000].asSpec,[-1000, 1000].asSpec);
+~v = UserView.new(w,Rect(0,0,700,700)).background_(Color.black);
+a = ScatterView3d(~v, Rect(0,0, 700,700), ~data, [-700, 700].asSpec,[-700, 700].asSpec,[-700, 700].asSpec);
 a.drawMethod = \fillRect;
-a.symbolSize = 5;
+a.symbolSize = 2;
 a.symbolColor = Color.white;
 a.background = Color.black;
 
@@ -45,7 +43,7 @@ Pen.translate(400,400);
 		a.rot(ot,ot,ot);
     ~v.refresh;
 
-		ot=ot+0.01.degrad;
+		ot=ot+0.02.degrad;
 
 };
 { while { run } {~v.background_(Color.black); ~v.refresh; (1/1000).wait } }.fork(AppClock);
@@ -62,9 +60,7 @@ var n=12,mk=0,size=500;
 
 ~data=[];
 
-1.do{
-
-data = (6*1*2*4).collect{
+data = (4*2*2*4).collect{
 
 	az=~az.[pl];
 	el=~el.[pl];
@@ -79,10 +75,9 @@ data = (6*1*2*4).collect{
 		sph=Spherical(mag*(size),az,el).asCartesian.asArray;
 };
 	~data=~data++data;
-};
 
 w = Window.new("3D Scatterplot", Rect(40,40, 1200, 800)).front;
-a = ScatterView3d(w, Rect(0,0, 800,600), ~data, [-600, 600].asSpec,[-600, 600].asSpec,[-600, 600].asSpec);
+a = ScatterView3d(w, Rect(0,0, 600,600), ~data, [-600, 600].asSpec,[-600, 600].asSpec,[-600, 600].asSpec);
 a.drawMethod = \fillRect;
 a.symbolSize = 2;
 a.symbolColor = Color.white;
@@ -117,21 +112,22 @@ var sphx,sphy,sphz,sphqx,sphqy;
 var az1=0,el1=0,az2=0,el2=0,az3=0,el3=0,az4=0,el4=0,az5=0,el5=0,az6=0,el6=0,az7=0,el7=0;
 var az11=0,el11=0,az22=0,el22=0,az33=0,el33=0,az44=0,el44=0,az55=0,el55=0,az66=0,el66=0,az77=0,el77=0;
 var azimuth,elevation,magnitudex,magnitudey,magnitudez,ellipsis=[1,1,1],spread=1;
-var scale=5,mag,mag_x,mag_y,mag_z,mag_qx,mag_qy;
+var scale=2,mag,mag_x,mag_y,mag_z,mag_qx,mag_qy;
+var cloud=2,gravity1=4,gravity2;
 
 	~az=[];~el=[];~magx=[];~magy=[];~magz=[];~qx=[];~qy=[];
 //	spread = if(m_z < 1) { 1 / m_z } { m_z };
 
-	6.do{
+	cloud.do{
 
-2.do{
+cloud.do{
 			az1 = (az1+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 			el1 = (el1+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 			sph1=(Spherical(1,(az1.degrad+angle.degrad).wrap(pi.neg,pi),(el1.degrad+angle.degrad).wrap((pi/2).neg,(pi/2))));
 
-			1.do{
+			gravity1.do{
 				az11=az1;el11=el1;
-	azimuth=4.collect{
+	azimuth=gravity1.collect{
 				az11 = (az11+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 				el11 = (el11+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 
@@ -141,14 +137,14 @@ var scale=5,mag,mag_x,mag_y,mag_z,mag_qx,mag_qy;
 			};~az=~az++azimuth;angle1=(angle1+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap(0,(180*2.pow(n/12)));};
 		};
 
-2.do{
+cloud.do{
 			az2 = (az2+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 			el2 = (el2+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 			sph2=(Spherical(1,(az2.degrad+angle.degrad).wrap(pi.neg,pi),(el2.degrad+angle.degrad).wrap((pi/2).neg,(pi/2))));
 
-			1.do{
+			gravity1.do{
 				az22=az2;el22=el2;
-	elevation=4.collect{
+	elevation=gravity1.collect{
 				az22 = (az22+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 				el22 = (el22+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 
@@ -158,14 +154,14 @@ var scale=5,mag,mag_x,mag_y,mag_z,mag_qx,mag_qy;
 			};~el=~el++elevation;angle2=(angle2+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap(0,(180*2.pow(n/12)));};
 		};
 
-2.do{
+cloud.do{
 			az3 = (az3+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 			el3 = (el3+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 		    sph3=(Spherical(1,(az3.degrad+angle.degrad).wrap(pi.neg,pi),(el3.degrad+angle.degrad).wrap((pi/2).neg,(pi/2))));
 
-			1.do{
+			gravity1.do{
 				az33=az3;el33=el3;
-	magnitudex=4.collect{
+	magnitudex=gravity1.collect{
 				az33 = (az33+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 				el33 = (el33+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 
@@ -177,14 +173,14 @@ var scale=5,mag,mag_x,mag_y,mag_z,mag_qx,mag_qy;
 			};~magx=~magx++magnitudex;angle3=(angle3+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap(0,(180*2.pow(n/12)));};
 		};
 
-2.do{
+cloud.do{
 			az4 = (az4+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 				el4 = (el4+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 	sph4=(Spherical(1,(az4.degrad+angle.degrad).wrap(pi.neg,pi),(el4.degrad+angle.degrad).wrap((pi/2).neg,(pi/2))));
 
-			1.do{
+			gravity1.do{
 				az44=az4;el44=el4;
-	magnitudey=4.collect{
+	magnitudey=gravity1.collect{
 				az44 = (az44+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 				el44 = (el44+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 
@@ -197,14 +193,14 @@ var scale=5,mag,mag_x,mag_y,mag_z,mag_qx,mag_qy;
 		};
 
 
-2.do{
+cloud.do{
 			az5 = (az5+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 			el5 = (el5+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 	sph5=(Spherical(1,(az5.degrad+angle.degrad).wrap(pi.neg,pi),(el5.degrad+angle.degrad).wrap((pi/2).neg,(pi/2))));
 
-			1.do{
+			gravity1.do{
 				az55=az5;el55=el5;
-	qx=4.collect{
+	qx=gravity1.collect{
 				az55 = (az55+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 				el55 = (el55+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 
@@ -219,14 +215,14 @@ var scale=5,mag,mag_x,mag_y,mag_z,mag_qx,mag_qy;
 
 
 
-2.do{
+cloud.do{
 			az6 = (az6+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 			el6 = (el6+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 	sph6=(Spherical(1,(az6.degrad+angle.degrad).wrap(pi.neg,pi),(el6.degrad+angle.degrad).wrap((pi/2).neg,(pi/2))));
 
-			1.do{
+			gravity1.do{
 				az66=az6;el66=el6;
-		qy=4.collect{
+		qy=gravity1.collect{
 				az66 = (az66+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 				el66 = (el66+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 
@@ -240,14 +236,14 @@ var scale=5,mag,mag_x,mag_y,mag_z,mag_qx,mag_qy;
 		};
 
 
-2.do{
+cloud.do{
 			az7 = (az7+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 			el7 = (el7+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 sph7=(Spherical(1,(az7.degrad+angle.degrad).wrap(pi.neg,pi),(el7.degrad+angle.degrad).wrap((pi/2).neg,(pi/2))));
 
-			1.do{
+			gravity1.do{
 				az77=az7;el77=el7;
-	magnitudez=	4.collect{
+	magnitudez=	gravity1.collect{
 				az77 = (az77+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 				el77 = (el77+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 
@@ -348,12 +344,12 @@ a.background = Color.black;
 
 	5.do{
 
-1.do{
+gravity1.do{
 			az1 = (az1+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 			el1 = (el1+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 			sph1=(Spherical(1,(az1.degrad+angle.degrad).wrap(pi.neg,pi),(el1.degrad+angle.degrad).wrap((pi/2).neg,(pi/2))));
 
-			1.do{
+			gravity1.do{
 				az11=az1;el11=el1;
 	azimuth=5.collect{
 				az11 = (az11+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
@@ -365,12 +361,12 @@ a.background = Color.black;
 			};~az=~az++azimuth;angle1=(angle1+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap(0,(180*2.pow(n/12)));};
 		};
 
-1.do{
+gravity1.do{
 			az2 = (az2+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 			el2 = (el2+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 			sph2=(Spherical(1,(az2.degrad+angle.degrad).wrap(pi.neg,pi),(el2.degrad+angle.degrad).wrap((pi/2).neg,(pi/2))));
 
-			1.do{
+			gravity1.do{
 				az22=az2;el22=el2;
 	elevation=5.collect{
 				az22 = (az22+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
@@ -382,12 +378,12 @@ a.background = Color.black;
 			};~el=~el++elevation;angle2=(angle2+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap(0,(180*2.pow(n/12)));};
 		};
 
-1.do{
+gravity1.do{
 			az3 = (az3+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 			el3 = (el3+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 		    sph3=(Spherical(1,(az3.degrad+angle.degrad).wrap(pi.neg,pi),(el3.degrad+angle.degrad).wrap((pi/2).neg,(pi/2))));
 
-			1.do{
+			gravity1.do{
 				az33=az3;el33=el3;
 	magnitudex=5.collect{
 				az33 = (az33+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
@@ -401,12 +397,12 @@ a.background = Color.black;
 			};~magx=~magx++magnitudex;angle3=(angle3+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap(0,(180*2.pow(n/12)));};
 		};
 
-1.do{
+gravity1.do{
 			az4 = (az4+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 				el4 = (el4+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 	sph4=(Spherical(1,(az4.degrad+angle.degrad).wrap(pi.neg,pi),(el4.degrad+angle.degrad).wrap((pi/2).neg,(pi/2))));
 
-			1.do{
+			gravity1.do{
 				az44=az4;el44=el4;
 	magnitudey=5.collect{
 				az44 = (az44+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
@@ -421,12 +417,12 @@ a.background = Color.black;
 		};
 
 
-1.do{
+gravity1.do{
 			az5 = (az5+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 			el5 = (el5+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 	sph5=(Spherical(1,(az5.degrad+angle.degrad).wrap(pi.neg,pi),(el5.degrad+angle.degrad).wrap((pi/2).neg,(pi/2))));
 
-			1.do{
+			gravity1.do{
 				az55=az5;el55=el5;
 	qx=5.collect{
 				az55 = (az55+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
@@ -443,12 +439,12 @@ a.background = Color.black;
 
 
 
-1.do{
+gravity1.do{
 			az6 = (az6+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 			el6 = (el6+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 	sph6=(Spherical(1,(az6.degrad+angle.degrad).wrap(pi.neg,pi),(el6.degrad+angle.degrad).wrap((pi/2).neg,(pi/2))));
 
-			1.do{
+			gravity1.do{
 				az66=az6;el66=el6;
 		qy=5.collect{
 				az66 = (az66+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
@@ -464,12 +460,12 @@ a.background = Color.black;
 		};
 
 
-1.do{
+gravity1.do{
 			az7 = (az7+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
 			el7 = (el7+((90*2.pow(n/12))-((90*2.pow(n/12))/1.6180339887499))).wrap((45*2.pow(n/12)).neg,(45*2.pow(n/12)));
 sph7=(Spherical(1,(az7.degrad+angle.degrad).wrap(pi.neg,pi),(el7.degrad+angle.degrad).wrap((pi/2).neg,(pi/2))));
 
-			1.do{
+			gravity1.do{
 				az77=az7;el77=el7;
 	magnitudez=	5.collect{
 				az77 = (az77+((180*2.pow(n/12))-((180*2.pow(n/12))/1.6180339887499))).wrap((90*2.pow(n/12)).neg,(90*2.pow(n/12)));
