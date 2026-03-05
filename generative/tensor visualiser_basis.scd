@@ -1,3 +1,110 @@
+
+(
+var data;
+var az=0,el=0;
+var m=600,sph,az1,el1,pl=0,daz,del,harm,mag,r;
+var r1,harm1,r2,harm2,rad;
+var run = true,n=12;
+var ot=0,mk=0,size=500;
+~data=[];
+
+
+data = (2*2*2*2).collect{
+
+	az=~az.[pl];
+	el=~el.[pl];
+	//mag=1000;
+	// mag=(Cartesian(~magx.[pl],~magy.[pl],~magz.[pl]).rho/(2.sqrt))+(Cartesian(~qx.[pl],~qy.[pl],~magz.[pl]).rho/(2.sqrt));
+				// mag=(Cartesian(~magx.[pl],~magy.[pl],~magz.[pl]).rho/(2.sqrt));
+		mag=(Cartesian(~magx.[pl],~magy.[pl],~magz.[pl]).rho/(2.sqrt));
+		// mag=~magz.[pl];
+	pl=pl+1;
+			mk=(mk+((size*2.pow(n/12))-((size*2.pow(n/12))/1.6180339887499))).wrap(0,size*2.pow(n/12));
+		//mk=(mk+1);
+		sph=Spherical(mag*(size),az,el).asCartesian.asArray;
+};
+	//pl=0;
+	//mk=(mk+(1200-(1200/1.6180339887499))).wrap(0,1200);
+	~data=~data++data;
+
+w = Window.new("3D Scatterplot", Rect(40,40, 800, 800)).front;
+
+~v = UserView.new(w,Rect(0,0,700,700)).background_(Color.black);
+a = ScatterView3d(~v, Rect(0,0, 700,700), ~data, [-700, 700].asSpec,[-700, 700].asSpec,[-700, 700].asSpec);
+a.drawMethod = \fillRect;
+a.symbolSize = 2;
+a.symbolColor = Color.white;
+a.background = Color.black;
+
+~v.animate;
+~v.drawFunc ={
+Pen.translate(400,400);
+
+		a.rot(ot,ot,ot);
+    ~v.refresh;
+
+		ot=ot+0.02.degrad;
+
+};
+{ while { run } {~v.background_(Color.black); ~v.refresh; (1/1000).wait } }.fork(AppClock);
+)
+
+
+//////////////////////////
+
+(
+var data,sph;
+var az=0,el=0;
+var m=600,pl=0,mag,r=1.neg,magg;
+var n=12,mk=0,size=250;
+
+~data=[];
+
+data = ~count.collect{
+
+	az=~az.[pl];
+	el=~el.[pl];
+	magg=~qx.[pl];
+	//mag=1000;
+	mag=(Cartesian(~magx.[pl],~magy.[pl],~magz.[pl]).rho/(2.sqrt));
+
+	//	mag=(Cartesian(~magx.[pl],~magy.[pl],~magz.[pl]).rho/(2.sqrt));
+		// mag=~magz.[pl];
+	pl=pl+1;
+			///mk=(mk+((size*2.pow(n/12))-((size*2.pow(n/12))/1.6180339887499))).wrap(0,size*2.pow(n/12));
+		//mk=(mk+1);
+		sph=Spherical(mag*size,az,el).asCartesian.asArray;
+};
+	~data=~data++data;
+
+w = Window.new("3D Scatterplot", Rect(40,40, 1200, 800)).front;
+a = ScatterView3d(w, Rect(0,0, 600,600), ~data, [-600, 600].asSpec,[-600, 600].asSpec,[-600, 600].asSpec);
+a.drawMethod = \fillRect;
+a.symbolSize = 2;
+a.symbolColor = Color.white;
+a.background = Color.black;
+
+// Y Slider
+Slider(w, Rect(900, 10, 10, 450)).action_{|me|
+    a.rotY = me.value * 2pi;
+    w.refresh;
+};
+// X Slider
+Slider(w, Rect(1000, 10, 10, 450)).action_{|me|
+    a.rotX = me.value * 2pi;
+    w.refresh;
+};
+// Z Slider
+Slider(w, Rect(1100, 10, 10, 450)).action_{|me|
+    a.rotZ = me.value * 2pi;
+    w.refresh;
+};
+
+)
+
+~count=(2*2*4*4)
+
+
 (
 {
 var sph1,sph2,sph3,sph4,sph5,sph6,sph7,m_x=1,m_y=1,m_z=1,qx,qy,mq=2,angle=0,n=12,num=1.neg;
@@ -12,8 +119,8 @@ var el_1=0,el_2=0,el_3=0,el_4=0,el_5=0,el_6=0,el_7=0;
 var az1=0,el1=0,az2=0,el2=0,az3=0,el3=0,az4=0,el4=0,az5=0,el5=0,az6=0,el6=0,az7=0,el7=0;
 var az11=0,el11=0,az22=0,el22=0,az33=0,el33=0,az44=0,el44=0,az55=0,el55=0,az66=0,el66=0,az77=0,el77=0;
 var azimuth,elevation,magnitudex,magnitudey,magnitudez,ellipsis=[1,1,1],spread=1;
-var scale=10,mag,mag_x,mag_y,mag_z,mag_qx,mag_qy;
-var axis=2,cloud=2,axis1=1,gravity1=1;
+var scale=4,mag,mag_x,mag_y,mag_z,mag_qx,mag_qy;
+var axis=2,cloud=2,axis1=4,gravity1=4;
 var g=((1+5.sqrt)/2),s=(1+2.sqrt);
 
 	~az=[];~el=[];~magx=[];~magy=[];~magz=[];~qx=[];~qy=[];
@@ -71,6 +178,7 @@ cloud.do{
 				sph33=(Spherical(1/scale,(az33+angle3).wrap(pi.neg,pi),(el33+angle3).wrap((pi/2).neg,(pi/2))));
 	 mag_x=((Complex(cos((sph3.theta.round(0.000000000001)*m_x).wrap(pi.neg,pi)),cos((sph3.theta.round(0.000000000001)*m_x).wrap(pi.neg,pi))).rho/(2.sqrt)).pow(spread)*
 			(Complex(cos((sph3.phi.round(0.000000000001)).wrap((pi/2).neg,(pi/2))),cos((sph3.phi.round(0.000000000001)).wrap((pi/2).neg,(pi/2)))).rho/(2.sqrt)).pow(spread));
+
 	sphx=(Spherical(mag_x,sph3.theta,sph3.phi).asCartesian.round(0.000000000001)+Spherical(mag_x/scale,sph33.theta,sph33.phi).asCartesian.round(0.000000000001)).asSpherical.rho;
 
 			};~magx=~magx++magnitudex;angle3=(angle3+(2pi-(2pi/s))).wrap(0,2pi);};
