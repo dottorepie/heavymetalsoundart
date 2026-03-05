@@ -214,12 +214,12 @@ mod_anglex=SinOsc.ar(lfon,phase1).range(pi.neg,pi);
 					mod_anglez=SinOsc.ar(lfon*(1/2),phase3).range((pi/2).neg,(pi/2));
 
 					(
-		/*magx=((Complex(cos(((polytope.theta+mod_anglex).round(0.00001)*m).wrap(pi.neg,pi)),cos((((polytope.theta+mod_anglex).round(0.00001)*m)).wrap(pi.neg,pi))).rho/(2.sqrt))*(Complex(cos((polytope.phi.round(0.00001)).wrap((pi/2).neg,(pi/2))),cos((polytope.phi.round(0.00001)).wrap((pi/2).neg,(pi/2)))).rho/(2.sqrt));
-				);*/
+	magx=((Complex(cos(((polytope.theta+mod_anglex).round(0.00001)*m).wrap(pi.neg,pi)),cos((((polytope.theta+mod_anglex).round(0.00001)*m)).wrap(pi.neg,pi))).rho/(2.sqrt))*(Complex(cos((polytope.phi.round(0.00001)).wrap((pi/2).neg,(pi/2))),cos((polytope.phi.round(0.00001)).wrap((pi/2).neg,(pi/2)))).rho/(2.sqrt));
+				);
 
-/*magy=((Complex(sin(((polytope.theta+mod_angley).round(0.00001)*m).wrap(pi.neg,pi)),sin(((polytope.theta+mod_angley).round(0.00001)*m).wrap(pi.neg,pi))).rho/(2.sqrt))*
+magy=((Complex(sin(((polytope.theta+mod_angley).round(0.00001)*m).wrap(pi.neg,pi)),sin(((polytope.theta+mod_angley).round(0.00001)*m).wrap(pi.neg,pi))).rho/(2.sqrt))*
 		(Complex(cos((polytope.phi.round(0.00001)).wrap((pi/2).neg,(pi/2))),cos((polytope.phi.round(0.00001)).wrap((pi/2).neg,(pi/2)))).rho/(2.sqrt));
-				);*/
+				);
 
 magz=((Complex(cos(((polytope.phi+mod_anglez).round(0.00001)*m).wrap((pi/2).neg,(pi/2))),cos(((polytope.phi).round(0.00001)*m).wrap((pi/2).neg,(pi/2)))).rho/(2.sqrt)));
 
@@ -238,16 +238,15 @@ sin((polytope.phi.round(0.00001)*(mq-1)).wrap((pi/2).neg,(pi/2)))))*
 cos((polytope.phi.round(0.00001)).wrap((pi/2).neg,(pi/2))))))).rho/(2.sqrt)).pow(spread);
 	);
 
-					mx=(Cartesian(magqx,0,0).rho);     //mqx=(Cartesian(magqx,0,0).rho);
-					my=(Cartesian(0,magqy,0).rho);      //mqy=(Cartesian(0,magqy,0).rho);
+					mx=(Cartesian(magx,0,0).rho);     //mqx=(Cartesian(magqx,0,0).rho);
+					my=(Cartesian(0,magy,0).rho);      //mqy=(Cartesian(0,magqy,0).rho);
 					mz=(Cartesian(0,0,magz).rho);
-					mag=(Cartesian(magqx,magqy,magz).rho/2.sqrt);	  //magq=(Cartesian(magqx,magqy,0).rho);
+					mag=(Cartesian(mx,my,mz).rho/2.sqrt)*(magqx/2.sqrt);	  //magq=(Cartesian(magqx,magqy,0).rho);
 
 
 		sph=Spherical(mag,polytope.theta,polytope.phi);
 
-	//	loc1=sph.x;  loc2=sph.y;  loc3=sph.z;
-					loc1=mx;  loc2=my;  loc3=mz;
+	loc1=sph.x;  loc2=sph.y;  loc3=sph.z;
 
 phasex=Complex(1,mx.value).theta;
 phasey=Complex(1,my.value).theta;
