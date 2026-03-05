@@ -27,10 +27,11 @@ data = ~count.collect{
 	//mk=(mk+(1200-(1200/1.6180339887499))).wrap(0,1200);
 	~data=~data++data;
 
-w = Window.new("3D Scatterplot", Rect(40,40, 800, 800)).front;
+w = Window.new("3D Scatterplot", Rect(40,40, 1200, 1200)).front;
 
-~v = UserView.new(w,Rect(0,0,700,700)).background_(Color.black);
-a = ScatterView3d(~v, Rect(0,0, 700,700), ~data, [-700, 700].asSpec,[-700, 700].asSpec,[-700, 700].asSpec);
+~v = UserView.new(w,Rect(0,0,1000,1000)).background_(Color.black);
+
+a = ScatterView3d(w, Rect(0,0, 1000,1000), ~data, [-1000, 1000].asSpec,[-1000, 1000].asSpec,[-1000, 1000].asSpec);
 a.drawMethod = \fillRect;
 a.symbolSize = 2;
 a.symbolColor = Color.white;
@@ -56,7 +57,7 @@ Pen.translate(400,400);
 var data,sph;
 var az=0,el=0;
 var m=600,pl=0,mag,r=1.neg,magg;
-var n=12,mk=0,size=400;
+var n=12,mk=0,size=1000;
 
 ~data=[];
 
@@ -73,42 +74,42 @@ data = ~count.collect{
 	pl=pl+1;
 			///mk=(mk+((size*2.pow(n/12))-((size*2.pow(n/12))/1.6180339887499))).wrap(0,size*2.pow(n/12));
 		//mk=(mk+1);
-		sph=Spherical(size,az,el).asCartesian.asArray;
+		sph=Spherical(mag*size,az,el).asCartesian.asArray;
 };
 	~data=~data++data;
 
-w = Window.new("3D Scatterplot", Rect(40,40, 1200, 800)).front;
-a = ScatterView3d(w, Rect(0,0, 600,600), ~data, [-600, 600].asSpec,[-600, 600].asSpec,[-600, 600].asSpec);
+w = Window.new("3D Scatterplot", Rect(40,40, 1400, 1200)).front;
+a = ScatterView3d(w, Rect(0,0, 1000,1000), ~data, [-1000, 1000].asSpec,[-1000, 1000].asSpec,[-1000, 1000].asSpec);
 a.drawMethod = \fillRect;
-a.symbolSize = 2;
+a.symbolSize = 4;
 a.symbolColor = Color.white;
 a.background = Color.black;
 
 // Y Slider
-Slider(w, Rect(900, 10, 10, 450)).action_{|me|
+Slider(w, Rect(1000, 10, 10,450)).action_{|me|
     a.rotY = me.value * 2pi;
     w.refresh;
 };
 // X Slider
-Slider(w, Rect(1000, 10, 10, 450)).action_{|me|
+Slider(w, Rect(1100, 10, 10, 450)).action_{|me|
     a.rotX = me.value * 2pi;
     w.refresh;
 };
 // Z Slider
-Slider(w, Rect(1100, 10, 10, 450)).action_{|me|
+Slider(w, Rect(1200, 10, 10, 450)).action_{|me|
     a.rotZ = me.value * 2pi;
     w.refresh;
 };
 
 )
 
-~count=(2*2*1*1*2*2)
+~count=(2*2*2*2*8*16)
 
 /////////////
 (
 {
-var scale=1,scale1=1,scale2=10;
-var axis=2,cloud=2,axis1=2,gravity1=2,axis2=2,gravity2=2;
+var scale=1,scale1=4,scale2=4;
+var axis=2,cloud=2,axis1=2,gravity1=2,axis2=8,gravity2=16;
 var sph1,sph2,sph3,sph4,sph5,sph6,sph7,m_x=1,m_y=1,m_z=1,qx,qy,mq=2;
 var angle=0,angle1=0, angle11=0;
 var sphx,sphy,sphz,sphqx,sphqy,az=0,el=0,sph;

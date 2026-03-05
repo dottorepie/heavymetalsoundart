@@ -198,6 +198,7 @@ cloud.do{
 				sph44=(Spherical(1/scale,(az44+angle4).wrap(pi.neg,pi),(el44+angle4).wrap((pi/2).neg,(pi/2))));
 	 mag_y=((Complex(sin((sph4.theta.round(0.000000000001)*m_x).wrap(pi.neg,pi)),sin((sph4.theta.round(0.000000000001)*m_x).wrap(pi.neg,pi))).rho/(2.sqrt)).pow(spread)*
 			(Complex(cos((sph4.phi.round(0.000000000001)).wrap((pi/2).neg,(pi/2))),cos((sph4.phi.round(0.000000000001)).wrap((pi/2).neg,(pi/2)))).rho/(2.sqrt)).pow(spread));
+
 	sphy=(Spherical(mag_y,sph4.theta,sph4.phi).asCartesian.round(0.000000000001)+Spherical(mag_y/scale,sph44.theta,sph44.phi).asCartesian.round(0.000000000001)).asSpherical.rho;
 
 			};~magy=~magy++magnitudey;angle4=(angle4+(2pi-(2pi/s))).wrap(0,2pi);};
