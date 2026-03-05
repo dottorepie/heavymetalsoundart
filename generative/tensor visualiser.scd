@@ -101,15 +101,17 @@ Slider(w, Rect(1100, 10, 10, 450)).action_{|me|
 
 )
 
-~count=(2*2*2*2*2)
+~count=(2*2*4*1)
 
 /////////////
 (
 {
+var scale=1,scale1=1,scale2=1;
 var sph1,sph2,sph3,sph4,sph5,sph6,sph7,m_x=1,m_y=1,m_z=1,qx,qy,mq=0,angle=0,n=12,num=1.neg;
 var angle1=0,angle2=0,angle3=0,angle4=0,angle5=0,angle6=0,angle7=0;
+var angle_1=0;angle_2=0;angle_3=0;ngle_4=0;angle_5=0;angle_6=0;angle_7=0;
 var angle11=0,angle22=0,angle33=0,angle44=0,angle55=0,angle66=0,angle77=0;
-var sphx,sphy,sphz,sphqx,sphqy,az=0,el=0,sph,angl=0;
+var sphx,sphy,sphz,sphqx,sphqy,az=0,el=0,sph;
 var sph11,sph22,sph33,sph44,sph55,sph66,sph77;
 var sph_1,sph_2,sph_3,sph_4,sph_5,sph_6,sph_7;
 var sph_11,sph_22,sph_33,sph_44,sph_55,sph_66,sph_77;
@@ -118,8 +120,8 @@ var el_1=0,el_2=0,el_3=0,el_4=0,el_5=0,el_6=0,el_7=0;
 var az1=0,el1=0,az2=0,el2=0,az3=0,el3=0,az4=0,el4=0,az5=0,el5=0,az6=0,el6=0,az7=0,el7=0;
 var az11=0,el11=0,az22=0,el22=0,az33=0,el33=0,az44=0,el44=0,az55=0,el55=0,az66=0,el66=0,az77=0,el77=0;
 var azimuth,elevation,magnitudex,magnitudey,magnitudez,ellipsis=[1,1,1],spread=1;
-var scale=1,mag,mag_x,mag_y,mag_z,mag_qx,mag_qy;
-var axis=2,matter=2,cloud=2,axis1=2,gravity1=2,axis2=2,gravity2=2;
+var mag,mag_x,mag_y,mag_z,mag_qx,mag_qy;
+var axis=2,matter=2,cloud=2,axis1=2,gravity1=1,axis2=4,gravity2=4;
 var g=((1+5.sqrt)/2),s=(1+2.sqrt);
 	~az=[];~el=[];~magx=[];~magy=[];~magz=[];~qx=[];~qy=[];
 //	spread = if(m_z < 1) { 1 / m_z } { m_z };
@@ -127,34 +129,35 @@ var g=((1+5.sqrt)/2),s=(1+2.sqrt);
 	axis.do{
 
 		matter.do{
-			az1= (az1+(2pi-(2pi/s))).wrap(pi.neg,pi);
+			az= (az+(2pi-(2pi/s))).wrap(pi.neg,pi);
 			el = (el1+(pi-(pi/s))).wrap((pi/2).neg,(pi/2));
-			sph=(Spherical(1,(az1+angl).wrap(pi.neg,pi),(el1+angl).wrap((pi/2).neg,(pi/2))));
+			sph=(Spherical(1/scale,(az+angle).wrap(pi.neg,pi),(el+angle).wrap((pi/2).neg,(pi/2))));
 
 cloud.do{
 			az1 = sph.theta;
 			el1 = sph.phi;
-			sph1=(Spherical(1,(az1+angle).wrap(pi.neg,pi),(el1+angle).wrap((pi/2).neg,(pi/2))));
+				sph1=(sph.asCartesian+(Spherical(1/scale1,(az1+angle_1).wrap(pi.neg,pi),(el1+angle_1).wrap((pi/2).neg,(pi/2)))).asCartesian).asSpherical;
 
 			axis1.do{
-				az11=az1;el11=el1;
+				az11=sph1.theta;el11=sph1.phi;
+
 	azimuth=gravity1.collect{
 				az11 = (az11+(2pi-(2pi/s))).wrap(pi.neg,pi);
 				el11 = (el11+(pi-(pi/s))).wrap((pi/2).neg,(pi/2));
 
-				sph11=(Spherical(1/scale,(az11+angle1).wrap(pi.neg,pi),(el11+angle+angle1).wrap((pi/2).neg,(pi/2))));
+				sph11=(Spherical(1/scale2,(az11+angle1).wrap(pi.neg,pi),(el11+angle+angle1).wrap((pi/2).neg,(pi/2))));
 				(sph1.asCartesian.round(0.000000000001)+sph11.asCartesian.round(0.000000000001)).asSpherical.theta.round(0.000000000001);
 
-			};~az=~az++azimuth;angle1=(angle1+(2pi-(2pi/s))).wrap(0,2pi);};
+			};~az=~az++azimuth;angle1=(angle1+(2pi-(2pi/s))).wrap(0,2pi);}; az11=0; wl11=0;
 		};
 
 cloud.do{
 			az2 = (az2+(2pi-(2pi/s))).wrap(pi.neg,pi);
 			el2 = (el2+(pi-(pi/s))).wrap((pi/2).neg,(pi/2));
-			sph2=(Spherical(1,(az2+angle).wrap(pi.neg,pi),(el2+angle).wrap((pi/2).neg,(pi/2))));
+				sph2=(sph.asCartesian+(Spherical(1,(az2+angle_2).wrap(pi.neg,pi),(el2+angle_2).wrap((pi/2).neg,(pi/2)))).asCartesian).asSpherical;
 
 			axis1.do{
-				az22=az2;el22=el2;
+				az22=sph2.theta; el22=sph2.phi;
 	elevation=gravity1.collect{
 				az22 = (az22+(2pi-(2pi/s))).wrap(pi.neg,pi);
 				el22 = (el22+(pi-(pi/s))).wrap((pi/2).neg,(pi/2));
@@ -162,7 +165,7 @@ cloud.do{
 				sph22=(Spherical(1/scale,(az22+angle2).wrap(pi.neg,pi),(el22+angle+angle2).wrap((pi/2).neg,(pi/2))));
 				(sph2.asCartesian.round(0.000000000001)+sph22.asCartesian.round(0.000000000001)).asSpherical.phi.round(0.000000000001);
 
-			};~el=~el++elevation;angle2=(angle2+(2pi-(2pi/s))).wrap(0,2pi);};
+			};~el=~el++elevation;angle2=(angle2+(2pi-(2pi/s))).wrap(0,2pi);}; az22=0; el22=0;
 		};
 
 cloud.do{
@@ -270,7 +273,9 @@ sph7=(Spherical(1,(az7+angle).wrap(pi.neg,pi),(el7+angle).wrap((pi/2).neg,(pi/2)
 		az1=0;el1=0;az2=0;el2=0;az3=0;el3=0;az4=0;el4=0;az5=0;el5=0;az6=0;el6=0;az7=0;el7=0;
 		};
 
-angle=0;az=0;el=0;
+		angle=(angle+(2pi-(2pi/s))).wrap(0,2pi);
+angle_1=0;angle_2=0;angle_3=0;ngle_4=0;angle_5=0;angle_6=0;angle_7=0;
+		az=0;el=0;
 	}
 }.value;
 )
