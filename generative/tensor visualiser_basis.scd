@@ -13,7 +13,7 @@ var az1=0,el1=0,az2=0,el2=0,az3=0,el3=0,az4=0,el4=0,az5=0,el5=0,az6=0,el6=0,az7=
 var az11=0,el11=0,az22=0,el22=0,az33=0,el33=0,az44=0,el44=0,az55=0,el55=0,az66=0,el66=0,az77=0,el77=0;
 var azimuth,elevation,magnitudex,magnitudey,magnitudez,ellipsis=[1,1,1],spread=1;
 var scale=10,mag,mag_x,mag_y,mag_z,mag_qx,mag_qy;
-var axis=2,cloud=2,axis1=4,gravity1=4;
+var axis=2,cloud=2,axis1=1,gravity1=1;
 var g=((1+5.sqrt)/2),s=(1+2.sqrt);
 
 	~az=[];~el=[];~magx=[];~magy=[];~magz=[];~qx=[];~qy=[];
@@ -28,14 +28,16 @@ cloud.do{
 
 			axis1.do{
 				az11=sph1.theta; el11=sph1.phi;
+
 	azimuth=gravity1.collect{
 				az11 = (az11+(2pi-(2pi/s))).wrap(pi.neg,pi);
 				el11 = (el11+(pi-(pi/s))).wrap((pi/2).neg,(pi/2));
 
 				sph11=(Spherical(1/scale,(az11+angle1).wrap(pi.neg,pi),(el11+angle1).wrap((pi/2).neg,(pi/2))));
+
 				(sph1.asCartesian.round(0.000000000001)+sph11.asCartesian.round(0.000000000001)).asSpherical.theta.round(0.000000000001);
 
-			};~az=~az++azimuth;angle1=(angle1+(2pi-(2pi/s))).wrap(0,(180*2.pow(n/12)));};
+			};~az=~az++azimuth;angle1=(angle1+(2pi-(2pi/s))).wrap(0,2pi);};
 		};
 
 cloud.do{
@@ -52,7 +54,7 @@ cloud.do{
 				sph22=(Spherical(1/scale,(az22+angle2).wrap(pi.neg,pi),(el22+angle2).wrap((pi/2).neg,(pi/2))));
 				(sph2.asCartesian.round(0.000000000001)+sph22.asCartesian.round(0.000000000001)).asSpherical.phi.round(0.000000000001);
 
-			};~el=~el++elevation;angle2=(angle2+(2pi-(2pi/s))).wrap(0,(180*2.pow(n/12)));};
+			};~el=~el++elevation;angle2=(angle2+(2pi-(2pi/s))).wrap(0,2pi);};
 		};
 
 cloud.do{
@@ -71,7 +73,7 @@ cloud.do{
 			(Complex(cos((sph3.phi.round(0.000000000001)).wrap((pi/2).neg,(pi/2))),cos((sph3.phi.round(0.000000000001)).wrap((pi/2).neg,(pi/2)))).rho/(2.sqrt)).pow(spread));
 	sphx=(Spherical(mag_x,sph3.theta,sph3.phi).asCartesian.round(0.000000000001)+Spherical(mag_x/scale,sph33.theta,sph33.phi).asCartesian.round(0.000000000001)).asSpherical.rho;
 
-			};~magx=~magx++magnitudex;angle3=(angle3+(2pi-(2pi/s))).wrap(0,(180*2.pow(n/12)));};
+			};~magx=~magx++magnitudex;angle3=(angle3+(2pi-(2pi/s))).wrap(0,2pi);};
 		};
 
 cloud.do{
@@ -90,7 +92,7 @@ cloud.do{
 			(Complex(cos((sph4.phi.round(0.000000000001)).wrap((pi/2).neg,(pi/2))),cos((sph4.phi.round(0.000000000001)).wrap((pi/2).neg,(pi/2)))).rho/(2.sqrt)).pow(spread));
 	sphy=(Spherical(mag_y,sph4.theta,sph4.phi).asCartesian.round(0.000000000001)+Spherical(mag_y/scale,sph44.theta,sph44.phi).asCartesian.round(0.000000000001)).asSpherical.rho;
 
-			};~magy=~magy++magnitudey;angle4=(angle4+(2pi-(2pi/s))).wrap(0,(180*2.pow(n/12)));};
+			};~magy=~magy++magnitudey;angle4=(angle4+(2pi-(2pi/s))).wrap(0,2pi);};
 		};
 
 
@@ -111,7 +113,7 @@ cloud.do{
 
 		sphqx=(Spherical(mag_qx,sph5.theta,sph5.phi).asCartesian.round(0.000000000001)+Spherical(mag_qx/scale,sph55.theta,sph55.phi).asCartesian.round(0.000000000001)).asSpherical.rho;
 
-			};~qx=~qx++qx;angle5=(angle5+(2pi-(2pi/s))).wrap(0,(180*2.pow(n/12)));};
+			};~qx=~qx++qx;angle5=(angle5+(2pi-(2pi/s))).wrap(0,2pi);};
 		};
 
 
@@ -133,7 +135,7 @@ cloud.do{
 				(Complex(cos((sph6.phi.round(0.000000000001)).wrap((pi/2).neg,(pi/2))),cos((sph6.phi.round(0.000000000001)).wrap((pi/2).neg,(pi/2))))))).rho/(2.sqrt)).pow(spread);
 		sphqy=(Spherical(mag_qy,sph6.theta,sph6.phi).asCartesian.round(0.000000000001)+Spherical(mag_qy/scale,sph66.theta,sph66.phi).asCartesian.round(0.000000000001)).asSpherical.rho;
 
-			};~qy=~qy++qy;angle6=(angle6+(2pi-(2pi/s))).wrap(0,(180*2.pow(n/12)));};
+			};~qy=~qy++qy;angle6=(angle6+(2pi-(2pi/s))).wrap(0,2pi);};
 		};
 
 
@@ -152,7 +154,7 @@ sph7=(Spherical(1,(az7+angle).wrap(pi.neg,pi),(el7+angle).wrap((pi/2).neg,(pi/2)
 		mag_z=(Complex(sin((sph7.phi.round(0.000000000001)*m_z).wrap((pi/2).neg,(pi/2))),sin((sph7.phi.round(0.000000000001)*m_z).wrap((pi/2).neg,(pi/2)))).rho/(2.sqrt)).pow(spread);
 		sphz=(Spherical(mag_z,sph7.theta,sph7.phi).asCartesian.round(0.000000000001)+Spherical(mag_z/scale,sph77.theta,sph77.phi).asCartesian.round(0.000000000001)).asSpherical.rho;
 
-			};~magz=~magz++magnitudez;angle7=(angle7+(2pi-(2pi/s))).wrap(0,(180*2.pow(n/12)));};
+			};~magz=~magz++magnitudez;angle7=(angle7+(2pi-(2pi/s))).wrap(0,2pi);};
 		};
 
 angle=(angle+(2pi-(2pi/s))).wrap(0,2pi);
