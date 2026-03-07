@@ -63,7 +63,8 @@ data = ~count.collect{
 
 	az=~az.[pl];
 	el=~el.[pl];
-	magg=~magqx.[pl];
+	//magg=~magqx.[pl];
+	magg=1;
 	//mag=1000;
 	mag=(Cartesian(~magx.[pl],~magy.[pl],~magz.[pl]).rho/(2.sqrt));
 
@@ -101,12 +102,12 @@ Slider(w, Rect(1200, 10, 10, 450)).action_{|me|
 
 )
 
-~count=(2*2*2*2*2*2)
+~count=(1*2*2*2*2*2)
 
 (
 {
 var scale=1,scale1=8,scale2=8;
-var axis=2,cloud=2,axis1=2,gravity1=2,axis2=2,gravity2=2;
+var axis=2,cloud=1,axis1=2,gravity1=2,axis2=2,gravity2=2;
 var m_x=1,m_y=1,m_z=1,mq=m_x+1;
 var sph1,sph2,sph3,sph4,sph7,sph6;
 var sph11,sph22,sph33,sph44,sph77,sph66;
