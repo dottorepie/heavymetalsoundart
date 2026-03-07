@@ -19,7 +19,7 @@ Buffer.freeAll;
 {
 var signal,wt;
 	//signal=Env([1,100],[3],[8]);
-		signal=Env([1,1000],[3],[8]);
+		signal=Env([1,1500],[3],[8]);
 	wt = signal.asSignal(1024).asWavetable;
 ~scale2.loadCollection(wt);
 //signal.plot;
@@ -27,7 +27,7 @@ var signal,wt;
 		{
 var signal,wt;
 //	signal=Env([1,10000],[3],[12]);
-			signal=Env([1,1100],[3],[12]);
+			signal=Env([1,1000],[3],[12]);
 	wt = signal.asSignal(1024).asWavetable;
 ~scale1.loadCollection(wt);
 //signal.plot;
@@ -36,7 +36,7 @@ var signal,wt;
 	{
 var signal,wt;
 	//signal=Env([0.005,1,0.01],[2,1],[4,2.neg]);
-		signal=Env([1,20100,1],[2.9,0.1],[4,2.neg]);
+		signal=Env([1,20100,1],[2.95,0.05],[4,1.neg]);
 	wt = signal.asSignal(1024).asWavetable;
 ~scale.loadCollection(wt);
 //signal.plot;
@@ -52,7 +52,7 @@ var signal,wt;
 
 	{
 var signal,wt;
-	signal=Env([1,4],[3],[8]);
+	signal=Env([1,8],[3],[8]);
 	wt = signal.asSignal(1024).asWavetable;
 ~harm.loadCollection(wt);
 //signal.plot;
@@ -62,25 +62,25 @@ var signal,wt;
 (
 SynthDef.new(\player,{
 	arg tempo;
-	Out.kr(~controlBus.index, (Osc.kr(~scale.bufnum,(1/40)).abs));
-	Out.kr(~controlBus1.index, (Osc.kr(~scale1.bufnum,(1/40)).abs));
-			Out.kr(~controlBus4.index, (Osc.kr(~scale2.bufnum,(1/40)).abs));
-		Out.kr(~controlBus2.index, (Osc.kr(~perspective.bufnum,(1/40)).abs));
-Out.kr(~controlBus3.index, (Osc.kr(~harm.bufnum,(1/40)).abs));
+	Out.kr(~controlBus.index, (Osc.kr(~scale.bufnum,(1/100)).abs));
+	Out.kr(~controlBus1.index, (Osc.kr(~scale1.bufnum,(1/100)).abs));
+			Out.kr(~controlBus4.index, (Osc.kr(~scale2.bufnum,(1/100)).abs));
+		Out.kr(~controlBus2.index, (Osc.kr(~perspective.bufnum,(1/100)).abs));
+Out.kr(~controlBus3.index, (Osc.kr(~harm.bufnum,(1/100)).abs));
 
 }).add;
-	);
+	);~count=[2,2,2,3,2,4];
 }
 )
 
 
-Server.freeAll
+//Server.freeAll
 //smoothing
 //az1 = az1 + (targetAz1 - az1) * 0.1;
 //el1 = el1 + (targetEl1 - el1) * 0.1;
 
 //////////////////////////////////////////////////////////////////////animation
-~count=[2,2,2,3,2,4];
+
 (
 var ot=0,dota,pla=0;
 var data;
@@ -108,12 +108,12 @@ var g=((1+5.sqrt)/2),s=(1+2.sqrt);
 Synth.new(\player);
 data = [];
 
-w = Window.new("3D Scatterplot", Rect(40,40, 1500, 1000)).front;
+w = Window.new("3D Scatterplot", Rect(40,40, 2000, 1200)).front;
 
-~v = UserView.new(w,Rect(0,0,1500,1000)).background_(Color.black);
-a = ScatterView3d(~v, Rect(0,0, 1500,1000), ~data, [-10000, 10000].asSpec,[-10000, 10000].asSpec,[-10000, 10000].asSpec);
+~v = UserView.new(w,Rect(0,0,2000,1200)).background_(Color.black);
+a = ScatterView3d(~v, Rect(0,0, 2000,1200), ~data, [-5000, 5000].asSpec,[-5000, 5000].asSpec,[-5000, 5000].asSpec);
 a.drawMethod = \fillRect;
-a.symbolSize = 2;
+a.symbolSize = 3;
 a.symbolColor = Color.white;
 a.background = Color.black;
 
@@ -530,8 +530,8 @@ az6=0;el6=0;
 
 	~azimuth=~az;
 	~elevation=~el;
-	~magnitude=~magnitude=(~magx.pow(2)+~magy.pow(2)+~magz.pow(2)).sqrt;
-	~azimuth.postln;
+	~magnitude=~magnitude=(~magx.pow(2)+~magy.pow(2)+~magz.pow(2)).sqrt*992;
+//~magnitude.postln;
 
 	dota=(~count.[0]*~count.[1]*~count.[2]*~count.[3]*~count.[4]*~count.[5]).collect{
 
@@ -562,7 +562,7 @@ r.play;
 
 ~v.animate;
 ~v.drawFunc ={
-Pen.translate(400,400);
+Pen.translate(1000,600);
 
 	a.rot(ot,ot,ot);
 
