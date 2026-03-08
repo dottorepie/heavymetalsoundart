@@ -607,64 +607,9 @@ r.play;
 };
 //{ while { run } {~v.background_(Color.black); ~v.refresh; (1/100).wait } }.fork(AppClock);
 }.value);
-		(
 
-thisThread.randSeed = 123;
-
-			~seq = Pseq([1/8], inf).asStream;
-//~ind = Pseq(~count.rand, inf).asStream;
-
-~s = Routine({
-    var i;
-	var tone, az, el, x, y, z;
-
-    loop {
-       // i = ~ind.next.asInteger;
-i= ~cart.size.rand;
-    //   // ~synth.set(
-			//			\tone, ~magnitude[i].lag(0.01),
-        //    \az, ~azimuth[i].lag(0.01),
-       //     \el, ~elevation[i].lag(0.01)
-     //   );
-
-tone = ~magnitude[i];
-az = ~azimuth[i];
-el = ~elevation[i];
-x = ~cart[i] ? [0,0,0];
-
-if(tone.notNil && az.notNil && el.notNil) {
-
-    ~synth = Synth.new(\synth,[
-        \gain,0.1,
-        \drive,992*2,
-        \fu,32,
-        \tone, tone.round(1),
-        \low,992*2,
-        \pan,(992*16).neg,
-        \mix,1,
-        \drone_amp,3,
-        \room,1,
-        \pann,(992*8).neg,
-        \x,2,
-        \a,1,
-        \spread,80,
-        \az, az,
-        \el, el,
-        \drone,12.neg,
-        \xx, x[0].round(1),
-        \yy, x[1].round(1),
-        \zz, x[2].round(1)
-    ]).register;
-
-};
-        ~seq.next.wait;
-				//	(1).wait;
-    }
-		})
-		);
-	~s.play;
 )
-		~s.stop;
+
 
 
 

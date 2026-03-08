@@ -448,7 +448,7 @@ m3=m3+1;
 
 thisThread.randSeed = 123;
 
-			~seq = Pseq([1/8], inf).asStream;
+			~seq = Pseq([1/4], inf).asStream;
 //~ind = Pseq(~count.rand, inf).asStream;
 
 ~s = Routine({
@@ -463,8 +463,11 @@ i= ~cart.size.rand;
        //     \el, ~elevation[i].lag(0.01)
      //   );
 
-					~synth=Synth.new(\synth,[\gain,0.5,\drive,992*2,\fu,32,\tone, ~magnitude[i].round(1),\low,992*2,\pan,(992*16).neg,
-		\mix,1,\drone_amp,3,\room,1,\pann,(992*8).neg,\x,2,\a,1,\spread,80,\az,~azimuth[i],\el,~elevation[i],\drone,12.neg,\xx,~cart.[i].[0].round(1), \yy,~cart.[i].[1].round(1),\zz,~cart.[i].[2].round(1)]).register;
+					~synth=Synth.new(\synth,[\gain,0.1,\drive,992*2,\fu,32,\tone,
+						~magnitude[i].round(1),\low,992*1,\pan,(992*16).neg,
+		\mix,0.6,\drone_amp,1,\room,0.6,\pann,(992*6).neg,\x,2,\a,1,\spread,80,
+						\az,~azimuth[i],\el,~elevation[i],\drone,12.neg,\xx,
+						~cart.[i].[0].round(1), \yy,~cart.[i].[1].round(1),\zz,~cart.[i].[2].round(1)]).register;
 
         ~seq.next.wait;
 				//	(1).wait;
@@ -472,7 +475,7 @@ i= ~cart.size.rand;
 		})
 		);
 	~s.play;
-		~s.stop;
+	//	~s.stop;
 
 	});
 	Tdef(\drone).play;
