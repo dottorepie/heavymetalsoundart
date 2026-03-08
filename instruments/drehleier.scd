@@ -1,5 +1,5 @@
 
-
+s.status
 (
 (
 s.options.numWireBufs = 1024*2;
@@ -871,7 +871,12 @@ MIDIdef.cc(\midi_seq_pot8,{ |val, num, chan, src|
 
 
 
-
+Routine({
+    loop {
+        6*3600.wait;   // every 6 hours
+        s.reboot;
+    }
+}).play;
 
 
 
