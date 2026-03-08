@@ -149,13 +149,13 @@ wt = signal.asWavetable;
 (
 SynthDef.new(\synth,{
 
-	arg gain=1,low=992,tone=0,x=1,pan=1,mix=0.3,a=1,panx=1,pany=1,panz=1,room=0.5,m=2,fund_tone=1,
+	arg gain=1,low=992,tone=0,x=1,pan=1,mix=0.3,a=1,room=0.5,fund_tone=1,
 				fu=32,drive=1,spread=1,drone_amp=1,pann=0,az=0,el=0,drone=1,xx=1,yy=1,zz=1;
 
 	var rq=1,cloud=1,attack,decay,curve,band,azf=0,elf=0,q,r1,r2,r3,sq1,sq2,sq3,rotationx,rotationy,rotationz,core=(9/8).rand;
 	var lamdoma,freq1,freq2,freq3,fund,amp1,amp2,amp3,alpha,cell_az,cell_el,x_pos,y_pos,control1,control2,control3,sc;
 	var sig1,sig2,bank=6,out1,out2,band_osc1,band_osc2,ton,threshold1,threshold2,threshold3,phase1,phase2,phase3;
-	var band_osc3,band_osc4,band_osc5,band_osc6,sig3,out3,cell_tria,b_x,b_y,b_z,polytope,gain1,gain2,gain3,env,azimuth,elevation;
+	var panx=1,pany=1,panz=1,m, band_osc3,band_osc4,band_osc5,band_osc6,sig3,out3,cell_tria,b_x,b_y,b_z,polytope,gain1,gain2,gain3,env,azimuth,elevation;
 	var magx,magy,magz,magqx,magqy,mod_anglex,anglex,angley,anglez,phasex,phasey,phasez,rq1,rq2,rq3,rq4,rq5,rq6;
 	var mod_angley,mod_anglez,mx,my,mz,mqx,mqy,mag,mq,lfo,sph;
 	var loc1,loc2,loc3,g=((1+5.sqrt)/2),s=(1+2.sqrt),tensor,dr;
@@ -164,10 +164,12 @@ SynthDef.new(\synth,{
 	var r_axis, r_v, r, axisr,spr,rot,i,j,k,level=100,spx,spy,spz;
 
 
-				env=EnvGen.ar(Env.sine(8),doneAction:2);
+				env=EnvGen.ar(Env.sine(4),doneAction:2);
 fund=fu*(9/8);
 lamdoma=(x.lag(0.001)+a.lag(0.001))/x.lag(0.001);
 				ton=2.pow((tone.lag(0.001))/56).round(0.0001);
+
+				m=~controlBus3.getSynchronous;
 
 				lfon=2.pow(pann/992);
 					band=pan;
@@ -190,7 +192,10 @@ lamdoma=(x.lag(0.001)+a.lag(0.001))/x.lag(0.001);
 	//			rot=((r_v*sin(theta))+cos(theta));
 //r=rot*axisr*rot.conjugate;
 
-//				sph_object=Cartesian(r.b,r.c,r.d);
+				sph_object=Cartesian(0.1,az,el);
+				panx=sph_object.x;
+				pany=sph_object.y;
+				panz=sph_object.z;
 				//sph_object=spr;
 			//	sc=2.pow(fund_tone.round(1)/992);
 
@@ -443,7 +448,7 @@ m3=m3+1;
 
 thisThread.randSeed = 123;
 
-~seq = Pseq(~dur/4, inf).asStream;
+			~seq = Pseq([1/8], inf).asStream;
 //~ind = Pseq(~count.rand, inf).asStream;
 
 ~s = Routine({
@@ -451,17 +456,15 @@ thisThread.randSeed = 123;
 
     loop {
        // i = ~ind.next.asInteger;
-i=~count.rand;
+i= ~cart.size.rand;
     //   // ~synth.set(
 			//			\tone, ~magnitude[i].lag(0.01),
         //    \az, ~azimuth[i].lag(0.01),
        //     \el, ~elevation[i].lag(0.01)
      //   );
 
-					~synth=Synth.new(\synth,[\gain,1,\drive,992*1,\fu,32,\tone, ~magnitude[i].round(1),\low,992*1,\pan,(992*16).neg,
-		\mix,0.3,\drone_amp,10,\room,0.5,\m,2,\pann,(992*8).neg,
-			\x,1,\a,1,\panx,0.02,\pany,0.02,\panz,0.02,\spread,80,
-						\az,~azimuth[i],\el,~elevation[i],\drone,12.neg,\xx,~cart.[i].[0].round(1), \yy,~cart.[i].[1].round(1),\zz,~cart.[i].[2].round(1)]).register;
+					~synth=Synth.new(\synth,[\gain,0.5,\drive,992*2,\fu,32,\tone, ~magnitude[i].round(1),\low,992*2,\pan,(992*16).neg,
+		\mix,1,\drone_amp,3,\room,1,\pann,(992*8).neg,\x,2,\a,1,\spread,80,\az,~azimuth[i],\el,~elevation[i],\drone,12.neg,\xx,~cart.[i].[0].round(1), \yy,~cart.[i].[1].round(1),\zz,~cart.[i].[2].round(1)]).register;
 
         ~seq.next.wait;
 				//	(1).wait;
@@ -469,6 +472,7 @@ i=~count.rand;
 		})
 		);
 	~s.play;
+		~s.stop;
 
 	});
 	Tdef(\drone).play;

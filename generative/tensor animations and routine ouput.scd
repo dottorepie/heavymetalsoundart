@@ -84,14 +84,15 @@ Out.kr(~controlBus3.index, (Osc.kr(~harm.bufnum,(1/100)).abs));
 )
 
 
+
 //Server.freeAll
 //smoothing
 //az1 = az1 + (targetAz1 - az1) * 0.1;
 //el1 = el1 + (targetEl1 - el1) * 0.1;
 
 //////////////////////////////////////////////////////////////////////animation
-
 (
+({
 var ot=0,dota,pla=0;
 var data;
 var az=0,el=0;
@@ -564,7 +565,7 @@ az6=0;el6=0;
             a.data = data;   // ScatterView3d data
             ~v.refresh;
           //  0;               // keep AppClock loop going
-        }); /*~cart.postln;*/ (0.1).wait;
+        }); /*~cart.postln;*/ (1/8).wait;
 };};
 
 );
@@ -600,12 +601,70 @@ r.play;
 		ry = (x*sin(ot)) + (y*cos(ot));
         x = rx; y = ry;
 
-        [x,y,z]/10
+        [x,y,z]/20.16129;
     };
 
 };
 //{ while { run } {~v.background_(Color.black); ~v.refresh; (1/100).wait } }.fork(AppClock);
-);
+}.value);
+		(
+
+thisThread.randSeed = 123;
+
+			~seq = Pseq([1/8], inf).asStream;
+//~ind = Pseq(~count.rand, inf).asStream;
+
+~s = Routine({
+    var i;
+	var tone, az, el, x, y, z;
+
+    loop {
+       // i = ~ind.next.asInteger;
+i= ~cart.size.rand;
+    //   // ~synth.set(
+			//			\tone, ~magnitude[i].lag(0.01),
+        //    \az, ~azimuth[i].lag(0.01),
+       //     \el, ~elevation[i].lag(0.01)
+     //   );
+
+tone = ~magnitude[i];
+az = ~azimuth[i];
+el = ~elevation[i];
+x = ~cart[i] ? [0,0,0];
+
+if(tone.notNil && az.notNil && el.notNil) {
+
+    ~synth = Synth.new(\synth,[
+        \gain,0.1,
+        \drive,992*2,
+        \fu,32,
+        \tone, tone.round(1),
+        \low,992*2,
+        \pan,(992*16).neg,
+        \mix,1,
+        \drone_amp,3,
+        \room,1,
+        \pann,(992*8).neg,
+        \x,2,
+        \a,1,
+        \spread,80,
+        \az, az,
+        \el, el,
+        \drone,12.neg,
+        \xx, x[0].round(1),
+        \yy, x[1].round(1),
+        \zz, x[2].round(1)
+    ]).register;
+
+};
+        ~seq.next.wait;
+				//	(1).wait;
+    }
+		})
+		);
+	~s.play;
+)
+		~s.stop;
 
 
 
