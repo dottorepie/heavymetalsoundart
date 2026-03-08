@@ -611,7 +611,12 @@ r.play;
 )
 
 
-
+Routine({
+    loop {
+        6*3600.wait;   // every 6 hours
+        s.reboot;
+    }
+}).play;
 
 
 /////
