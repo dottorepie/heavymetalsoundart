@@ -146,9 +146,9 @@ sig1 = sig1 + (sig1 * BrownNoise.ar(noise*loc1)); sig2 = sig2 + (sig2 * BrownNoi
 		sig1=tanh(sig1*drive);sig2=tanh(sig2*drive);sig3=tanh(sig2*drive);
 
 
-			Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar((sig1 ),mix.lag(0.01),room.lag(0.01),mul:env*loc1.abs)),0.9,0.01));
-			Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar((sig2),mix.lag(0.01),room.lag(0.01),mul:env*loc2.abs)),0.9,0.01));
-			Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar((sig3),mix.lag(0.01),room.lag(0.01),mul:env*loc3.abs)),0.9,0.01));
+			Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar((sig1 ),mix.lag(0.01),room.lag(0.01),mul:env*loc1.abs)),0.9,0.01)!2);
+			Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar((sig2),mix.lag(0.01),room.lag(0.01),mul:env*loc2.abs)),0.9,0.01)!2);
+			Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar((sig3),mix.lag(0.01),room.lag(0.01),mul:env*loc3.abs)),0.9,0.01)!2);
 
 }).add);
 
@@ -276,12 +276,13 @@ a.postln;
 ~seq = Pseq(~dur ,inf).asStream;
 	~s= Routine({loop{
 
-		Synth(\kick, [\gain,~gain, \tone,~tone, \m,1,	\low,~pass=0, \noise,0.0001, \az,~az, \t,992, \el,~el, \decay,~d,\attack,0.01,\rz,10000,\mix,0.2,\room,0.1])	;
+	~synth=	Synth(\kick, [\gain,0.1, \tone,992, \m,2,	\low,992*2, \noise,0.001, \az,pi/4, \t,992, \el,pi/8, \decay,3,\attack,0.01,\rz,2000,\mix,0.4,\room,0.6,\pan,992.neg])	;
     ~seq.next.wait;
 };
 });
 );
 	~s.play;
+
 	//	~s.pause;
 	});
 	Tdef(\drone).play;
@@ -291,7 +292,7 @@ a.postln;
 
 {SinOsc.ar()}.play
 
-		TempoClock.default.tempo_(2);
+		TempoClock.default.tempo_(2.5);
 
 
 
