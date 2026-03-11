@@ -141,10 +141,18 @@ wt = signal.asWavetable;
 		//	~transfer_function.plot;
 			~dist=Buffer.loadCollection(s,~transfer_function.asWavetableNoWrap);
 		);
+		Scale.directory
 (
 			{
 				var nn=1.neg;
 		~scale=14.collect{nn=nn+1;Scale.phrygian.performDegreeToKey(nn,12)};
+			}.value;
+		);
+
+		(
+			{
+				var nn=1.neg;
+		~scale1=28.collect{nn=nn+1;Scale.dorian.performDegreeToKey(nn,12)};
 			}.value;
 		);
 
@@ -207,9 +215,9 @@ ton=2.pow(Select.kr(tone.lag(0.001).linlin(0, 14, 0, 24), ~scale) /12).round(0.0
 
 				polytope=Cartesian(axis.x,axis.y,axis.z);
 
-b_x=2.pow(Select.kr(polytope.x.linlin(0, 14, 0, 24), ~scale) /12);
-b_y=2.pow(Select.kr(polytope.y.linlin(0, 14, 0, 24), ~scale) /12);
-b_z=2.pow(Select.kr(polytope.z.linlin(0, 14, 0, 24), ~scale) /12);
+b_x=2.pow(Select.kr(polytope.x.round(1).linlin(1, 14, 0, 24), ~scale1) /12);
+b_y=2.pow(Select.kr(polytope.y.round(1).linlin(1, 14, 0, 24), ~scale1) /12);
+b_z=2.pow(Select.kr(polytope.z.round(1).linlin(1, 14, 0, 24), ~scale1) /12);
 
 
 anglex=(exp(Complex(0,1)*polytope.theta).real*exp(Complex(0,1)*polytope.phi).real).round(0.00001);
@@ -250,14 +258,14 @@ sin((polytope.phi.round(0.00001)*(mq-1)).wrap((pi/2).neg,(pi/2)))))*
 cos((polytope.phi.round(0.00001)).wrap((pi/2).neg,(pi/2))))))).rho/(2.sqrt));
 	);
 
-					mx=(Cartesian(magx,0,0).rho)*(magqx);
-					my=(Cartesian(0,magy,0).rho)*(magqy);
+					mx=(Cartesian(magx,0,0).rho);
+					my=(Cartesian(0,magy,0).rho);
 					mz=(Cartesian(0,0,magz).rho);
 					mag=(Cartesian(mx,my,mz).rho/2.sqrt)*(magqx) ;
 
 		sph=Spherical(mag,polytope.theta,polytope.phi);
 
-	loc1=mx;  loc2=my;  loc3=mz;
+	loc1=sph.x;  loc2=sph.y;  loc3=sph.z;
 
 phasex=Complex(1,mx.value).theta;
 phasey=Complex(1,my.value).theta;
@@ -565,7 +573,7 @@ MIDIdef.cc(\midi_pot12,{ |val, num, chan, src|
 													(
 MIDIdef.cc(\midi_pot13,{ |val, num, chan, src|
 		var theta;
-			theta=val.linlin(0,127,0,14).round(1).asInteger;
+			theta=val.linlin(0,127,1,14).round(1).asInteger;
 		theta.postln;
 		if(~synth.isPlaying,{~synth.set(\sc,theta)});
 },47);
