@@ -146,7 +146,7 @@ wt = signal.asWavetable;
 				var nn=1.neg;
 		~scale=14.collect{nn=nn+1;Scale.phrygian.performDegreeToKey(nn,12)};
 			}.value;
-		)
+		);
 
 		////sound
 
@@ -336,7 +336,7 @@ threshold3=(((343/0.3)/fund).reciprocal.ampdb/2.sqrt).dbamp;
 
 	///distortion
 
-	sig1 = sig1.softclip.distort; sig2 = sig2.softclip.distort;  sig3 = sig3.softclip.distort;
+	sig1 = sig1.softclip; sig2 = sig2.softclip;  sig3 = sig3.softclip;
 
 		sig1 = (tanh(sig1*2.pow(drive/992))) / (1 + (tanh(sig1*2.pow(drive/992))).abs);
 
@@ -361,14 +361,14 @@ threshold3=(((343/0.3)/fund).reciprocal.ampdb/2.sqrt).dbamp;
 //Out.ar(0,PanAz.ar(2,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.001),room.lag(0.001),mul:gain3*loc3.abs)),0.9,0.01),SinOsc.ar(panz,phasez),width:spread));
 
 				/////3d vbap expansion
-					Out.ar(0,VBAP.ar(3,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.001),room.lag(0.001),mul:gain1*loc1.abs)),0.9,0.01),~b,(spx.theta.raddeg+SinOsc.ar(panx,phasex).range(180,180.neg)).wrap(180,180.neg),
-					(spx.phi.raddeg+SinOsc.ar(panx,phasex).range(90,90.neg)).wrap(90,90.neg),spread:spread));
+					Out.ar(0,VBAP.ar(3,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.001),room.lag(0.001),mul:gain1*loc1.abs)),0.9,0.01),~b,(spx.theta.raddeg+LFNoise0.ar(panx).range(180,180.neg)).wrap(180,180.neg),
+					(spx.phi.raddeg+LFNoise0.ar(panx).range(90,90.neg)).wrap(90,90.neg),spread:spread));
 
-Out.ar(0,VBAP.ar(3,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.001),room.lag(0.001),mul:gain2*loc2.abs)),0.9,0.01),~b,(spy.theta.raddeg+SinOsc.ar(pany,phasey).range(180,180.neg)).wrap(180,180.neg),
-					(spy.phi.raddeg+SinOsc.ar(pany,phasey).range(90,90.neg)).wrap(90,90.neg),spread:spread));
+Out.ar(0,VBAP.ar(3,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.001),room.lag(0.001),mul:gain2*loc2.abs)),0.9,0.01),~b,(spy.theta.raddeg+LFNoise0.ar(pany).range(180,180.neg)).wrap(180,180.neg),
+					(spy.phi.raddeg+LFNoise0.ar(pany).range(90,90.neg)).wrap(90,90.neg),spread:spread));
 
-Out.ar(0,VBAP.ar(3,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.001),room.lag(0.001),mul:gain3*loc3.abs)),0.9,0.01),~b,(spz.theta.raddeg+SinOsc.ar(panz,phasez).range(180,180.neg)).wrap(180,180.neg),
-					(spz.phi.raddeg+SinOsc.ar(panz,phasez).range(90,90.neg)).wrap(90,90.neg),spread:spread));
+Out.ar(0,VBAP.ar(3,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.001),room.lag(0.001),mul:gain3*loc3.abs)),0.9,0.01),~b,(spz.theta.raddeg+LFNoise0.ar(panz).range(180,180.neg)).wrap(180,180.neg),
+					(spz.phi.raddeg+LFNoise0.ar(panz).range(90,90.neg)).wrap(90,90.neg),spread:spread));
 
 
 ///anbisonic decoded on stereo
@@ -502,7 +502,7 @@ MIDIdef.cc(\midi_pot5,{ |val, num, chan, src|
 														(
 MIDIdef.cc(\midi_pot6,{ |val, num, chan, src|
 		var drone_amp;
-			drone_amp=val.linlin(0,127,1,100).round(0.0001);
+			drone_amp=val.linlin(0,127,1,10).round(0.0001);
 		drone_amp.postln;
 		if(~synth.isPlaying,{~synth.set(\drone_amp,drone_amp)});
 },50);
