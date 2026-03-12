@@ -166,7 +166,7 @@ wt = signal.asWavetable;
 (
 SynthDef.new(\synth,{
 
-	arg gain=1,low=992,tone1=0,tone2=0,tone3=0,x=1,pan=1,mix=0.3,a=1,panx=1,pany=1,panz=1,room=0.5,m=2,sc=1,
+	arg gain=1,low=992,tone1=0,tone2=0,tone3=0,x=1,pan=1,mix=0.3,a=1,panx=1,pany=1,panz=1,room=0.5,m=2,sc=1,pon=1,
 				fu=32,drive=1,spread=1,drone_amp=1,pann=0,az=0,el=0,azr=0,dron=0,drone=1,theta=0,rx=0,ry=0,rz=0;
 
 	var rq=1,cloud=1,attack,decay,curve,band,azf=0,elf=0,q,r1,r2,r3,sq1,sq2,sq3,rotationx,rotationy,rotationz,core=(9/8).rand;
@@ -376,17 +376,17 @@ threshold3=(((343/0.3)/fund).reciprocal.ampdb/2.sqrt).dbamp;
 					gain2=gain*rq2.sqrt.reciprocal*cloud.reciprocal*10;
 					gain3=gain*rq3.sqrt.reciprocal*cloud.reciprocal*10;
 
-					g_ch1=((sph.x*Spherical(sph.rho,~az.[0],~el.[0]).x)+
-						         (sph.y*Spherical(sph.rho,~az.[0],~el.[0]).y)+
+					g_ch1=((sph.x*Spherical(sph.rho,~az.[0],~el.[0]).x*LFSaw.ar(pon,0))+
+						         (sph.y*Spherical(sph.rho,~az.[0],~el.[0]).y*LFSaw.ar(pon,0.5))+
 						          (sph.z*Spherical(sph.rho,~az.[1],~el.[1]).z)).max(0);
-					g_ch2=((sph.x*Spherical(sph.rho,~az.[1],~el.[1]).x)+
-						         (sph.y*Spherical(sph.rho,~az.[1],~el.[1]).y)+
+					g_ch2=((sph.x*Spherical(sph.rho,~az.[1],~el.[1]).x*LFSaw.ar(pon,0))+
+						         (sph.y*Spherical(sph.rho,~az.[1],~el.[1]).y*LFSaw.ar(pon,0.5))+
 						          (sph.z*Spherical(sph.rho,~az.[1],~el.[1]).z)).max(0);
-					g_ch3=((sph.x*Spherical(sph.rho,~az.[2],~el.[2]).x)+
-						         (sph.y*Spherical(sph.rho,~az.[2],~el.[2]).y)+
+					g_ch3=((sph.x*Spherical(sph.rho,~az.[2],~el.[2]).x*LFSaw.ar(pon,0))+
+						         (sph.y*Spherical(sph.rho,~az.[2],~el.[2]).y*LFSaw.ar(pon,0.5))+
 						          (sph.z*Spherical(sph.rho,~az.[2],~el.[2]).z)).max(0);
-					g_ch4=((sph.x*Spherical(sph.rho,~az.[3],~el.[3]).x)+
-						         (sph.y*Spherical(sph.rho,~az.[3],~el.[3]).y)+
+					g_ch4=((sph.x*Spherical(sph.rho,~az.[3],~el.[3]).x*LFSaw.ar(pon,0))+
+						         (sph.y*Spherical(sph.rho,~az.[3],~el.[3]).y*LFSaw.ar(pon,0.5))+
 						          (sph.z*Spherical(sph.rho,~az.[3],~el.[3]).z)).max(0);
 
 				 gn = [g_ch1, g_ch2, g_ch3, g_ch4];   g_sum = gn.sum;  gn = gn / g_sum;
@@ -508,7 +508,7 @@ m3=m3+1;
 
 (
 ~synth=Synth.new(\synth,[\gain,1,\drive,992*2,\fu,32,\tone1,0,\tone2,0,\tone3,0,\low,992*0,\pan,(992*16).neg,
-		\mix,0.3,\drone_amp,1,\room,0.5,\m,1,\pann,(992*16).neg,
+		\mix,0.3,\drone_amp,1,\room,0.5,\m,1,\pann,(992*16).neg,\pon,0.001,
 			\x,1,\a,1,\panx,0.01,\pany,0.01,\panz,0.01,\spread,1,
 			\az,pi/4,\el,pi/8,\azr,992,\dron,0,\drone,1,\sc,1]).register;
 );
@@ -565,10 +565,10 @@ MIDIdef.cc(\midi_pot5,{ |val, num, chan, src|
 
 														(
 MIDIdef.cc(\midi_pot6,{ |val, num, chan, src|
-		var drone_amp;
-			drone_amp=val.linlin(0,127,1,30).round(0.0001);
-		drone_amp.postln;
-		if(~synth.isPlaying,{~synth.set(\drone_amp,drone_amp)});
+		var pon;
+			pon=val.linlin(0,127,0.001,4).round(0.0001);
+		pon.postln;
+		if(~synth.isPlaying,{~synth.set(\pon,pon)});
 },50);
 	);
 
@@ -630,7 +630,7 @@ MIDIdef.cc(\midi_pot12,{ |val, num, chan, src|
 													(
 MIDIdef.cc(\midi_pot13,{ |val, num, chan, src|
 		var theta;
-			theta=val.linlin(0,127,1,14).round(1).asInteger;
+			theta=val.linlin(0,127,1,56).round(1).asInteger;
 		theta.postln;
 		if(~synth.isPlaying,{~synth.set(\sc,theta)});
 },47);
@@ -733,6 +733,16 @@ MIDIdef.cc(\midi_slider8,{ |val, num, chan, src|
 		th.postln;
 ~r2=th
 },57);
+	);
+
+
+	(
+MIDIdef.cc(\midi_slider9,{ |val, num, chan, src|
+var drone_amp;
+			drone_amp=val.linlin(0,127,1,30).round(0.0001);
+		drone_amp.postln;
+		if(~synth.isPlaying,{~synth.set(\drone_amp,drone_amp)});
+},61);
 	);
 
 (
