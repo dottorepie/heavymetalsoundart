@@ -1,11 +1,11 @@
 
 (
-s.options.numWireBufs = 1024*2;
+s.options.numWireBufs = 1024*4;
 s.options.numOutputBusChannels=6;
 s.options.numInputBusChannels=0;
 s.options.memSize = 8192*16;
 s.options.blockSize = 64;
-s.options.maxNodes = 1024 * 2;
+s.options.maxNodes = 8192*2;
 s.makeGui(w);
 s.waitForBoot{
 Buffer.freeAll;
@@ -541,7 +541,7 @@ az6=0;el6=0;
 
 	~azimuth=~az;
 	~elevation=~el;
-	~magnitude=~magnitude=(~magx.pow(2)+~magy.pow(2)+~magz.pow(2)).sqrt*(56);
+	~magnitude=(~magx.pow(2)+~magy.pow(2)+~magz.pow(2)).sqrt*(496);
 //~magnitude.postln;
 
 	dota=(~count.[0]*~count.[1]*~count.[2]*~count.[3]*~count.[4]*~count.[5]).collect{
@@ -602,7 +602,7 @@ r.play;
 		ry = (x*sin(ot)) + (y*cos(ot));
         x = rx; y = ry;
 
-        [x,y,z]/20.16129;
+        [x,y,z];
     };
 
 };

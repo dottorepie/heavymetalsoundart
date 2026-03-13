@@ -19,8 +19,8 @@ s.options.maxNodes = 1024 * 2;
 //
 (
 s.waitForBoot{
-s.freqscope;
-s.scope;
+//s.freqscope;
+//s.scope;
 //s.makeWindow;
 s.meter;
 	Tdef(\drone, {
@@ -149,7 +149,7 @@ wt = signal.asWavetable;
 		(
 			{
 				var nn=1.neg;
-		~scale=14.collect{nn=nn+1;Scale.phrygian.performDegreeToKey(nn,12)};
+		~scalee=14.collect{nn=nn+1;Scale.phrygian.performDegreeToKey(nn,12)};
 			}.value;
 		);
 
@@ -165,8 +165,8 @@ SynthDef.new(\synth,{
 	var rq=1,cloud=1,attack,decay,curve,band,azf=0,elf=0,q,r1,r2,r3,sq1,sq2,sq3,rotationx,rotationy,rotationz,core=(9/8).rand;
 	var lamdoma,freq1,freq2,freq3,fund,amp1,amp2,amp3,alpha,cell_az,cell_el,x_pos,y_pos,control1,control2,control3;
 	var sig1,sig2,bank=6,out1,out2,band_osc1,band_osc2,ton,threshold1,threshold2,threshold3,phase1,phase2,phase3;
-	var m, band_osc3,band_osc4,band_osc5,band_osc6,sig3,out3,cell_tria,b_x,b_y,b_z;
-	var polytope,gain1,gain2,gain3,env,azimuth,elevation;
+	var band_osc3,band_osc4,band_osc5,band_osc6,sig3,out3,cell_tria,b_x,b_y,b_z;
+	var polytope,gain1,gain2,gain3,env,azimuth,elevation,m=1;
 	var magx,magy,magz,magqx,magqy,mod_anglex,anglex,angley,anglez,phasex,phasey,phasez,rq1,rq2,rq3,rq4,rq5,rq6;
 	var mod_angley,mod_anglez,mx,my,mz,mqx,mqy,mag,mq,lfo,sph;
 	var loc1,loc2,loc3,g=((1+5.sqrt)/2),s=(1+2.sqrt),tensor,dr;
@@ -177,7 +177,9 @@ SynthDef.new(\synth,{
 	var gn ,g_sum,g_avg ,ton1,ton2,ton3;
 
 
-				env=EnvGen.ar(Env.sine(3),doneAction:2,levelScale:1);
+				//m = In.kr(~controlBus3);
+
+				env=EnvGen.ar(Env.sine(8),doneAction:2,levelScale:namp);
 fund=fu*(9/8);
 lamdoma=(x.lag(0.001)+a.lag(0.001))/x.lag(0.001);
 
@@ -188,11 +190,10 @@ lamdoma=(x.lag(0.001)+a.lag(0.001))/x.lag(0.001);
 				tone3=sph_object.z;
 
 
-ton1=2.pow(Select.kr(tone1.round(1), ~scale) /12).round(0.0001)*2.pow(dron.lag(0.0001)/992);
-ton2=2.pow(Select.kr(tone2.round(1), ~scale) /12).round(0.0001)*2.pow(dron.lag(0.0001)/992);
-ton3=2.pow(Select.kr(tone3.round(1), ~scale) /12).round(0.0001)*2.pow(dron.lag(0.0001)/992);
+ton1=2.pow(Select.kr(tone1.round(1), ~scalee) /12).round(0.0001)*2.pow(dron.lag(0.0001)/992);
+ton2=2.pow(Select.kr(tone2.round(1), ~scalee) /12).round(0.0001)*2.pow(dron.lag(0.0001)/992);
+ton3=2.pow(Select.kr(tone3.round(1), ~scalee) /12).round(0.0001)*2.pow(dron.lag(0.0001)/992);
 
-				m=~controlBus3.getSynchronous;
 
 				lfon=2.pow(pann/992);
 					band=pan;
@@ -217,9 +218,9 @@ anglex=(exp(Complex(0,1)*polytope.theta).real*exp(Complex(0,1)*polytope.phi).rea
 angley=(exp(Complex(0,1)*polytope.theta).imag*exp(Complex(0,1)*polytope.phi).real).round(0.00001);
 anglez=(exp(Complex(0,1)*polytope.phi).imag).round(0.00001);
 
-phase1=Complex(1,anglex).theta;
-phase2=Complex(1,angley).theta;
-phase3=Complex(1,anglez).theta;
+phase1=Complex(1,anglex).theta+pneuma;
+phase2=Complex(1,angley).theta+pneuma;
+phase3=Complex(1,anglez).theta+pneuma;
 
 
 mod_anglex=SinOsc.ar(lfon,phase1).range(pi.neg,pi);
@@ -358,18 +359,18 @@ threshold3=(((343/0.3)/fund).reciprocal.ampdb/2.sqrt).dbamp;
 					gain3=gain*rq3.sqrt.reciprocal*cloud.reciprocal*10*env;
 
 
-				g_ch1=((sph.x*Spherical(sph.rho,~az.[0],~el.[0]).x*LFSaw.ar(pon,0))+
-						         (sph.y*Spherical(sph.rho,~az.[0],~el.[0]).y*LFSaw.ar(pon,0.5))+
-						          (sph.z*Spherical(sph.rho,~az.[1],~el.[1]).z)).max(0);
-					g_ch2=((sph.x*Spherical(sph.rho,~az.[1],~el.[1]).x*LFSaw.ar(pon,0))+
-						         (sph.y*Spherical(sph.rho,~az.[1],~el.[1]).y*LFSaw.ar(pon,0.5))+
-						          (sph.z*Spherical(sph.rho,~az.[1],~el.[1]).z)).max(0);
-					g_ch3=((sph.x*Spherical(sph.rho,~az.[2],~el.[2]).x*LFSaw.ar(pon,0))+
-						         (sph.y*Spherical(sph.rho,~az.[2],~el.[2]).y*LFSaw.ar(pon,0.5))+
-						          (sph.z*Spherical(sph.rho,~az.[2],~el.[2]).z)).max(0);
-					g_ch4=((sph.x*Spherical(sph.rho,~az.[3],~el.[3]).x*LFSaw.ar(pon,0))+
-						         (sph.y*Spherical(sph.rho,~az.[3],~el.[3]).y*LFSaw.ar(pon,0.5))+
-						          (sph.z*Spherical(sph.rho,~az.[3],~el.[3]).z)).max(0);
+				g_ch1=((sph.x*Spherical(sph.rho,~azz.[0],~ell.[0]).x*LFSaw.ar(pon,0))+
+						         (sph.y*Spherical(sph.rho,~azz.[0],~ell.[0]).y*LFSaw.ar(pon,0.5))+
+						          (sph.z*Spherical(sph.rho,~azz.[1],~ell.[1]).z)).max(0);
+					g_ch2=((sph.x*Spherical(sph.rho,~azz.[1],~ell.[1]).x*LFSaw.ar(pon,0))+
+						         (sph.y*Spherical(sph.rho,~azz.[1],~ell.[1]).y*LFSaw.ar(pon,0.5))+
+						          (sph.z*Spherical(sph.rho,~azz.[1],~ell.[1]).z)).max(0);
+					g_ch3=((sph.x*Spherical(sph.rho,~azz.[2],~ell.[2]).x*LFSaw.ar(pon,0))+
+						         (sph.y*Spherical(sph.rho,~azz.[2],~ell.[2]).y*LFSaw.ar(pon,0.5))+
+						          (sph.z*Spherical(sph.rho,~azz.[2],~ell.[2]).z)).max(0);
+					g_ch4=((sph.x*Spherical(sph.rho,~azz.[3],~ell.[3]).x*LFSaw.ar(pon,0))+
+						         (sph.y*Spherical(sph.rho,~azz.[3],~ell.[3]).y*LFSaw.ar(pon,0.5))+
+						          (sph.z*Spherical(sph.rho,~azz.[3],~ell.[3]).z)).max(0);
 
 
 				 gn = [g_ch1, g_ch2, g_ch3, g_ch4];   g_sum = gn.sum;  gn = gn / g_sum;
@@ -485,19 +486,21 @@ m3=m3+1;
 		/////////////sequencer
 		(
 
-			~seq = Pseq(~dur/4, inf).asStream;
+			~seq = Pseq(~dur, inf).asStream;
 		~system= Pseq(~r,inf).asStream;
 
 ~s = Routine({
-    var i;
+    var i,m,l;
 
     loop {
 				thisThread.randSeed = ~val;
+					~r1=0; ~r2=0; ~r3=0;
 i= ~cart.size.rand;
+					l=~system.next;
 
-				~synth=Synth.new(\synth,[\gain,0.5,\drive,(992*2).rand,\fu,32,\sc,~magnitude[i].round(1),\low,992.rand,
-						\pan,(992*16).neg,\mix,0.999.rand,\room,1,\pann,(992*8).neg,\x,2,\a,1,\spread,1,\pon,0.001,
-					\pneuma,0,\namp,~system.next,\drone,12.neg,\az,~azimuth[i],\el,~elevation.[i]
+	~synth=Synth.new(\synth,[\gain,0.5,\drive,(992*2).rand,\fu,32,\sc,~magnitude.[i].round(1).max(1),
+              \low,992.rand,\pan,(992*16).neg,\mix,0.999.rand,\room,1,\pann,(992*8).neg,\x,2,\a,1,\spread,1,
+						\pon,0.001,\pneuma,0,\namp,l,\drone,12.neg,\az,~azimuth.[i],\el,~elevation.[i]
 						,\panx,0.5.rand,\pany,0.5.rand,\panz,0.5.rand,
 						\xx,~cart.[i].[0].round(1), \yy,~cart.[i].[1].round(1),\zz,~cart.[i].[2].round(1)]).register;
 
@@ -509,7 +512,7 @@ i= ~cart.size.rand;
 		})
 		);
 	~s.play;
-//	~s.stop;
+//~s.stop;
 
 	});
 	Tdef(\drone).play;
