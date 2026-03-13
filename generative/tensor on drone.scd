@@ -493,13 +493,13 @@ m3=m3+1;
     var i,m,l;
 
     loop {
-				thisThread.randSeed = ~val;
-							TempoClock.default.tempo_(~val/300);
-					~r1=0; ~r2=0; ~r3=0;
+				thisThread.randSeed = 123;
+							TempoClock.default.tempo_(1);
+					//~r1=0; ~r2=0; ~r3=0;
 i= ~cart.size.rand;
 					l=~system.next;
 
-	~synth=Synth.new(\synth,[\gain,0.5,\drive,(992*2).rand,\fu,32,\sc,~magnitude.[i].round(1).max(1).asInteger.postln,
+	~synth=Synth.new(\synth,[\gain,0.5,\drive,(992*2).rand,\fu,32,\sc,~magnitude.[i].round(1).max(1).asInteger,
               \low,992.rand,\pan,(992*16).neg,\mix,0.999.rand,\room,1,\pann,(992*8).neg,\x,2,\a,1,\spread,0.5,
 						\pon,0.001,\pneuma,0,\namp,l,\drone,12.neg,\az,~azimuth.[i],\el,~elevation.[i]
 						,\panx,0.5.rand,\pany,0.5.rand,\panz,0.5.rand,
