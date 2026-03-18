@@ -360,18 +360,18 @@ threshold3=(((343/0.3)/fund).reciprocal.ampdb/2.sqrt).dbamp;
 					gain3=gain*rq3.sqrt.reciprocal*cloud.reciprocal*10*env;
 
 
-				g_ch1=((sph.x*Spherical(sph.rho,~azz.[0],~ell.[0]).x*LFSaw.ar(pon,0))+
-						         (sph.y*Spherical(sph.rho,~azz.[0],~ell.[0]).y*LFSaw.ar(pon,0.5))+
-						          (sph.z*Spherical(sph.rho,~azz.[1],~ell.[1]).z)).max(0);
-					g_ch2=((sph.x*Spherical(sph.rho,~azz.[1],~ell.[1]).x*LFSaw.ar(pon,0))+
-						         (sph.y*Spherical(sph.rho,~azz.[1],~ell.[1]).y*LFSaw.ar(pon,0.5))+
-						          (sph.z*Spherical(sph.rho,~azz.[1],~ell.[1]).z)).max(0);
-					g_ch3=((sph.x*Spherical(sph.rho,~azz.[2],~ell.[2]).x*LFSaw.ar(pon,0))+
-						         (sph.y*Spherical(sph.rho,~azz.[2],~ell.[2]).y*LFSaw.ar(pon,0.5))+
-						          (sph.z*Spherical(sph.rho,~azz.[2],~ell.[2]).z)).max(0);
-					g_ch4=((sph.x*Spherical(sph.rho,~azz.[3],~ell.[3]).x*LFSaw.ar(pon,0))+
-						         (sph.y*Spherical(sph.rho,~azz.[3],~ell.[3]).y*LFSaw.ar(pon,0.5))+
-						          (sph.z*Spherical(sph.rho,~azz.[3],~ell.[3]).z)).max(0);
+					g_ch1=((sph.x*Spherical(sph.rho,~az.[0],~el.[0]).x*SinOsc.ar(pon,0))+
+						(sph.y*Spherical(sph.rho,~az.[0],~el.[0]).y*SinOsc.ar(pon,(pi/2)))+
+						          (sph.z*Spherical(sph.rho,~az.[1],~el.[1]).z)).max(0);
+					g_ch2=((sph.x*Spherical(sph.rho,~az.[1],~el.[1]).x*SinOsc.ar(pon,0))+
+						         (sph.y*Spherical(sph.rho,~az.[1],~el.[1]).y*SinOsc.ar(pon,(pi/2)))+
+						          (sph.z*Spherical(sph.rho,~az.[1],~el.[1]).z)).max(0);
+					g_ch3=((sph.x*Spherical(sph.rho,~az.[2],~el.[2]).x*SinOsc.ar(pon,0))+
+						         (sph.y*Spherical(sph.rho,~az.[2],~el.[2]).y*SinOsc.ar(pon,(pi/2)))+
+						          (sph.z*Spherical(sph.rho,~az.[2],~el.[2]).z)).max(0);
+					g_ch4=((sph.x*Spherical(sph.rho,~az.[3],~el.[3]).x*SinOsc.ar(pon,0))+
+						         (sph.y*Spherical(sph.rho,~az.[3],~el.[3]).y*SinOsc.ar(pon,(pi/2)))+
+						          (sph.z*Spherical(sph.rho,~az.[3],~el.[3]).z)).max(0);
 
 
 				 gn = [g_ch1, g_ch2, g_ch3, g_ch4];   g_sum = gn.sum;  gn = gn / g_sum;
