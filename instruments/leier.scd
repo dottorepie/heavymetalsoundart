@@ -201,16 +201,16 @@ threshold3=(((343/0.15)/55).reciprocal.ampdb/2.sqrt).dbamp;
 
 ///ambisonic decoded on stereo
 
-amb_sig1=(Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.0001),room.lag(0.0001),mul:gain)),0.9,0.01));
-amb_sig2=(Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.0001),room.lag(0.0001),mul:gain)),0.9,0.01));
-amb_sig3=(Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.0001),room.lag(0.0001),mul:gain)),0.9,0.01));
+amb_sig1=(Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.0001),room.lag(0.0001),mul:gain*loc1)),0.9,0.01));
+amb_sig2=(Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.0001),room.lag(0.0001),mul:gain*loc2)),0.9,0.01));
+amb_sig3=(Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.0001),room.lag(0.0001),mul:gain*loc3)),0.9,0.01));
 
 			amb_w=(amb_sig1+amb_sig2+amb_sig3)/2.sqrt;
 				amb_x=amb_sig1;
 				amb_y=amb_sig2;
 				amb_z=amb_sig3;
 			out= Out.ar(0,BFDecode1.ar1(amb_w, amb_x, amb_y, amb_z,
-					[sph.theta+SinoOsc.ar(pon,0), sph.theta+SinoOsc.ar(pon,pi/2)], [sph.phi,sph.phi],2 ));
+					[sph.theta+SinOsc.ar(pon,0), sph.theta+SinOsc.ar(pon,pi/2)], [sph.phi,sph.phi],2 ));
 
 pl=pl+1;
 				};
@@ -223,9 +223,9 @@ pl=pl+1;
 
 
 
-~synth=Synth.new(\synth,[\gain,1,\drive,992*2,\pan,(992*16).neg,\mix,0.3,\room,0.5,\m,1,\pon,0.001,\spread,1]);
+~synth=Synth.new(\synth,[\gain,1,\drive,992*2,\pan,(992*8).neg,\mix,0.3,\room,0.5,\m,1,\pon,0.01,\spread,0.6]);
 
 
-~synth.se(\drive,992*2,\gain,1,\pan,(992*2),\mix,0.5,\room,1,\m,2,\pon,0.001,\spread,1);
+~synth.se(\drive,992*2,\gain,1,\pan,(992*2).neg,\mix,0.5,\room,1,\m,2,\pon,0.01,\spread,1);
 
 
