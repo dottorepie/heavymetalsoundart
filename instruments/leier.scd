@@ -69,7 +69,7 @@ angle=(angle+(2pi-(2pi/g))).wrap(pi.neg,pi);
 		//difusion
 		(
 			{
-var steps = 128;
+var steps = 64;
 
 ~nVals = steps.collect { |i|
     i.linexp(0, steps-1, 0.18, 512).round
@@ -101,7 +101,7 @@ SynthDef.new(\synth,{
 
 
 
-				(127).do{
+				(63).do{
 
 					axis=Spherical(1,~az.[pl],~el.[pl]);
 
