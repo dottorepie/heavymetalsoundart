@@ -365,17 +365,17 @@ threshold3=(((343/0.3)/fund).reciprocal.ampdb/2.sqrt).dbamp;
 					gain3=gain*rq3.sqrt.reciprocal*cloud.reciprocal*10*env;
 
 
-				/*	g_ch1=((sph.x*Spherical(sph.rho,~az.[0],~el.[0]).x*SinOsc.ar(pon,(pi*(4/4))))+
-						          (sph.y*Spherical(sph.rho,~az.[0],~el.[0]).y*SinOsc.ar(pon,((pi/2)*(4/4))))+
+				/*	g_ch1=((sph.x*Spherical(sph.rho,~az.[0],~el.[0]).x))+
+						          (sph.y*Spherical(sph.rho,~az.[0],~el.[0]).y))+
 						          (sph.z*Spherical(sph.rho,~az.[1],~el.[1]).z)).max(0);
-					g_ch2=((sph.x*Spherical(sph.rho,~az.[1],~el.[1]).x*SinOsc.ar(pon,(pi*(1/4))))+
-						         (sph.y*Spherical(sph.rho,~az.[1],~el.[1]).y*SinOsc.ar(pon,((pi/2)*(1/4))))+
+					g_ch2=((sph.x*Spherical(sph.rho,~az.[1],~el.[1]).x))+
+						         (sph.y*Spherical(sph.rho,~az.[1],~el.[1]).y))+
 						          (sph.z*Spherical(sph.rho,~az.[1],~el.[1]).z)).max(0);
-					g_ch3=((sph.x*Spherical(sph.rho,~az.[2],~el.[2]).x*SinOsc.ar(pon,(pi*(2/4))))+
-						         (sph.y*Spherical(sph.rho,~az.[2],~el.[2]).y*SinOsc.ar(pon,((pi/2)*(2/4))))+
+					g_ch3=((sph.x*Spherical(sph.rho,~az.[2],~el.[2]).x))+
+						         (sph.y*Spherical(sph.rho,~az.[2],~el.[2]).y))+
 						          (sph.z*Spherical(sph.rho,~az.[2],~el.[2]).z)).max(0);
-					g_ch4=((sph.x*Spherical(sph.rho,~az.[3],~el.[3]).x*SinOsc.ar(pon,(pi*(3/4))))+
-						         (sph.y*Spherical(sph.rho,~az.[3],~el.[3]).y*SinOsc.ar(pon,((pi/2)*(3/4))))+
+					g_ch4=((sph.x*Spherical(sph.rho,~az.[3],~el.[3]).x))+
+						         (sph.y*Spherical(sph.rho,~az.[3],~el.[3]).y))+
 						          (sph.z*Spherical(sph.rho,~az.[3],~el.[3]).z)).max(0);
 					// */
 					// gn = [g_ch1, g_ch2, g_ch3, g_ch4];   g_sum = gn.sum;  gn = gn / g_sum;
@@ -455,12 +455,25 @@ g_ch1 = gn[0]; g_ch2 = gn[1];
 
 
 
-Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.001),room.lag(0.001),mul:gain1)),0.9,0.01)*g_ch1*loc1);
-Out.ar(1,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.001),room.lag(0.001),mul:gain1)),0.9,0.01)*g_ch2*loc1);
-Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.001),room.lag(0.001),mul:gain2)),0.9,0.01)*g_ch1*loc2);
-Out.ar(1,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.001),room.lag(0.001),mul:gain2)),0.9,0.01)*g_ch2*loc2);
-Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.001),room.lag(0.001),mul:gain3)),0.9,0.01)*g_ch1*loc3);
-Out.ar(1,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.001),room.lag(0.001),mul:gain3)),0.9,0.01)*g_ch2*loc3);
+Out.ar(0,Pan2.ar(
+				Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.001),room.lag(0.001),mul:gain1)),0.9,0.01)*g_ch1),
+					SinOsc.ar(pon,phasex);
+Out.ar(0,Pan2.ar(
+				Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.001),room.lag(0.001),mul:gain1)),0.9,0.01)*g_ch2),
+					SinOsc.ar(pon,phasex.neg);
+
+Out.ar(0,Pan2.ar(
+					Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.001),room.lag(0.001),mul:gain2)),0.9,0.01)*g_ch1),
+					SinOsc.ar(pon,phasey);
+Out.ar(0,Pan2.ar(
+				Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.001),room.lag(0.001),mul:gain2)),0.9,0.01)*g_ch2),
+					SinOsc.ar(pon,phasey.neg);
+
+Out.ar(0,Pan2.ar(
+						Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.001),room.lag(0.001),mul:gain3)),0.9,0.01)*g_ch1),SinOsc.ar(pon,phasez);
+Out.ar(0,Pan2.ar(
+			Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.001),room.lag(0.001),mul:gain3)),0.9,0.01)*g_ch2),
+						SinOsc.ar(pon,phasez.neg);
 
 
 						azf = (azf+(2pi-(2pi/s))).wrap(pi.neg,pi);
