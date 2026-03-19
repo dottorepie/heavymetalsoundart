@@ -185,9 +185,9 @@ lamdoma=(x.lag(0.001)+a.lag(0.001))/x.lag(0.001);
 
 
 						sph_object=Spherical(35,az.lag(0.0001),el.lag(0.0001));
-				tone1=sph_object.x;
-				tone2=sph_object.y;
-				tone3=sph_object.z;
+				tone1=sph_object.x+1;
+				tone2=sph_object.y+1;
+				tone3=sph_object.z+1;
 
 				tonb=2.pow(dron.lag(0.0001)/992);
 
@@ -201,7 +201,7 @@ ton3=2.pow(Select.kr(tone3.round(1), ~scalee) /12).round(0.0001)*tonb;
 
 				mq=(m.lag(0.001)+1);
 
-				spr=Cartesian(xx,yy,zz);
+				spr=Cartesian(xx+1,yy+1,zz+1);
 				//spx=Cartesian(spr.x,0,0);
 				//spy=Cartesian(0,spr.y,0);
 				//spz=Cartesian(0,0,spr.z);
@@ -537,9 +537,9 @@ i= ~cart.lag(0.01).size.rand;
 ~detune=4;
 
 	~synth=Synth.new(\synth,[\gain,0.05,\drive,(992*2),\fu,32,\sc,~magnitude.lag(0.01).[i].round(1).max(1).asInteger,
-						\low,(992*2),\pan,(992*16).neg,\mix,0.8,\room,~rev.lag(0.01),\pann,(992*6).neg,\x,2,\a,1,\spread,~panwidth,
-						\pon,0.001,\pneuma,0,\namp,1,\drone,12.neg,\az,~azimuth.lag(0.01).[i],\el,~elevation.lag(0.01).[i]
-						,\panx,0.001,\pany,0.001,\panz,0.001,\dron,~tonb,
+						\low,(992*2),\pan,(992*16).neg,\mix,0.8,\room,~rev.lag(0.01),\pann,(992*8).neg,\x,2,\a,1,\spread,~panwidth,
+						\pon,0.01,\pneuma,0,\namp,1,\drone,12.neg,\az,~azimuth.lag(0.01).[i],\el,~elevation.lag(0.01).[i]
+						,\panx,0.01,\pany,0.001,\panz,0.01,\dron,~tonb,
 						\xx,~cart.lag(0.01).[i].[0].round(1), \yy,~cart.lag(0.01).[i].[1].round(1),\zz,~cart.lag(0.01).[i].[2].round(1)]).register;
 
 
@@ -562,9 +562,9 @@ i= ~cart.lag(0.01).size.rand;
 ~detune=4;
 
 	~synth=Synth.new(\synth,[\gain,0.05,\drive,(992*2),\fu,32,\sc,~magnitude.lag(0.01).[i].round(1).max(1).asInteger,
-						\low,(992*2),\pan,(992*16).neg,\mix,0.8,\room,~rev.lag(0.01),\pann,(992*6).neg,\x,2,\a,1,\spread,~panwidth,
-						\pon,0.001,\pneuma,0,\namp,1,\drone,12.neg,\az,~azimuth.lag(0.01).[i],\el,~elevation.lag(0.01).[i]
-						,\panx,0.001,\pany,0.001,\panz,0.001,\dron,~tonb,
+						\low,(992*2),\pan,(992*16).neg,\mix,0.8,\room,~rev.lag(0.01),\pann,(992*8).neg,\x,2,\a,1,\spread,~panwidth,
+						\pon,0.01,\pneuma,0,\namp,1,\drone,12.neg,\az,~azimuth.lag(0.01).[i],\el,~elevation.lag(0.01).[i]
+						,\panx,0.01,\pany,0.01,\panz,0.01,\dron,~tonb,
 						\xx,~cart.lag(0.01).[i].[0].round(1), \yy,~cart.lag(0.01).[i].[1].round(1),\zz,~cart.lag(0.01).[i].[2].round(1)]).register;
 
 
@@ -588,9 +588,9 @@ i= ~cart.lag(0.01).size.rand;
 ~detune=4;
 
 	~synth=Synth.new(\synth,[\gain,0.05,\drive,(992*2),\fu,32,\sc,~magnitude.lag(0.01).[i].round(1).max(1).asInteger,
-						\low,(992*2),\pan,(992*16).neg,\mix,0.8,\room,~rev.lag(0.01),\pann,(992*6).neg,\x,2,\a,1,\spread,~panwidth,
-						\pon,0.001,\pneuma,0,\namp,1,\drone,12.neg,\az,~azimuth.lag(0.01).[i],\el,~elevation.lag(0.01).[i]
-						,\panx,0.001,\pany,0.001,\panz,0.001,\dron,~tonb,
+						\low,(992*2),\pan,(992*16).neg,\mix,0.8,\room,~rev.lag(0.01),\pann,(992*8).neg,\x,2,\a,1,\spread,~panwidth,
+						\pon,0.01,\pneuma,0,\namp,1,\drone,12.neg,\az,~azimuth.lag(0.01).[i],\el,~elevation.lag(0.01).[i]
+						,\panx,0.01,\pany,0.01,\panz,0.01,\dron,~tonb,
 						\xx,~cart.lag(0.01).[i].[0].round(1), \yy,~cart.lag(0.01).[i].[1].round(1),\zz,~cart.lag(0.01).[i].[2].round(1)]).register;
 
 
