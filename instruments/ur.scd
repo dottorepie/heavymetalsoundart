@@ -209,7 +209,7 @@ Out.ar(1,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.0001),room.lag(0.0001),
 ~synth=Synth.new(\synth,[\gain,1,\drive,992*4,\fu,32,\tone1,0,\tone2,0,\pan,(992*8).neg,
 		\mix,0.3,\drone_amp,1,\room,0.5,\pann,(992*16).neg,\pon,0.001,\pneuma1,0,\pneuma2,0,
 			\panx,0.01,\pany,0.01,\spread,1,\namp1,1,\namp2,1,\decay,16,
-			\re,0,\im,1,\dron,0,\drone,1]).register;
+			\re,992,\im,496,\dron,0,\drone,1]).register;
 );
 
 		(
@@ -427,7 +427,7 @@ MIDIdef.cc(\midi_seq_pot8,{ |val, num, chan, src|
 			(
 MIDIdef.cc(\midi_slider1,{ |val, num, chan, src|
 		var gain;
-	gain=val.linlin(0,127,0,1).round(0.0001);
+	gain=val.linlin(0,127,0,5).round(0.0001);
 		gain.postln;
 		if(~synth.isPlaying,{~synth.set(\gain,gain)});
 },49);
@@ -728,7 +728,7 @@ m2=m2+1;
 
 	    ~seq1.next.wait;
 
-	~synth.set(\tone1, ~s8, \pneuma1pi, \namp1,~ss8)	;
+	~synth.set(\tone1, ~s8, \pneuma1,pi, \namp1,~ss8)	;
 
 	    ~seq1.next.wait;
 };
@@ -776,9 +776,9 @@ m2=m2+1;
 
 
 	~str1.play;
-	~str2.play;
+//	~str2.play;
 
-		TempoClock.default.tempo_(2);
+		TempoClock.default.tempo_(4);
 
 	});
 	Tdef(\drone).play;
