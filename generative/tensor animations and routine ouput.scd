@@ -141,15 +141,15 @@ data = [];
 Window.free;
 ~w = Window.new("3D Scatterplot", Rect(40,40, 2000, 1200)).front;
 
-~v = UserView.new(~w,Rect(0,0,2000,1200)).background_(Color.black);
-a = ScatterView3d(~v, Rect(0,0, 2000,1200), ~data, [-2500, 2500].asSpec,[-2500, 2500].asSpec,[-2500, 2500].asSpec);
+~v = UserView.new(~w,Rect(0,0,1800,1000)).background_(Color.black);
+a = ScatterView3d(~v, Rect(0,0, 1800,1000), ~data, [-10000, 10000].asSpec,[-10000, 10000].asSpec,[-10000, 10000].asSpec);
 a.drawMethod = \fillRect;
-a.symbolSize = 3;
+a.symbolSize = 2;
 a.symbolColor = Color.white;
 a.background = Color.clear;
-b = ScatterView3d(~v, Rect(0,0, 2000,1200), ~data, [-2500, 2500].asSpec,[-2500, 2500].asSpec,[-2500, 2500].asSpec);
+b = ScatterView3d(~v, Rect(0,0, 1800,1000), ~data, [-9000, 9000].asSpec,[-9000, 9000].asSpec,[-9000, 9000].asSpec);
 b.drawMethod = \fillRect;
-b.symbolSize = 3;
+b.symbolSize = 2;
 b.symbolColor = Color.white;
 b.background = Color.clear;
 
@@ -168,7 +168,8 @@ b.background = Color.clear;
 
 		~rev=harm/10;
 
-	m_x=m_y=m_z=mq=harm;
+	m_x=m_y=m_z=harm;
+		mq=harm+1;
 
 
 
