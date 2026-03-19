@@ -228,13 +228,13 @@ ton3=2.pow(Select.kr(tone3.lag(0.0001), ~scale) /12).round(0.0001)*2.pow(dron.la
 //b_z=2.pow(Select.kr(polytope.z.round(1).linlin(1, 14, 0, 24), ~scale1) /12);
 
 
-//b_x=2.pow(polytope.x.round(1) /992)*lamdoma;
-//b_y=2.pow(polytope.y.round(1) /992)*lamdoma;
-//b_z=2.pow(polytope.z.round(1) /992)*lamdoma;
+b_x=2.pow(polytope.x.round(1) /992)*lamdoma;
+b_y=2.pow(polytope.y.round(1) /992)*lamdoma;
+b_z=2.pow(polytope.z.round(1) /992)*lamdoma;
 
-b_x=2.pow(polytope.x.round(1) /992)*laxis.x.round((9/8)/2);
-b_y=2.pow(polytope.y.round(1) /992)*laxis.y.round((9/8)/2);
-b_z=2.pow(polytope.z.round(1) /992)*laxis.z.round((9/8)/2);
+//b_x=2.pow(polytope.x.round(1) /992)*laxis.x.round((9/8)/2);
+//b_y=2.pow(polytope.y.round(1) /992)*laxis.y.round((9/8)/2);
+//b_z=2.pow(polytope.z.round(1) /992)*laxis.z.round((9/8)/2);
 
 //b_x=laxis.x.round((9/8)/2);
 //b_y=laxis.y.round((9/8)/2);
