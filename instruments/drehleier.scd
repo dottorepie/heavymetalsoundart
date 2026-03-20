@@ -1228,6 +1228,13 @@ MIDIdef.cc(\midi_slider25,{ |val, num, chan, src|
 		th.postln;
 ~ss25=th
 },81,2);
+					(
+MIDIdef.cc(\midi_slider26,{ |val, num, chan, src|
+		var th;
+	th=val.linlin(0,127,1,16).round(1);
+		th.postln;
+	TempoClock.default.tempo_(th);
+},82,2);
 	);
 
 			);

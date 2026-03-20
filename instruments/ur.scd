@@ -516,7 +516,7 @@ MIDIdef.cc(\midi_slider9,{ |val, num, chan, src|
 },32);
 			));
 			///comtroller 2
-			/*(
+			(
 					(
 MIDIdef.cc(\midi_seq_pot9,{ |val, num, chan, src|
 		var s1;
@@ -588,8 +588,8 @@ MIDIdef.cc(\midi_seq_pot16,{ |val, num, chan, src|
 		~s17=s8;
 },57,2);
 	);
-)*/
-/*(
+);
+(
 			(
 MIDIdef.cc(\midi_slider17,{ |val, num, chan, src|
 		var th;
@@ -659,9 +659,15 @@ MIDIdef.cc(\midi_slider24,{ |val, num, chan, src|
 ~ss17=th
 },65,2);
 	);
+					(
+MIDIdef.cc(\midi_slider26,{ |val, num, chan, src|
+		var th;
+	th=val.linlin(0,127,1,16).round(1);
+		th.postln;
+	TempoClock.default.tempo_(th);
+},82,2);
 
-
-			)*/
+			);
 		);
 
 		////durs
@@ -674,7 +680,7 @@ MIDIdef.cc(\midi_slider24,{ |val, num, chan, src|
 				Complex(cos(1.5pi+(2pi/3)),sin(1.5pi+(2pi/3)+(2pi/3))).imag,
 				Complex(cos(1.5pi+(2pi/3)+(2pi/3)),sin(1.5pi+(2pi/3)+(2pi/3))).imag].round(0.0001);
 
-			~dur1=[];~dur2=[];~dx=[];~dy=[]; ~durx=[]; ~dury=[]; ~dur=[]; ~rotation=0;
+			~dur1=[];~dur2=[];~dx=[];~dy=[]; ~durx=[]; ~dury=[]; ~dur=[]; ~rotation=45;
 
 					1.do{
 ~x=bank.collect{
