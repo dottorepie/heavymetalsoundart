@@ -185,8 +185,8 @@ threshold2=(((343/0.15)/fund).reciprocal.ampdb/2.sqrt).dbamp;
 
 				g_ch1=((axis.x*Complex(1,0).real)+
 				(axis.y*Complex(1,0).imag)).max(0);
-			g_ch2=((axis.x*Complex(1,0).real)+
-			(axis.y*Complex(1,0).imag)).max(0);
+			g_ch2=((axis.x*Complex(0,1).real)+
+			(axis.y*Complex(0,1).imag)).max(0);
 
 gn = [g_ch1, g_ch2];   g_sum = gn.sum;  gn = gn / g_sum;
 g_avg = gn.sum / gn.size;
