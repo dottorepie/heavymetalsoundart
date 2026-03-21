@@ -378,21 +378,21 @@ threshold3=(((343/0.3)/fund).reciprocal.ampdb/2.sqrt).dbamp;
 	sig3 =  (tanh(sig3.softclip*2.pow(drive/992))) / (1 + (tanh(sig3.softclip*2.pow(drive/992))).abs);
 
 	///final out
-					gain1=gain*rq1.sqrt.reciprocal*cloud.reciprocal*10*namp1;
-					gain2=gain*rq2.sqrt.reciprocal*cloud.reciprocal*10*namp2;
-					gain3=gain*rq3.sqrt.reciprocal*cloud.reciprocal*10*namp3;
+					gain1=gain*rq1.sqrt.reciprocal*cloud.reciprocal*10*namp1*SinOsc.ar(pon,phasex);
+					gain2=gain*rq2.sqrt.reciprocal*cloud.reciprocal*10*namp2*SinOsc.ar(pon,phasey);
+					gain3=gain*rq3.sqrt.reciprocal*cloud.reciprocal*10*namp3*SinOsc.ar(pon,phasez);
 
-					g_ch1=((sph.x*Spherical(sph.rho,~az.[0],~el.[0]).x*SinOsc.ar(pon,(pi*(4/4))))+
-						          (sph.y*Spherical(sph.rho,~az.[0],~el.[0]).y*SinOsc.ar(pon,((pi/2)*(4/4))))+
+					g_ch1=((sph.x*Spherical(sph.rho,~az.[0],~el.[0]).x)+
+						          (sph.y*Spherical(sph.rho,~az.[0],~el.[0]).y)+
 						          (sph.z*Spherical(sph.rho,~az.[1],~el.[1]).z)).max(0);
-					g_ch2=((sph.x*Spherical(sph.rho,~az.[1],~el.[1]).x*SinOsc.ar(pon,(pi*(1/4))))+
-						         (sph.y*Spherical(sph.rho,~az.[1],~el.[1]).y*SinOsc.ar(pon,((pi/2)*(1/4))))+
+					g_ch2=((sph.x*Spherical(sph.rho,~az.[1],~el.[1]).x)+
+						         (sph.y*Spherical(sph.rho,~az.[1],~el.[1]).y)+
 						          (sph.z*Spherical(sph.rho,~az.[1],~el.[1]).z)).max(0);
-					g_ch3=((sph.x*Spherical(sph.rho,~az.[2],~el.[2]).x*SinOsc.ar(pon,(pi*(2/4))))+
-						         (sph.y*Spherical(sph.rho,~az.[2],~el.[2]).y*SinOsc.ar(pon,((pi/2)*(2/4))))+
+					g_ch3=((sph.x*Spherical(sph.rho,~az.[2],~el.[2]).x)+
+						         (sph.y*Spherical(sph.rho,~az.[2],~el.[2]).y)+
 						          (sph.z*Spherical(sph.rho,~az.[2],~el.[2]).z)).max(0);
-					g_ch4=((sph.x*Spherical(sph.rho,~az.[3],~el.[3]).x*SinOsc.ar(pon,(pi*(3/4))))+
-						         (sph.y*Spherical(sph.rho,~az.[3],~el.[3]).y*SinOsc.ar(pon,((pi/2)*(3/4))))+
+					g_ch4=((sph.x*Spherical(sph.rho,~az.[3],~el.[3]).x)+
+						         (sph.y*Spherical(sph.rho,~az.[3],~el.[3]).y)+
 						          (sph.z*Spherical(sph.rho,~az.[3],~el.[3]).z)).max(0);
 
 				 gn = [g_ch1, g_ch2, g_ch3, g_ch4];   g_sum = gn.sum;  gn = gn / g_sum;
@@ -1279,7 +1279,7 @@ m3=m3+1;
 			~dur=~dur++~dur1++~dur2++~dur3;
 );
 		}.value);
-
+(
 						//	~seq = Pseq([1] ,inf).asStream;
 		~seq1= Pseq(~dur1 ,inf).asStream;
 		~seq2= Pseq(~dur2 ,inf).asStream;
@@ -1403,7 +1403,7 @@ m3=m3+1;
 
 	    ~seq3.next.wait;
 };
-		}));
+	})));
 
 	~str1.play;
 	~str2.play;
