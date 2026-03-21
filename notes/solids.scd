@@ -1,7 +1,7 @@
 
 /*
 /tetrahedron
-(
+(\
 ~az=[45.degrad,135.neg.degrad,45.neg.degrad,135.degrad];
 ~el=[35.264390.neg.degrad,35.264390.neg.degrad,35.264390.degrad,35.264390.degrad];
 );
