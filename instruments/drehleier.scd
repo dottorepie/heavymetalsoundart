@@ -178,7 +178,7 @@ SynthDef.new(\synth,{
 	var amb_w,amb_x,amb_y,amb_z,out,amb_sig1,amb_sig2,amb_sig3,axisx,axisy,axisz,cx,cy,cz;
 	var axi1,axi2,axi3,ds1,ds2,ds3,f1,f2,f3,g1,g2,g3,sph_object,lfon,axis;
 	var r_axis, r_v, r, axisr,spr,rot,i,j,k,level=100,spx,spy,spz;
-	var g_ch1,g_ch2,g_ch3,g_ch;
+	var g_ch1,g_ch2,g_ch3,g_ch4;
 	var gn ,g_sum,g_avg ,ton1,ton2,ton3,laxis;
 
 fund=fu*(9/8);
