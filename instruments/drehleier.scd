@@ -44,7 +44,7 @@ s.meter;
 );*/
 
 		///vbap
-
+~chan=1;
 		///octahedron
 		(
 ~azz=[0.degrad,0.degrad,90.degrad,180.degrad,90.neg.degrad,0.degrad];
@@ -178,7 +178,7 @@ SynthDef.new(\synth,{
 	var amb_w,amb_x,amb_y,amb_z,out,amb_sig1,amb_sig2,amb_sig3,axisx,axisy,axisz,cx,cy,cz;
 	var axi1,axi2,axi3,ds1,ds2,ds3,f1,f2,f3,g1,g2,g3,sph_object,lfon,axis;
 	var r_axis, r_v, r, axisr,spr,rot,i,j,k,level=100,spx,spy,spz;
-	var g_ch1,g_ch2,g_ch3,g_ch4,chan=1;
+	var g_ch1,g_ch2,g_ch3,g_ch4,chan=~chan;
 	var gn ,g_sum,g_avg ,ton1,ton2,ton3,laxis;
 
 fund=fu*(9/8);
@@ -402,10 +402,10 @@ threshold3=(((343/0.3)/fund).reciprocal.ampdb/2.sqrt).dbamp;
 
 //gn = gn/ gn.sum;
 
-g_ch1 = 1;
-g_ch2 =1;
-g_ch3 = 1;
-g_ch4 =1;
+//g_ch1 = magqx;
+////g_ch2 =magy;
+//g_ch3 = magz;
+//g_ch4 =1;
 
 Out.ar(0,PanAz.ar(chan,
 Limiter.ar(LeakDC.ar(FreeVerb.ar(
@@ -446,7 +446,7 @@ Out.ar(0,PanAz.ar(chan,
 Limiter.ar(LeakDC.ar(FreeVerb.ar(
 sig3,mix.lag(0.0001),room.lag(0.0001),mul:gain3)),0.9,0.01)*g_ch4,LFSaw.ar(pon,3/4),width:spread));
 
-					Out.ar(0,WhiteNoise.ar(0.0001)!4);
+					Out.ar(0,WhiteNoise.ar(0.0001)!chan);
 					///three channel
 				//	Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.0001),room.lag(0.0001),mul:gain1*loc1.abs)),0.9,0.01));
 				//	Out.ar(1,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.0001),room.lag(0.0001),mul:gain2*loc2.abs)),0.9,0.01));
