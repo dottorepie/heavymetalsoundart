@@ -173,7 +173,7 @@ SynthDef.new(\synth,{
 	var amb_w,amb_x,amb_y,amb_z,out,amb_sig1,amb_sig2,amb_sig3,axisx,axisy,axisz,cx,cy,cz;
 	var axi1,axi2,axi3,ds1,ds2,ds3,f1,f2,f3,g1,g2,g3,sph_object,lfon,axis;
 	var r_axis, r_v, r, axisr,spr,rot,i,j,k,level=100,spx,spy,spz;
-	var g_ch1,g_ch2,g_ch3,g_ch4,chan=2,sp;
+	var g_ch1,g_ch2,g_ch3,g_ch4,chan=2,sp,spl;
 	var gn ,g_sum,g_avg ,ton1,ton2,ton3,tonb,laxis;
 
 
@@ -362,20 +362,22 @@ threshold3=(((343/0.3)/fund).reciprocal.ampdb/2.sqrt).dbamp;
 					gain3=gain*rq3.sqrt.reciprocal*cloud.reciprocal*10*env;
 
 
-					sp= LFNoise1.kr(10).range(spread.neg, spread);
+					sp= LFNoise2.ar(6).range(spread*pi.neg, spread*pi);
+					spl= LFNoise2.ar(6).range(spread*(pi/2).neg, spread*(pi/2));
 
-					g_ch1=((sph.x*Spherical(mx,~az.[0]+sp,~el.[0]+sp).x)+
-						          (sph.y*Spherical(my,~az.[0]+sp,~el.[0]+sp).y)+
-						          (sph.z*Spherical(mz,~az.[0]+sp,~el.[0]+sp).z)).max(0);
-					g_ch2=((sph.x*Spherical(mx,~az.[1]+sp,~el.[1]+sp).x)+
-						         (sph.y*Spherical(my,~az.[1]+sp,~el.[1]+sp).y)+
-						          (sph.z*Spherical(mz,~az.[1]+sp,~el.[1]+sp).z)).max(0);
-					g_ch3=((sph.x*Spherical(mx,~az.[2]+sp,~el.[2]+sp).x)+
-						         (sph.y*Spherical(my,~az.[2]+sp,~el.[2]+sp).y)+
-						          (sph.z*Spherical(mz,~az.[2]+sp,~el.[2]+sp).z)).max(0);
-					g_ch4=((sph.x*Spherical(mx,~az.[3]+sp,~el.[3]+sp).x)+
-						         (sph.y*Spherical(my,~az.[3]+sp,~el.[3]+sp).y)+
-						          (sph.z*Spherical(mz,~az.[3]+sp,~el.[3]+sp).z)).max(0);
+					g_ch1=((sph.x*Spherical(mx,(~az.[0]+sp).wrap(pi,pi.neg),(~el.[0]+spl).wrap(pi/2,(pi/2).neg)).x)+
+						(sph.y*Spherical(my,(~az.[0]+sp).wrap(pi,pi.neg),(~el.[0]+spl).wrap(pi/2,(pi/2).neg)).y)+
+						(sph.z*Spherical(mz,(~az.[0]+sp).wrap(pi,pi.neg),(~el.[0]+spl).wrap(pi/2,(pi/2).neg)).z)).max(0).lag(0.01);
+					g_ch2=((sph.x*Spherical(mx,(~az.[1]+sp).wrap(pi,pi.neg),(~el.[1]+spl).wrap(pi/2,(pi/2).neg)).x)+
+						(sph.y*Spherical(my,(~az.[1]+sp).wrap(pi,pi.neg),(~el.[1]+spl).wrap(pi/2,(pi/2).neg)).y)+
+						(sph.z*Spherical(mz,(~az.[1]+sp).wrap(pi,pi.neg),(~el.[1]+spl).wrap(pi/2,(pi/2).neg)).z)).max(0).lag(0.01);
+					g_ch3=((sph.x*Spherical(mx,(~az.[2]+sp).wrap(pi,pi.neg),(~el.[2]+spl).wrap(pi/2,(pi/2).neg)).x)+
+						(sph.y*Spherical(my,(~az.[2]+sp).wrap(pi,pi.neg),(~el.[2]+spl).wrap(pi/2,(pi/2).neg)).y)+
+						(sph.z*Spherical(mz,(~az.[2]+sp).wrap(pi,pi.neg),(~el.[2]+spl).wrap(pi/2,(pi/2).neg)).z)).max(0).lag(0.01);
+					g_ch4=((sph.x*Spherical(mx,(~az.[3]+sp).wrap(pi,pi.neg),(~el.[3]+spl).wrap(pi/2,(pi/2).neg)).x)+
+						(sph.y*Spherical(my,(~az.[3]+sp).wrap(pi,pi.neg),(~el.[3]+spl).wrap(pi/2,(pi/2).neg)).y)+
+						(sph.z*Spherical(mz,(~az.[3]+sp).wrap(pi,pi.neg),(~el.[3]+spl).wrap(pi/2,(pi/2).neg)).z)).max(0).lag(0.01);
+
 
 
 
