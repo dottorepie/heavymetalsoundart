@@ -180,13 +180,13 @@ SynthDef.new(\synth,{
 	var amb_w,amb_x,amb_y,amb_z,out,amb_sig1,amb_sig2,amb_sig3,axisx,axisy,axisz,cx,cy,cz;
 	var axi1,axi2,axi3,ds1,ds2,ds3,f1,f2,f3,g1,g2,g3,sph_object,lfon,axis;
 	var r_axis, r_v, r, axisr,spr,rot,i,j,k,level=100,spx,spy,spz;
-	var g_ch1,g_ch2,g_ch3,g_ch4,chan=2,sp,spl;
+	var g_ch1,g_ch2,g_ch3,g_ch4,chan=4,sp,spl;
 	var gn ,g_sum,g_avg ,ton1,ton2,ton3,tonb,laxis;
 
 
 				m = In.kr(~controlBus3).lag(0.1).round(1);
 
-				env=EnvGen.ar(Env.sine(5),doneAction:2,levelScale:1);
+				env=EnvGen.ar(Env.sine(12),doneAction:2,levelScale:1);
 fund=fu*(9/8);
 lamdoma=(x.lag(0.001)+a.lag(0.001))/x.lag(0.001);
 
@@ -538,19 +538,19 @@ m3=m3+1;
 		/////////////sequencer
 		(
 
-			~seq1= Pseq(~dur/2, inf).asStream;
+			~seq1= Pseq(~dur, inf).asStream;
 				~seq2 = Pseq(~dur2, inf).asStream;
 				~seq3 = Pseq(~dur3, inf).asStream;
 		~system= Pseq(~r,inf).asStream;
 			~tonb=496.neg;
-			~panwidth=0.5;
+			~panwidth=1;
           ~detune=1;
 			~pass=992*2;
 			~drive=992*3;
 			~mox=0.8;
 			~gg=1;
-			~pon=0.01;
-			~sphpan=(992*8).neg;
+			~pon=0.1;
+			~sphpan=(992*4).neg;
 
 ~str1 = Routine({
     var i,m,l;
@@ -561,7 +561,8 @@ m3=m3+1;
 							TempoClock.default.tempo_(1);
 				//	TempoClock.default.tempo_(~val/300);
 				//	~r1=0; ~r2=0; ~r3=0;
-i= ~cart.lag(0.01).size.rand;
+//i= ~cart.lag(0.01).size.rand;
+					i=0;
 				//	l=~system.next;
 					//~detune=32.rand.round(2).max(1);
 ~detune=1;
