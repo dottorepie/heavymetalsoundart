@@ -244,14 +244,19 @@ anglex=(exp(Complex(0,1)*polytope.theta).real*exp(Complex(0,1)*polytope.phi).rea
 angley=(exp(Complex(0,1)*polytope.theta).imag*exp(Complex(0,1)*polytope.phi).real).round(0.00001);
 anglez=(exp(Complex(0,1)*polytope.phi).imag).round(0.00001);
 
-phase1=Complex(1,anglex).theta;
-phase2=Complex(1,angley).theta;
-phase3=Complex(1,anglez).theta;
+//phase1=Complex(1,anglex).theta;
+//phase2=Complex(1,angley).theta;
+//phase3=Complex(1,anglez).theta;
 
 
-mod_anglex=SinOsc.ar(lfon,phase1).range(pi.neg,pi);
-					mod_angley=SinOsc.ar(lfon,phase2).range(pi.neg,pi);
-					mod_anglez=SinOsc.ar(lfon,phase3).range((pi/2).neg,(pi/2));
+//mod_anglex=SinOsc.ar(lfon,phase1).range(pi.neg,pi);
+//mod_angley=SinOsc.ar(lfon,phase2).range(pi.neg,pi);
+//mod_anglez=SinOsc.ar(lfon,phase3).range((pi/2).neg,(pi/2));
+
+mod_anglex=DelayC.ar(LFNoise1.ar(lfon).range(pi.neg,pi),anglex,anglex);
+mod_angley=DelayC.ar(LFNoise1.ar(lfon).range(pi.neg,pi),angley,angley);
+mod_anglez=DelayC.ar(LFNoise1.ar(lfon).range((pi/2).neg,(pi/2)),anglez,anglez);
+
 
 					(
 	magx=((Complex(cos(((polytope.theta+mod_anglex).round(0.00001)*m).wrap(pi.neg,pi)),cos((((polytope.theta+mod_anglex).round(0.00001)*m)).wrap(pi.neg,pi))).rho/(2.sqrt))*
@@ -281,11 +286,11 @@ cos((polytope.phi.round(0.00001)).wrap((pi/2).neg,(pi/2))))))).rho/(2.sqrt));
 					mx=(Cartesian(magx,0,0).rho);
 					my=(Cartesian(0,magy,0).rho);
 					mz=(Cartesian(0,0,magz).rho);
-					mag=(Cartesian(magqx,my,mz).rho/2.sqrt) ;
+					mag=(Cartesian(mx,my,mz).rho/2.sqrt) ;
 
 		sph=Spherical(mag,polytope.theta,polytope.phi);
 
-loc1=magqx;  loc2=magy;  loc3=magz;
+loc1=mx;  loc2=magy;  loc3=magz;
 
 phasex=Complex(1,sph.x).theta;
 phasey=Complex(1,sph.y).theta;
