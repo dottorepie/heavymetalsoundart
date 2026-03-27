@@ -181,7 +181,7 @@ SynthDef.new(\synth,{
 	var axi1,axi2,axi3,ds1,ds2,ds3,f1,f2,f3,g1,g2,g3,sph_object,lfon,axis;
 	var r_axis, r_v, r, axisr,spr,rot,i,j,k,level=100,spx,spy,spz;
 	var g_ch1,g_ch2,g_ch3,g_ch4,chan=4,sp,spl;
-	var gn ,g_sum,g_avg ,ton1,ton2,ton3,tonb,laxis,g1,g2,g3,g4;
+	var gn ,g_sum,g_avg ,ton1,ton2,ton3,tonb,laxis,g11,g22,g33,g44;
 
 
 				m = In.kr(~controlBus3).lag(0.1).round(1);
@@ -398,15 +398,15 @@ g_ch4 = (
  (Spherical(my,(polytope.theta+sp).wrap(pi,pi.neg),(polytope.phi+spl).wrap(pi/2,(pi/2).neg)).y * Spherical(mag,~az[0],~el[0]).y )+
    (Spherical(mz,(polytope.theta+sp).wrap(pi,pi.neg),(polytope.phi+spl).wrap(pi/2,(pi/2).neg)).z * Spherical(mag,~az[0],~el[0]).z)
 
-g1 = g_ch1;
-g2 = g_ch2;
-g3 = g_ch3;
-g4 = g_ch4;
+g11 = g_ch1;
+g22 = g_ch2;
+g33 = g_ch3;
+g44 = g_ch4;
 
-g_ch1 = (g1 + (g2*spread) + (g3*spread) + (g4*spread));
-g_ch2 = (g2 + (g1*spread) + (g3*spread) + (g4*spread));
-g_ch3 = (g3 + (g1*spread) + (g2*spread) + (g4*spread));
-g_ch4 = (g4 + (g1*spread) + (g2*spread) + (g3*spread));
+g_ch1 = (g11 + (g22*spread) + (g33*spread) + (g44*spread));
+g_ch2 = (g22 + (g11*spread) + (g33*spread) + (g44*spread));
+g_ch3 = (g33 + (g11*spread) + (g22*spread) + (g44*spread));
+g_ch4 = (g44 + (g11*spread) + (g22*spread) + (g33*spread));
 
 g_sum = (g_ch1.pow(2) + g_ch2.pow(2) + g_ch3.pow(2) + g_ch4.pow(2)).sqrt;
 
