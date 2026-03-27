@@ -435,6 +435,8 @@ g_ch4 = (g_ch4 / g_sum).lag(0.01);
 g_ch1 = g_ch1.pow(spread.linlin(0.01,1,0.4,0.01));
 g_ch2 = g_ch2.pow(spread.linlin(0.01,1,0.4,0.01));
 g_ch3 = g_ch3.pow(spread.linlin(0.01,1,0.4,0.01));
+g_ch4 = g_ch4 .pow(spread.linlin(0.01,1,0.4,0.01));
+
 
 		g_ch1.max(0.01) + (g_ch1 - g_ch1.max(0.01)).min(0);
 		g_ch2.max(0.01) + (g_ch2 - g_ch2.max(0.01)).min(0);
