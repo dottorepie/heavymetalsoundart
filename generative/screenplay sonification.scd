@@ -51,7 +51,7 @@ xx=xx+1;
         ~ax=~ax++(r.sum / r.size);
 		~ay=~ay++(g.sum / g.size);
 		~az=~az++(b.sum / b.size);
-
+			r=[];g=[];b=[]
 };
 )
 
@@ -72,6 +72,11 @@ r.play;
 }
 );
 
+(
+(
+~az=[45.degrad,135.neg.degrad,45.neg.degrad,135.degrad];
+~el=[35.264390.neg.degrad,35.264390.neg.degrad,35.264390.degrad,35.264390.degrad];
+);
 ////// wavetables
 
 		//oscillator table
@@ -111,7 +116,9 @@ wt = signal.asWavetable;
 			}.value;
 		);
 
+)
 		////sound
+
 
 (
 SynthDef.new(\synth,{
@@ -131,14 +138,14 @@ SynthDef.new(\synth,{
 	var axi1,axi2,axi3,ds1,ds2,ds3,f1,f2,f3,g1,g2,g3,sph_object,lfon,axis;
 	var r_axis, r_v, r, axisr,spr,rot,i,j,k,level=100;
 	var g_ch1,g_ch2,g_ch3,g_ch4,chan=4,nn=0;
-	var gn ,g_sum,g_avg ,ton1,ton2,ton3,laxis,sp,spl,g11,g22,g33,g44,env;
+	var gn ,g_sum,g_avg ,ton1,ton2,ton3,laxis,sp,spl,g11,g22,g33,g44;
 
 fund=fu*(9/8);
 lamdoma=(x.lag(0.0001)+a.lag(0.0001))/x.lag(0.0001);
 
-ton1=2.pow(Select.kr(tone1.lag(0.0001), ~scalee) /12).round(0.0001)*2.pow(dron.lag(0.0001)/992);
-ton2=2.pow(Select.kr(tone2.lag(0.0001), ~scalee) /12).round(0.0001)*2.pow(dron.lag(0.0001)/992);
-ton3=2.pow(Select.kr(tone3.lag(0.0001), ~scalee) /12).round(0.0001)*2.pow(dron.lag(0.0001)/992);
+ton1=2.pow(Select.kr(tone1.lag(0.0001), ~scaleee) /12).round(0.0001)*2.pow(dron.lag(0.0001)/992);
+ton2=2.pow(Select.kr(tone2.lag(0.0001), ~scaleee) /12).round(0.0001)*2.pow(dron.lag(0.0001)/992);
+ton3=2.pow(Select.kr(tone3.lag(0.0001), ~scaleee) /12).round(0.0001)*2.pow(dron.lag(0.0001)/992);
 
 	//env=EnvGen.ar(Env.sine(12),doneAction:2,levelScale:10);
 	env=10;
@@ -159,9 +166,9 @@ ton3=2.pow(Select.kr(tone3.lag(0.0001), ~scalee) /12).round(0.0001)*2.pow(dron.l
 				axis=Spherical(sc,(sph_object.theta+azf).wrap(pi,pi.neg),  (sph_object.phi+elf).wrap((pi/2),(pi/2).neg));
 				polytope=Cartesian(axis.x,axis.y,axis.z);
 
-b_x=2.pow(Select.kr(polytope.x, ~scale) /12).round(0.0001)*lamdoma;
-b_y=2.pow(Select.kr(polytope.y, ~scale) /12).round(0.0001)*lamdoma;
-b_z=2.pow(Select.kr(polytope.z, ~scale) /12).round(0.0001)*lamdoma;
+b_x=2.pow(Select.kr(polytope.x, ~scalee) /12).round(0.0001)*lamdoma;
+b_y=2.pow(Select.kr(polytope.y, ~scalee) /12).round(0.0001)*lamdoma;
+b_z=2.pow(Select.kr(polytope.z, ~scalee) /12).round(0.0001)*lamdoma;
 
 anglex=(exp(Complex(0,1)*polytope.theta).real*exp(Complex(0,1)*polytope.phi).real).round(0.00001);
 angley=(exp(Complex(0,1)*polytope.theta).imag*exp(Complex(0,1)*polytope.phi).real).round(0.00001);
@@ -230,9 +237,9 @@ amp1=ton1.reciprocal*b_x.reciprocal;
 amp2=ton2.reciprocal*b_y.reciprocal;
 amp3=ton3.reciprocal*b_z.reciprocal;
 
-g1=b_x.reciprocal*dr.reciprocal*drone_amp.reciprocal*panx;
-g2=b_y.reciprocal*dr.reciprocal*drone_amp.reciprocal*pany;
-g3=b_z.reciprocal*dr.reciprocal*drone_amp.reciprocal*panz;
+g1=b_x.reciprocal*dr.reciprocal*panx;
+g2=b_y.reciprocal*dr.reciprocal*pany;
+g3=b_z.reciprocal*dr.reciprocal*panz;
 
 band_osc1=SinOsc.kr(b_x*2.pow(band.lag(0.0001)/992),phase:phasex).exprange(496,16256);
 band_osc2=SinOsc.kr(b_y*2.pow(band.lag(0.0001)/992),phase:phasey).exprange(496,16256);
@@ -295,7 +302,7 @@ threshold3=(((343/0.3)/fund).reciprocal.ampdb/2.sqrt).dbamp;
 	///distortion
 
 
-					sig1 = (tanh((sig1*2.pow(drive/992)).softclip)) / (1 + (tanh((sig1*2.pow(drive/992)).softclip)).abs);
+		sig1 = (tanh((sig1*2.pow(drive/992)).softclip)) / (1 + (tanh((sig1*2.pow(drive/992)).softclip)).abs);
 
 		sig2 =  (tanh((sig2*2.pow(drive/992)).softclip)) / (1 + (tanh((sig2*2.pow(drive/992)).softclip)).abs);
 
@@ -410,7 +417,12 @@ nn=nn+1;
 
 }).add;);
 
-10.wait;
+
+	~synth=Synth.new(\synth,[\gain,1,\drive,992,\fu,8,\sc,14,\low,992,
+	\pan,(992*16).neg,\mix,0.5,\room,1,\tone1,0,\tone2,0,\tone3,0,
+				\pann,~sphpan,\x,2,\a,1,\spread,1,\pon,0.1,
+	\pneuma,0,\namp,1,\drone,5.neg,\panx,0.1\pany,0.1,\panz~0.1,\dron,0]).register;
+
 
 
 ////durs
@@ -418,11 +430,7 @@ nn=nn+1;
 ~azz=[0.degrad,0.degrad,90.degrad,180.degrad,90.neg.degrad,0.degrad];
 ~ell=[90.neg.degrad,0.degrad,0.degrad,0.degrad,0.degrad,90.degrad];
 );
-		//tetr
-		(
-~az=[45.degrad,135.neg.degrad,45.neg.degrad,135.degrad];
-~el=[35.264390.neg.degrad,35.264390.neg.degrad,35.264390.degrad,35.264390.degrad];
-);
+
 	({var m1=1.neg, m2=1.neg, m3=1.neg,a,b,c,n=0,bank=4,time=32.reciprocal,beat=1,r=0;
 
 			~dur1=[];~dur2=[];~dur3=[]; ~dx=[];~dy=[]; ~dz=[]; ~durx=[]; ~dury=[]; ~durz=[]; ~dur=[];
@@ -494,8 +502,8 @@ m3=m3+1;
 ~detune=1;
 
 	~synth=Synth.new(\synth,[\gain,~gg,\drive,~drive,\fu,8,\sc,14,\low,~pass,\pan,~bband,\mix,~mox,\room,~rev.lag(0.01),
-				\pann,~sphpan,\x,2,\a,1,\spread,~rev.lag(0.01),\pon,~pon,\pneuma,0,\namp,1,\drone,5.neg,\panx,~drn+0.55.rand
-				\pany,~drn+0.55.rand,\panz,~drn+0.55.rand,\dron,~tonb]).register;
+				\pann,~sphpan,\x,2,\a,1,\spread,~rev.lag(0.01),\pon,~pon,\pneuma,0,\namp,1,\drone,5.neg,\panx,~0.1
+				\pany,~0.1,\panz,~0.1,\dron,~tonb]).register;
 
 
         ~seq1.next.wait;
