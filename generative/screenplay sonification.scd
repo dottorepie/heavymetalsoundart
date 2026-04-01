@@ -93,13 +93,14 @@ PathName.new("/Users/amimid/Desktop/screenplay/").files.do { |f|
 )
 
 	(
+				~cx=[]; ~cy=[];  ~cz=[];
 PathName.new("/Users/amimid/Desktop/screenplay/").files.do { |f|
 
 var img = Image.open(f.fullPath);
 var c=0, color,xx=0,yy=0,r=[],g=[],b=[],h_count=0;
 	c=(img.height/7).asInteger;
 	h_count=(img.height/7).asInteger;
-		~cx=[]; ~cy=[];  ~cz=[];
+
 
 	7.do{
 
