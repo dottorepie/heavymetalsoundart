@@ -551,7 +551,7 @@ m3=m3+1;
 							TempoClock.default.tempo_(1);
 
 	~synth=Synth.new(\synth,[\gain,~gg,\drive,~drive,\fu,8,\sc,14,\low,~pass,\pan,~bband,\mix,~mox,\room,~rev.lag(0.01),
-				\pann,~sphpan,\x,2,\a,1,\spread,~rev.lag(0.01),\pon,~pon,\pneuma,0,\namp,1,\drone,5.neg,\panx,0.1
+				\pann,~sphpan,\x,2,\a,1,\spread,~rev.lag(0.01),\pon,~pon,\pneuma,0,\namp,1,\drone,5.neg,\panx,0,
 				\pany,0.1,\panz,0.1,\dron,~tonb,\mm,l]).register;
 
 l=l+7;
