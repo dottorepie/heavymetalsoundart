@@ -433,10 +433,10 @@ g_ch2 = g_ch2.pow(spread.reciprocal);
 g_ch3 = g_ch3.pow(spread.reciprocal);
 g_ch4 = g_ch4 .pow(spread.reciprocal);
 
-pon1=LFSaw.ar(pon,0).range(0.0001,1).lag(0.1);
-pon2=LFSaw.ar(pon,1/4).range(0.0001,1).lag(0.1);
-pon3=LFSaw.ar(pon,2/4).range(0.0001,1).lag(0.1);
-pon4=LFSaw.ar(pon,3/4).range(0.0001,1).lag(0.1);
+pon1=SinOsc.ar(pon,0).range(0.0001,1).lag(0.1);
+pon2=SinOsc.ar(pon,0.25pi).range(0.0001,1).lag(0.1);
+pon3=SinOsc.ar(pon,0.5pi).range(0.0001,1).lag(0.1);
+pon4=SinOsc.ar(pon,0.75pi).range(0.0001,1).lag(0.1);
 
 
 Out.ar(0,
@@ -594,7 +594,7 @@ MIDIdef.cc(\midi_pot5,{ |val, num, chan, src|
 														(
 MIDIdef.cc(\midi_pot6,{ |val, num, chan, src|
 		var pon;
-			pon=val.linlin(0,127,0.001,4).round(0.0001);
+			pon=val.linlin(0,127,0.0001,1).round(0.0001);
 		pon.postln;
 		if(~synth.isPlaying,{~synth.set(\pon,pon)});
 },6);
@@ -612,7 +612,7 @@ MIDIdef.cc(\midi_pot7,{ |val, num, chan, src|
 																	(
 MIDIdef.cc(\midi_pot8,{ |val, num, chan, src|
 		var spread;
-			spread=val.linlin(0,127,0.5,100).round(0.0001);
+			spread=val.linlin(0,127,1,100).round(0.0001);
 		spread.postln;
 		if(~synth.isPlaying,{~synth.set(\spread,spread)});
 },8);
