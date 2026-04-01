@@ -431,7 +431,7 @@ g_ch4 = (
 g_ch1 = g_ch1.pow(spread.reciprocal);
 g_ch2 = g_ch2.pow(spread.reciprocal);
 g_ch3 = g_ch3.pow(spread.reciprocal);
-g_ch4 = g_ch4 .pow(spread.reciprocal);
+g_ch4 = g_ch4.pow(spread.reciprocal);
 
 pon1=SinOsc.ar(pon,0).range(0.0001,1).lag(0.1);
 pon2=SinOsc.ar(pon,0.25pi).range(0.0001,1).lag(0.1);
