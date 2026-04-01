@@ -249,9 +249,9 @@ phase2=Complex(1,angley).theta;
 phase3=Complex(1,anglez).theta;
 
 
-mod_anglex=SinOsc.ar(lfon*ton1,phase1).range(pi.neg,pi).lag(0.01);
-mod_angley=SinOsc.ar(lfon*ton2,phase2).range(pi.neg,pi).lag(0.01);
-mod_anglez=SinOsc.ar(lfon*ton3,phase3).range((pi/2).neg,(pi/2)).lag(0.01);
+mod_anglex=SinOsc.ar(lfon*ton1,phase1,spread.reciprocal).range(pi.neg,pi).lag(0.01);
+mod_angley=SinOsc.ar(lfon*ton2,phase2,spread.reciprocal).range(pi.neg,pi).lag(0.01);
+mod_anglez=SinOsc.ar(lfon*ton3,phase3,spread.reciprocal).range((pi/2).neg,(pi/2)).lag(0.01);
 
 
 					(
@@ -432,10 +432,10 @@ g_ch2 = (g_ch2 / g_sum).lag(0.01);
 g_ch3 = (g_ch3 / g_sum).lag(0.01);
 g_ch4 = (g_ch4 / g_sum).lag(0.01);
 
-g_ch1 = g_ch1.pow(0.01);
-g_ch2 = g_ch2.pow(0.01);
-g_ch3 = g_ch3.pow(0.01);
-g_ch4 = g_ch4 .pow(0.01);
+g_ch1 = g_ch1.pow(1);
+g_ch2 = g_ch2.pow(1);
+g_ch3 = g_ch3.pow(1);
+g_ch4 = g_ch4 .pow(1);
 
 
 g_ch1 =g_ch1.max(0.01) + (g_ch1 - g_ch1.max(0.01)).min(0);
