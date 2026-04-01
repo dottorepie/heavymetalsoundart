@@ -180,7 +180,7 @@ SynthDef.new(\synth,{
 	var amb_w,amb_x,amb_y,amb_z,out,amb_sig1,amb_sig2,amb_sig3,axisx,axisy,axisz,cx,cy,cz;
 	var axi1,axi2,axi3,ds1,ds2,ds3,f1,f2,f3,g1,g2,g3,sph_object,lfon,axis;
 	var r_axis, r_v, r, axisr,spr,rot,i,j,k,level=100,spx,spy,spz;
-	var g_ch1,g_ch2,g_ch3,g_ch4,chan=2,sp,spl;
+	var g_ch1,g_ch2,g_ch3,g_ch4,chan=2,sp,spl.mp;
 	var gn ,g_sum,g_avg ,ton1,ton2,ton3,tonb,laxis,g11,g22,g33,g44;
 
 
@@ -215,11 +215,12 @@ ton3=2.pow(Select.kr(tone3.round(1), ~scaleee) /12).round(0.0001)*tonb;
 
 					polytope=Spherical(sc.max(0.01).lag(0.01),spr.theta,spr.phi);
 						//	laxis=Spherical(lamdoma,spr.theta,spr.phi);
+		mp=Spherical(sc,sph_object.theta,  sph_object.phi);
 
 
-b_x=2.pow(Select.kr(polytope.x.round(0.0001), ~scalee) /12).round(0.0001)*lamdoma;
-b_y=2.pow(Select.kr(polytope.y.round(0.0001), ~scalee) /12).round(0.0001)*lamdoma;
-b_z=2.pow(Select.kr(polytope.z.round(0.0001), ~scalee) /12).round(0.0001)*lamdoma;
+b_x=2.pow(Select.kr(mp.x.round(0.0001), ~scalee) /12).round(0.0001)*lamdoma;
+b_y=2.pow(Select.kr(mp.y.round(0.0001), ~scalee) /12).round(0.0001)*lamdoma;
+b_z=2.pow(Select.kr(mp.z.round(0.0001), ~scalee) /12).round(0.0001)*lamdoma;
 
 //b_x=laxis.x.round((9/8)/2);
 //b_y=laxis.y.round((9/8)/2);

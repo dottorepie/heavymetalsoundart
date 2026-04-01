@@ -6,11 +6,13 @@ s.options.numInputBusChannels=0;
 s.options.memSize = 8192*16;
 s.options.blockSize = 64;
 s.options.maxNodes = 8192*2;
+s.boot;
 s.makeGui(w);
 s.meter;
 s.freqscope;
 s.scope;
 
+)
 
 s.waitForBoot{
 
@@ -98,11 +100,11 @@ PathName.new("/Users/amimid/Desktop/screenplay/").files.do { |f|
 
 var img = Image.open(f.fullPath);
 var c=0, color,xx=0,yy=0,r=[],g=[],b=[],h_count=0;
-	c=(img.height/7).asInteger;
-	h_count=(img.height/7).asInteger;
+	c=(img.height/3).asInteger;
+	h_count=(img.height/3).asInteger;
 
 
-	7.do{
+	3.do{
 
 h_count.do {
 				img.width.do {
@@ -161,14 +163,14 @@ wt = signal.asWavetable;
 		(
 			{
 				var nn=1.neg;
-		~scaleee=28.collect{nn=nn+1;Scale.phrygian.performDegreeToKey(nn,12)};
+		~scaleee=14.collect{nn=nn+1;Scale.phrygian.performDegreeToKey(nn,12)};
 			}.value;
 		);
 
 				(
 			{
 				var nn=1.neg;
-		~scalee=14.collect{nn=nn+1;Scale.phrygian.performDegreeToKey(nn,12)};
+		~scalee=7.collect{nn=nn+1;Scale.phrygian.performDegreeToKey(nn,12)};
 			}.value;
 		);
 
@@ -181,9 +183,10 @@ SynthDef.new(\synth,{
 
 	arg gain=1,low=992,x=1,pan=1,mix=0.3,a=1,panx=1,pany=1,panz=1,room=0.5,m=2,pon=1,
 				fu=32,drive=1,spread=1,drone_amp=1,pann=0,dron=0,drone=1,theta=0,rx=0,ry=0,rz=0,
-				pneuma1=0,pneuma2=0,pneuma3=0,namp1=1,namp2=1,namp3=1,sc=14,mm=0;
+				pneuma1=0,pneuma2=0,pneuma3=0,namp1=1,namp2=1,namp3=1,sc=7,mm=0;
 
-	var rq=1,cloud=7,attack,decay,curve,band,azf=0,elf=0,q,r1,r2,r3,sq1,sq2,sq3,rotationx,rotationy,rotationz,core=(9/8).rand,tone1=0,tone2=0,tone3=0;
+	var rq=1,cloud=3,attack,decay,curve,band,azf=0,elf=0,q,r1,r2,r3,sq1,sq2,sq3;
+	var rotationx,rotationy,rotationz,core=(9/8).rand,tone1=0,tone2=0,tone3=0;
 	var lamdoma,freq1,freq2,freq3,fund,amp1,amp2,amp3,alpha,cell_az,cell_el,x_pos,y_pos,control1,control2,control3;
 	var sig1,sig2,bank=6,out1,out2,band_osc1,band_osc2,threshold1,threshold2,threshold3,phase1,phase2,phase3;
 	var band_osc3,band_osc4,band_osc5,band_osc6,sig3,out3,cell_tria,b_x,b_y,b_z,polytope,gain1,gain2,gain3,env,azimuth,elevation;
@@ -193,45 +196,49 @@ SynthDef.new(\synth,{
 	var amb_w,amb_x,amb_y,amb_z,out,amb_sig1,amb_sig2,amb_sig3,axisx,axisy,axisz,cx,cy,cz;
 	var axi1,axi2,axi3,ds1,ds2,ds3,f1,f2,f3,g1,g2,g3,sph_object,lfon,axis;
 	var r_axis, r_v, r, axisr,spr,rot,i,j,k,level=100;
-	var g_ch1,g_ch2,g_ch3,g_ch4,chan=2,nn=0;
-	var gn ,g_sum,g_avg ,ton1,ton2,ton3,laxis,sp,spl,g11,g22,g33,g44;
+	var g_ch1,g_ch2,g_ch3,g_ch4,chan=2,nn=0,lllx,llly,lllz;
+	var gn ,g_sum,g_avg ,ton1,ton2,ton3,laxis,sp,spl,g11,g22,g33,g44,mp;
 
 fund=fu*(9/8);
-lamdoma=(x.lag(0.0001)+a.lag(0.0001))/x.lag(0.0001);
+lamdoma=(x.lag(0.001)+a.lag(0.001))/x.lag(0.001);
 
 
 
 
-	env=EnvGen.ar(Env.sine(3),doneAction:2,levelScale:10);
-//	env=10;
+//	env=EnvGen.ar(Env.sine(3),doneAction:2,levelScale:10);
+	env=10;
 
-		tone1=Select.kr(mm,~cx).linlin(0,1,0,28).round(1).asInteger;
-	tone2=Select.kr(mm,~cy).linlin(0,1,0,28).round(1).asInteger;
-	tone3=Select.kr(mm,~cz).linlin(0,1,0,28).round(1).asInteger;
+	lllx=(Select.kr(mm.lag(0.001),~cx)+Select.kr(mm.lag(0.001)+1,~cx)+Select.kr(mm.lag(0.001)+2,~cx))/3;
+	llly=(Select.kr(mm.lag(0.001),~cy)+Select.kr(mm.lag(0.001)+1,~cy)+Select.kr(mm.lag(0.001)+2,~cy))/3;
+	lllz=(Select.kr(mm.lag(0.001),~cz)+Select.kr(mm.lag(0.001)+1,~cz)+Select.kr(mm.lag(0.001)+2,~cz))/3;
 
-ton1=2.pow(Select.kr(tone1.lag(0.0001), ~scaleee) /12).round(0.0001)*2.pow(dron.lag(0.0001)/992);
-ton2=2.pow(Select.kr(tone2.lag(0.0001), ~scaleee) /12).round(0.0001)*2.pow(dron.lag(0.0001)/992);
-ton3=2.pow(Select.kr(tone3.lag(0.0001), ~scaleee) /12).round(0.0001)*2.pow(dron.lag(0.0001)/992);
+	tone1=lllx.linlin(0,1,0,14).round(1).asInteger;
+	tone2=llly.linlin(0,1,0,14).round(1).asInteger;
+	tone3=lllz.linlin(0,1,0,14).round(1).asInteger;
+
+ton1=2.pow(Select.kr(tone1.lag(0.0001), ~scaleee) /12).round(0.001)*2.pow(dron.lag(0.001)/992);
+ton2=2.pow(Select.kr(tone2.lag(0.0001), ~scaleee) /12).round(0.001)*2.pow(dron.lag(0.001)/992);
+ton3=2.pow(Select.kr(tone3.lag(0.0001), ~scaleee) /12).round(0.001)*2.pow(dron.lag(0.001)/992);
 
 						lfo=2.pow(pan/992);
 				lfon=2.pow(pann/992);
 					band=pan;
 
-				mq=(m.lag(0.0001)+1);
+				mq=(m.lag(0.001)+1);
 
 						cloud.do{
-
-		spr=Cartesian(Select.kr(nn+mm,~cx),Select.kr(nn+mm,~cy),Select.kr(nn+mm,~cz));
+spr=Cartesian(Select.kr(nn+mm.lag(0.0001),~cx),Select.kr(nn+mm.lag(0.0001),~cy),Select.kr(nn+mm.lag(0.0001),~cz));
 				sph_object=spr;
 
 
 
 				axis=Spherical(sc,(sph_object.theta+azf).wrap(pi,pi.neg),  (sph_object.phi+elf).wrap((pi/2),(pi/2).neg));
 				polytope=Cartesian(axis.x,axis.y,axis.z);
+		mp=Spherical(sc,sph_object.theta,  sph_object.phi);
 
-b_x=2.pow(Select.kr(polytope.x, ~scalee) /12).round(0.0001)*lamdoma;
-b_y=2.pow(Select.kr(polytope.y, ~scalee) /12).round(0.0001)*lamdoma;
-b_z=2.pow(Select.kr(polytope.z, ~scalee) /12).round(0.0001)*lamdoma;
+b_x=2.pow(Select.kr(mp.x, ~scalee) /12).round(0.0001)*lamdoma;
+b_y=2.pow(Select.kr(mp.y, ~scalee) /12).round(0.0001)*lamdoma;
+b_z=2.pow(Select.kr(mp.z, ~scalee) /12).round(0.0001)*lamdoma;
 
 anglex=(exp(Complex(0,1)*polytope.theta).real*exp(Complex(0,1)*polytope.phi).real).round(0.00001);
 angley=(exp(Complex(0,1)*polytope.theta).imag*exp(Complex(0,1)*polytope.phi).real).round(0.00001);
@@ -481,15 +488,32 @@ nn=nn+1;
 }).add;);
 
 
-	~synth=Synth.new(\synth,[\gain,1,\drive,992,\fu,32,\sc,14,\low,992,
-	\pan,(992*16).neg,\mix,0.5,\room,1,\tone1,0,\tone2,0,\tone3,0,
-	\pann,(992*6).neg,\x,2,\a,1,\spread,1,\pon,0.1,
+	~synth=Synth.new(\synth,[\gain,1,\drive,992,\fu,32,\sc,7,\low,992,
+	\pan,(992*16).neg,\mix,0.5,\room,1,\mm,0,
+	\pann,(992*6).neg,\x,1,\a,1,\spread,1,\pon,0.1,
 	\pneuma,0,\namp,1,\drone,5.neg,\panx,0.1,\pany,0.1,\panz,0.1,\dron,0]).register;
 
+~r1 = Routine({
+    var i,m,l=0;
+    60.do{
+					//	thisThread.randSeed = ~val.asInteger;
+							TempoClock.default.tempo_(1);
+
+		~synth.set(\mm,l);
+
+l=l+3;
+      //  ~seq1.next.wait;
+			(1/2).wait;
+
+    }
+		});
+
+	~r1.play;
+s.record
 
 
 ////durs
-		(
+	/*	(
 ~azz=[0.degrad,0.degrad,90.degrad,180.degrad,90.neg.degrad,0.degrad];
 ~ell=[90.neg.degrad,0.degrad,0.degrad,0.degrad,0.degrad,90.degrad];
 );
@@ -529,9 +553,9 @@ m3=m3+1;
 
 }.value;
 );
-
+*/
 		////////2////sequencer
-		(
+		/*(
 
 			~seq1= Pseq(~dur, inf).asStream;
 				~seq2 = Pseq(~dur2, inf).asStream;
@@ -568,9 +592,7 @@ l=l+7;
 		});
 
 
-		);
-
-
+		)*/;
 
 
 	~r1.play;
