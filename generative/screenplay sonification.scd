@@ -3,7 +3,7 @@
 s.options.numWireBufs = 1024*4;
 s.options.numOutputBusChannels=4;
 s.options.numInputBusChannels=0;
-s.options.memSize = 8192*16;
+s.options.memSize = 8192*32;
 s.options.blockSize = 64;
 s.options.maxNodes = 8192*2;
 s.boot;
@@ -18,8 +18,10 @@ s.waitForBoot{
 
 Buffer.freeAll;
 
+	}
+);
 	////entire folder
-(
+/*(
 		PathName.new("/Users/amimid/Desktop/screenplay/").files.do { |f|
     var img = Image.open(f.fullPath);
 
@@ -32,10 +34,10 @@ Buffer.freeAll;
         height.postln;
     };
 };
-)
+)*/
 
 ///simple example
-(
+/*(
 var img = Image.open("/Users/amimid/Desktop/screenplay/DSC_0001.jpg");
 var width = img.width;
 var height = img.height;
@@ -43,11 +45,11 @@ var color = img.getColor(0, 0).postln; // returns a Color object
 width.postln;
 height.postln;
 //[color.red, color.green, color.blue].postln;
-)
+)*/
 
 
 	///iteration data draw
-(
+/*(
 var img = Image.open("/Users/amimid/Desktop/1.png");
 var c=0, color,xx=0,yy=0,r=[],g=[],b=[],h_count=0;
 	c=(img.height/5).asInteger;
@@ -73,30 +75,30 @@ xx=xx+1;
 		~cz=~cz++(b.sum / b.size);
 			r=[];g=[];b=[];
 };
-)
+)*/
 
 
 	////////folder routine read
 
-(
-~images = List.new;
+	// (
+	// 	~images = List.new;
+	//
+	// 	PathName.new("/Users/amimid/Desktop/screenplay/").files.do { |f|
+	// 		var img;
+	//
+	// 		img = Image.open(f.fullPath);
+	//
+	// 		if(img.notNil) {
+	// 			~images.add(img);
+	// 		};
+	// 	};
+	//
+	// 	~images.postln;
+	// )
 
-PathName.new("/Users/amimid/Desktop/screenplay/").files.do { |f|
-    var img;
-
-    img = Image.open(f.fullPath);
-
-    if(img.notNil) {
-        ~images.add(img);
-    };
-};
-
-~images.postln;
-)
-
-	(
+	/*(
 				~cx=[]; ~cy=[];  ~cz=[];
-		PathName.new("/Users/amimid/Documents/sound art/film/iloveimg-resized/").files.do { |f|
+		PathName.new("/Users/amimid/Documents/film/screenplay/").files.do { |f|
 
 var img = Image.open(f.fullPath);
 var c=0, color,xx=0,yy=0,r=[],g=[],b=[],h_count=0;
@@ -125,10 +127,69 @@ xx=xx+1;
 };
 	yy=0;
 };
+)*/
+
+/////granular
+	/*(
+				~cx=[]; ~cy=[];  ~cz=[];
+		PathName.new("/Users/amimid/Documents/film/screenplay/").files.do { |f|
+
+var img = Image.open(f.fullPath);
+var c=0, color,xx=0,yy=0,r=[],g=[],b=[],h_count=0;
+	c=(img.height/5).asInteger;
+	h_count=(img.height/5).asInteger;
+
+img.height.do{
+				img.width.do{
+         color = img.getColor(xx, yy);
+		[color.red, color.green, color.blue].postln;
+			r=r++color.red;
+			g=g++color.green;
+         	b=b++color.blue;
+xx=xx+1;
+				};
+				xx=0;
+				yy=yy+1;
+    };
+        ~cx=~cx++r;
+		~cy=~cy++g;
+		~cz=~cz++b;
+		//	r=[];g=[];b=[];
+			yy=0;
+};
+)*/
+
+/////one value per image
+	(
+				~cx=[]; ~cy=[];  ~cz=[];
+		PathName.new("/Users/amimid/Documents/film/screenplay/").files.do { |f|
+
+var img = Image.open(f.fullPath);
+var c=0, color,xx=0,yy=0,r=[],g=[],b=[],h_count=0;
+
+
+	img.height.do {
+				img.width.do {
+         color = img.getColor(xx, yy);
+	[color.red, color.green, color.blue].postln;
+			r=r++color.red;
+			g=g++color.green;
+         	b=b++color.blue;
+xx=xx+1;
+				};
+				xx=0;
+				yy=yy+1;
+    };
+        ~cx=~cx++(r.sum / r.size);
+		~cy=~cy++(g.sum / g.size);
+		~cz=~cz++(b.sum / b.size);
+			r=[];g=[];b=[];
+				yy=0;
+};
+
 )
 
-}
-);
+
 
 (
 (
@@ -184,7 +245,7 @@ SynthDef.new(\synth,{
 				fu=32,drive=1,spread=1,drone_amp=1,pann=0,dron=0,drone=1,theta=0,rx=0,ry=0,rz=0,
 				pneuma1=0,pneuma2=0,pneuma3=0,namp1=1,namp2=1,namp3=1,sc=7,mm=0;
 
-	var rq=1,cloud=5,attack,decay,curve,band,azf=0,elf=0,q,r1,r2,r3,sq1,sq2,sq3;
+	var rq=1,cloud=1,attack,decay,curve,band,azf=0,elf=0,q,r1,r2,r3,sq1,sq2,sq3;
 	var rotationx,rotationy,rotationz,core=(9/8).rand,tone1=0,tone2=0,tone3=0;
 	var lamdoma,freq1,freq2,freq3,fund,amp1,amp2,amp3,alpha,cell_az,cell_el,x_pos,y_pos,control1,control2,control3;
 	var sig1,sig2,bank=6,out1,out2,band_osc1,band_osc2,threshold1,threshold2,threshold3,phase1,phase2,phase3;
@@ -205,12 +266,15 @@ lamdoma=(x.lag(0.001)+a.lag(0.001))/x.lag(0.001);
 
 
 
-	env=EnvGen.ar(Env.sine(9),doneAction:2,levelScale:10);
-//	env=10;
+	//env=EnvGen.ar(Env.sine(9),doneAction:2,levelScale:10);
+env=10;
 
-	lllx=(Select.kr(mm.lag(0.001),~cx)+Select.kr(mm.lag(0.001)+1,~cx)+Select.kr(mm.lag(0.001)+2,~cx))/3;
-	llly=(Select.kr(mm.lag(0.001),~cy)+Select.kr(mm.lag(0.001)+1,~cy)+Select.kr(mm.lag(0.001)+2,~cy))/3;
-	lllz=(Select.kr(mm.lag(0.001),~cz)+Select.kr(mm.lag(0.001)+1,~cz)+Select.kr(mm.lag(0.001)+2,~cz))/3;
+	//lllx=(Select.kr(mm.lag(0.001),~cx)+Select.kr(mm.lag(0.001)+1,~cx)+Select.kr(mm.lag(0.001)+2,~cx))/3;
+	//llly=(Select.kr(mm.lag(0.001),~cy)+Select.kr(mm.lag(0.001)+1,~cy)+Select.kr(mm.lag(0.001)+2,~cy))/3;
+	//lllz=(Select.kr(mm.lag(0.001),~cz)+Select.kr(mm.lag(0.001)+1,~cz)+Select.kr(mm.lag(0.001)+2,~cz))/3;
+	lllx=Select.kr(mm.lag(0.001),~cx);
+	llly=Select.kr(mm.lag(0.001),~cy);
+	lllz=Select.kr(mm.lag(0.001),~cz);
 
 	tone1=lllx.linlin(0,1,0,14).round(1);
 	tone2=llly.linlin(0,1,0,14).round(1);
@@ -230,7 +294,8 @@ ton3=2.pow(Select.kr(tone3.lag(0.0001), ~scaleee) /12).round(0.001)*2.pow(dron.l
 				mq=(m.lag(0.001)+1);
 
 						cloud.do{
-spr=Cartesian(Select.kr(nn+mm.lag(0.0001),~cx),Select.kr(nn+mm.lag(0.0001),~cy),Select.kr(nn+mm.lag(0.0001),~cz));
+//spr=Cartesian(Select.kr(nn+mm.lag(0.0001),~cx),Select.kr(nn+mm.lag(0.0001),~cy),Select.kr(nn+mm.lag(0.0001),~cz));
+		spr=Cartesian(Select.kr(mm.lag(0.0001),~cx),Select.kr(mm.lag(0.0001),~cy),Select.kr(mm.lag(0.0001),~cz));
 				sph_object=spr;
 
 
@@ -256,10 +321,9 @@ phase2=Complex(1,angley).theta;
 phase3=Complex(1,anglez).theta;
 
 
-mod_anglex=LFNoise1.ar(lfon*anglex,spread.reciprocal).range(pi.neg,pi).lag(0.01);
-mod_angley=LFNoise1.ar(lfon*angley,spread.reciprocal).range(pi.neg,pi).lag(0.01);
-mod_anglez=LFNoise1.ar(lfon*anglez,spread.reciprocal).range((pi/2).neg,(pi/2)).lag(0.01);
-
+mod_anglex=SinOsc.ar(lfon*anglex,phase1).range(pi.neg,pi).lag(0.01);
+mod_angley=SinOsc.ar(lfon*angley,phase2).range(pi.neg,pi).lag(0.01);
+mod_anglez=SinOsc.ar(lfon*anglez,phase3).range(35.264390.degrad,35.264390.degrad.neg).lag(0.01);
 
 					(
 	magx=((Complex(cos(((polytope.theta+mod_anglex).round(0.00001)*m).wrap(pi.neg,pi)),cos((((polytope.theta+mod_anglex).round(0.00001)*m)).wrap(pi.neg,pi))).rho/(2.sqrt))*
@@ -490,36 +554,33 @@ nn=nn+1;
 				};
 
 }).add;);
-
 (
-	~synth=Synth.new(\synth,[\gain,0.1,\drive,992,\fu,32,\sc,992,\low,992,
+(
+	~synth=Synth.new(\synth,[\gain,0.5,\drive,992,\fu,32,\sc,992,\low,992,
 	\pan,(992*16).neg,\mix,0.5,\room,0.6,\mm,0,\m,3,
 	\pann,(992*6).neg,\x,1,\a,1,\spread,1,\pon,0.01,
-	\pneuma,0,\namp,1,\drone,5.neg,\panx,0.3,\pany,0.4,\panz,0.2,\dron,0]).register;)
+	\pneuma,0,\namp,1,\drone,5.neg,\panx,0.3,\pany,0.4,\panz,0.2,\dron,0]).register;);
 
 (
 ~r1 = Routine({
     var i,m,l=0;
-    30.do{
+    67.do{
 					//	thisThread.randSeed = ~val.asInteger;
 						//	TempoClock.default.tempo_(1);
-(
-	~synth=Synth.new(\synth,[\gain,1/2,\drive,992,\fu,32,\sc,7,\low,992,
-	\pan,(992*16).neg,\mix,0.7,\room,0.8,\mm,l,\m,2,
-	\pann,(992*2).neg,\x,1,\a,1,\spread,10,\pon,0.1,
-	\pneuma,0,\namp,1,\drone,12.neg,\panx,0.2,\pany,0.3,\panz,0.4,\dron,0]).register;);
-	//	~synth.set(\mm,l.postln);
 
-l=l+5;
+		~synth.set(\mm,l.postln);
+
+l=l+1;
       //  ~seq1.next.wait;
-			(4).wait;
+		(((300*300)*60).reciprocal).wait;
 
     }
 		});
-)
+);
 
 	~r1.play;
 s.record(numChannels:4)
+)
 
 
 ////durs
