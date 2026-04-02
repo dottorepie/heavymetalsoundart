@@ -37,15 +37,15 @@ Buffer.freeAll;
 )*/
 
 ///simple example
-/*(
-var img = Image.open("/Users/amimid/Desktop/screenplay/DSC_0001.jpg");
+(
+var img = Image.open("/Users/amimid/Documents/film/screenplay/DSC_0001.jpg");
 var width = img.width;
 var height = img.height;
 var color = img.getColor(0, 0).postln; // returns a Color object
 width.postln;
 height.postln;
 //[color.red, color.green, color.blue].postln;
-)*/
+)
 
 
 	///iteration data draw
@@ -130,7 +130,7 @@ xx=xx+1;
 )*/
 
 /////granular
-	/*(
+	//*(
 				~cx=[]; ~cy=[];  ~cz=[];
 		PathName.new("/Users/amimid/Documents/film/screenplay/").files.do { |f|
 
@@ -243,10 +243,10 @@ SynthDef.new(\synth,{
 
 	arg gain=1,low=992,x=1,pan=1,mix=0.3,a=1,panx=1,pany=1,panz=1,room=0.5,m=2,pon=1,
 				fu=32,drive=1,spread=1,drone_amp=1,pann=0,dron=0,drone=1,theta=0,rx=0,ry=0,rz=0,
-				pneuma1=0,pneuma2=0,pneuma3=0,namp1=1,namp2=1,namp3=1,sc=7,mm=0;
+				pneuma1=0,pneuma2=0,pneuma3=0,namp1=1,namp2=1,namp3=1,sc=7,mm=0,tone1=0,tone2=0,tone3=0;
 
 	var rq=1,cloud=1,attack,decay,curve,band,azf=0,elf=0,q,r1,r2,r3,sq1,sq2,sq3;
-	var rotationx,rotationy,rotationz,core=(9/8).rand,tone1=0,tone2=0,tone3=0;
+	var rotationx,rotationy,rotationz,core=(9/8).rand;
 	var lamdoma,freq1,freq2,freq3,fund,amp1,amp2,amp3,alpha,cell_az,cell_el,x_pos,y_pos,control1,control2,control3;
 	var sig1,sig2,bank=6,out1,out2,band_osc1,band_osc2,threshold1,threshold2,threshold3,phase1,phase2,phase3;
 	var band_osc3,band_osc4,band_osc5,band_osc6,sig3,out3,cell_tria,b_x,b_y,b_z,polytope,gain1,gain2,gain3,env,azimuth,elevation;
@@ -276,12 +276,10 @@ env=10;
 	llly=Select.kr(mm.lag(0.001),~cy);
 	lllz=Select.kr(mm.lag(0.001),~cz);
 
-	tone1=lllx.linlin(0,1,0,14).round(1);
-	tone2=llly.linlin(0,1,0,14).round(1);
-	tone3=lllz.linlin(0,1,0,14).round(1);
-	//	tone1=0;
-//	tone2=0;
-//	tone3=0;
+//	tone1=lllx.linlin(0,1,0,14).round(1);
+	//tone2=llly.linlin(0,1,0,14).round(1);
+	//tone3=lllz.linlin(0,1,0,14).round(1);
+
 
 ton1=2.pow(Select.kr(tone1.lag(0.0001), ~scaleee) /12).round(0.001)*2.pow(dron.lag(0.001)/992);
 ton2=2.pow(Select.kr(tone2.lag(0.0001), ~scaleee) /12).round(0.001)*2.pow(dron.lag(0.001)/992);
@@ -556,15 +554,15 @@ nn=nn+1;
 }).add;);
 (
 (
-	~synth=Synth.new(\synth,[\gain,0.5,\drive,992,\fu,32,\sc,992,\low,992,
-	\pan,(992*16).neg,\mix,0.5,\room,0.6,\mm,0,\m,3,
+	~synth=Synth.new(\synth,[\gain,0.5,\drive,992,\fu,32,\sc,992*2,\low,992,
+	\pan,(992*16).neg,\mix,0.5,\room,0.6,\mm,0,\m,3,\tone1,0,\tone2,0,\tone3,0,
 	\pann,(992*6).neg,\x,1,\a,1,\spread,1,\pon,0.01,
 	\pneuma,0,\namp,1,\drone,5.neg,\panx,0.3,\pany,0.4,\panz,0.2,\dron,0]).register;);
 
 (
 ~r1 = Routine({
     var i,m,l=0;
-    67.do{
+    60.do{
 					//	thisThread.randSeed = ~val.asInteger;
 						//	TempoClock.default.tempo_(1);
 
@@ -572,14 +570,14 @@ nn=nn+1;
 
 l=l+1;
       //  ~seq1.next.wait;
-		(((300*300)*60).reciprocal).wait;
+		(1/4).wait;
 
     }
 		});
 );
 
 	~r1.play;
-s.record(numChannels:4)
+s.record(numChannels:2)
 )
 
 
