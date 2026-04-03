@@ -279,9 +279,9 @@ cos((polytope.phi.round(0.00001)).wrap((pi/2).neg,(pi/2))))))).rho/(2.sqrt));
 					mx=(Cartesian(magx,0,0).rho);
 					my=(Cartesian(0,magy,0).rho);
 					mz=(Cartesian(0,0,magz).rho);
-					mag=(Cartesian(mx,my,mz).rho/2.sqrt) ;
+					mag=(Cartesian(mx,my,mz)) ;
 
-		sph=Spherical(mag,polytope.theta,polytope.phi);
+		sph=Spherical(mag.rho/2.sqrt,polytope.theta,polytope.phi);
 
 loc1=mx;  loc2=magy;  loc3=magz;
 
@@ -390,38 +390,38 @@ threshold3=(((343/0.1)/fund).reciprocal.ampdb/2.sqrt).dbamp;
 
 g_ch1 = (
    (Spherical(mx.lag(0.01),(polytope.theta+sp).wrap(pi,pi.neg),(polytope.phi+spl).wrap(35.264390.degrad,35.264390.degrad.neg)).x *
-							Spherical(mag,~az[0],~el[0]).x) +
+							Spherical(mag.x,~az[0],~el[0]).x) +
  (Spherical(my.lag(0.01),(polytope.theta+sp).wrap(pi,pi.neg),(polytope.phi+spl).wrap(35.264390.degrad,35.264390.degrad.neg)).y *
-							Spherical(mag,~az[0],~el[0]).y)+
+							Spherical(mag.y,~az[0],~el[0]).y)+
   (Spherical(mz.lag(0.01),(polytope.theta+sp).wrap(pi,pi.neg),(polytope.phi+spl).wrap(35.264390.degrad,35.264390.degrad.neg)).z *
-							Spherical(mag,~az[0],~el[0]).z)
+							Spherical(mag.z,~az[0],~el[0]).z)
 );
 
 g_ch2 = (
    (Spherical(mx.lag(0.01),(polytope.theta+sp).wrap(pi,pi.neg),(polytope.phi+spl).wrap(35.264390.degrad,35.264390.degrad.neg)).x *
-							Spherical(mag,~az[1],~el[1]).x)+
+							Spherical(mag.x,~az[1],~el[1]).x)+
 (Spherical(mz.lag(0.01),(polytope.theta+sp).wrap(pi,pi.neg),(polytope.phi+spl).wrap(35.264390.degrad,35.264390.degrad.neg)).y *
-							Spherical(mag,~az[1],~el[1]).y)+
+							Spherical(mag.y,~az[1],~el[1]).y)+
   (Spherical(mz.lag(0.01),(polytope.theta+sp).wrap(pi,pi.neg),(polytope.phi+spl).wrap(35.264390.degrad,35.264390.degrad.neg)).z *
-							Spherical(mag,~az[1],~el[1]).z)
+							Spherical(mag.z,~az[1],~el[1]).z)
 );
 
 g_ch3 = (
   (Spherical(mx.lag(0.01),(polytope.theta+sp).wrap(pi,pi.neg),(polytope.phi+spl).wrap(35.264390.degrad,35.264390.degrad.neg)).x *
-							Spherical(mag,~az[2],~el[2]).x)+
+							Spherical(mag.x,~az[2],~el[2]).x)+
    (Spherical(my.lag(0.01),(polytope.theta+sp).wrap(pi,pi.neg),(polytope.phi+spl).wrap(35.264390.degrad,35.264390.degrad.neg)).y *
-							Spherical(mag,~az[2],~el[2]).y)+
+							Spherical(mag.y,~az[2],~el[2]).y)+
   (Spherical(mz.lag(0.01),(polytope.theta+sp).wrap(pi,pi.neg),(polytope.phi+spl).wrap(35.264390.degrad,35.264390.degrad.neg)).z *
-							Spherical(mag,~az[2],~el[2]).z)
+							Spherical(mag.z,~az[2],~el[2]).z)
 );
 
 g_ch4 = (
 (Spherical(mx.lag(0.01),(polytope.theta+sp).wrap(pi,pi.neg),(polytope.phi+spl).wrap(35.264390.degrad,35.264390.degrad.neg)).x *
-							Spherical(mag,~az[3],~el[3]).x) +
+							Spherical(mag.x,~az[3],~el[3]).x) +
  (Spherical(my.lag(0.01),(polytope.theta+sp).wrap(pi,pi.neg),(polytope.phi+spl).wrap(35.264390.degrad,35.264390.degrad.neg)).y *
-							Spherical(mag,~az[3],~el[3]).y)+
+							Spherical(mag.y,~az[3],~el[3]).y)+
    (Spherical(mz.lag(0.01),(polytope.theta+sp).wrap(pi,pi.neg),(polytope.phi+spl).wrap(35.264390.degrad,35.264390.degrad.neg)).z *
-							Spherical(mag,~az[3],~el[3]).z)
+							Spherical(mag.z,~az[3],~el[3]).z)
 					);
 
 g_ch1 = g_ch1.pow(spread.reciprocal);
@@ -545,7 +545,7 @@ MIDIIn.connectAll;
 					(
 MIDIdef.cc(\midi_pot1,{ |val, num, chan, src|
 		var drive;
-		drive=val.linlin(0,127,(992*1).neg,(992*4)).round(1).asInteger;
+		drive=val.linlin(0,127,(992*1).neg,(992*6)).round(1).asInteger;
 		drive.postln;
 		if(~synth.isPlaying,{~synth.set(\drive,drive)});
 },1);
@@ -572,7 +572,7 @@ MIDIdef.cc(\midi_pot3,{ |val, num, chan, src|
 												(
 MIDIdef.cc(\midi_pot4,{ |val, num, chan, src|
 		var pann;
-			pann=val.linlin(0,127,(992*6).neg,(992*6)).round(1).asInteger;
+			pann=val.linlin(0,127,(992*8).neg,(992*4)).round(1).asInteger;
 		pann.postln;
 		if(~synth.isPlaying,{~synth.set(\pann,pann)});
 },4);
