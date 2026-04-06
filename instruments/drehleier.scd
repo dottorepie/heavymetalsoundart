@@ -314,7 +314,7 @@ amp1=ton1.reciprocal*b_x.reciprocal;
 amp2=ton2.reciprocal*b_y.reciprocal;
 amp3=ton3.reciprocal*b_z.reciprocal;
 
-g1=b_x.reciprocal*dr.reciproca*ton1.reciprocal;
+g1=b_x.reciprocal*dr.reciprocal*ton1.reciprocal;
 g2=b_y.reciprocal*dr.reciprocal*ton2.reciprocal;
 g3=b_z.reciprocal*dr.reciprocal*ton3.reciprocal;
 
