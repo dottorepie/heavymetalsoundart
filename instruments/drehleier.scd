@@ -306,17 +306,17 @@ freq3=(fund*ton3)*b_z.lag(0.01);
 
 					dr=2.pow(drone.lag(0.1)/12)*2.pow(dron.lag(0.01)/992);
 
-f1=(fund)*b_x.lag(0.01)*dr;
-f2=(fund)*b_y.lag(0.01)*dr;
-f3=(fund)*b_z.lag(0.01)*dr;
+f1=(fund*ton1)*b_x.lag(0.01)*dr;
+f2=(fund*ton2)*b_y.lag(0.01)*dr;
+f3=(fund*ton3)*b_z.lag(0.01)*dr;
 
 amp1=ton1.reciprocal*b_x.reciprocal;
 amp2=ton2.reciprocal*b_y.reciprocal;
 amp3=ton3.reciprocal*b_z.reciprocal;
 
-g1=b_x.reciprocal*dr.reciprocal;
-g2=b_y.reciprocal*dr.reciprocal;
-g3=b_z.reciprocal*dr.reciprocal;
+g1=b_x.reciprocal*dr.reciproca*ton1.reciprocal;
+g2=b_y.reciprocal*dr.reciprocal*ton2.reciprocal;
+g3=b_z.reciprocal*dr.reciprocal*ton3.reciprocal;
 
 band_osc1=SinOsc.kr(b_x*2.pow(band.lag(0.01)/992),phase:phasex).exprange(496,16256);
 band_osc2=SinOsc.kr(b_y*2.pow(band.lag(0.01)/992),phase:phasey).exprange(496,16256);
@@ -343,15 +343,9 @@ control1=SinOsc.ar(freq1,phase:phasex,mul:amp1);
 control2=SinOsc.ar(freq2,phase:phasey,mul:amp2);
 control3=SinOsc.ar(freq3,phase:phasez,mul:amp3);
 
-ds1=(LPF.ar((Osc.ar(~w1.bufnum,f1+1,phase:phasex,mul:level).abs*SinOsc.ar(f1+1,phase:phasex)),f1*2.pow(low.lag(0.01)/992),g1)+
-	LPF.ar((Osc.ar(~w1.bufnum,f1+1,phase:phasex+(pi/2),mul:level).abs*SinOsc.ar(f1+1,phase:phasex+(pi/2))),f1*2.pow(low.lag(0.01)/992),g1)
-					);
-ds2=(LPF.ar((Osc.ar(~w1.bufnum,f2+1,phase:phasey,mul:level).abs*SinOsc.ar(f2+1,phase:phasey)),f2*2.pow(low.lag(0.01)/992),g2)+
-	LPF.ar((Osc.ar(~w1.bufnum,f2+1,phase:phasey+(pi/2),mul:level).abs*SinOsc.ar(f2+1,phase:phasey+(pi/2))),f2*2.pow(low.lag(0.01)/992),g2)
-					);
-ds3=(LPF.ar((Osc.ar(~w1.bufnum,f3+1,phase:phasez,mul:level).abs*SinOsc.ar(f3+1,phase:phasez)),f3*2.pow(low.lag(0.01)/992),g3)+
-	LPF.ar((Osc.ar(~w1.bufnum,f3+1,phase:phasez+(pi/2),mul:level).abs*SinOsc.ar(f3+1,phase:phasez+(pi/2))),f3*2.pow(low.lag(0.01)/992),g3)
-					);
+ds1=(LPF.ar((Osc.ar(~w1.bufnum,f1+1,phase:phasex,mul:level).abs*SinOsc.ar(f1+1,phase:phasex)),f1*2.pow(low.lag(0.01)/992),g1));
+ds2=(LPF.ar((Osc.ar(~w1.bufnum,f2+1,phase:phasey,mul:level).abs*SinOsc.ar(f2+1,phase:phasey)),f2*2.pow(low.lag(0.01)/992),g2));
+ds3=(LPF.ar((Osc.ar(~w1.bufnum,f3+1,phase:phasez,mul:level).abs*SinOsc.ar(f3+1,phase:phasez)),f3*2.pow(low.lag(0.01)/992),g3));
 
 sig1=(LPF.ar((Osc.ar(~w1.bufnum,freq1,phase:phasex,mul:level).abs*SinOsc.ar(freq1,phase:phasex)),freq1*2.pow(low.lag(0.01)/992),amp1).range(panx,1)+(ds1));
 sig2=(LPF.ar((Osc.ar(~w1.bufnum,freq2,phase:phasey,mul:level).abs*SinOsc.ar(freq2,phase:phasey)),freq2*2.pow(low.lag(0.01)/992),amp2).range(pany,1)+(ds2));
@@ -582,7 +576,7 @@ MIDIdef.cc(\midi_pot3,{ |val, num, chan, src|
 												(
 MIDIdef.cc(\midi_pot4,{ |val, num, chan, src|
 		var pann;
-			pann=val.linlin(0,127,(992*8).neg,(992*8)).round(1).asInteger;
+			pann=val.linlin(0,127,(992*10).neg,(992*10)).round(1).asInteger;
 		pann.postln;
 		if(~synth.isPlaying,{~synth.set(\pann,pann)});
 },4);
@@ -600,7 +594,7 @@ MIDIdef.cc(\midi_pot5,{ |val, num, chan, src|
 														(
 MIDIdef.cc(\midi_pot6,{ |val, num, chan, src|
 		var pon;
-			pon=val.linlin(0,127,0.0001,10).round(0.0001);
+			pon=val.linlin(0,127,0.0001,28).round(0.0001);
 		pon.postln;
 		if(~synth.isPlaying,{~synth.set(\pon,pon)});
 },6);
@@ -628,7 +622,7 @@ MIDIdef.cc(\midi_pot8,{ |val, num, chan, src|
 												(
 MIDIdef.cc(\midi_pot9,{ |val, num, chan, src|
 		var panx;
-			panx=val.linlin(0,127,0.0001,1).round(0.0001);
+			panx=val.linlin(0,127,1.neg,0).round(0.0001);
 		panx.postln;
 		if(~synth.isPlaying,{~synth.set(\panx,panx)});
 },9);
@@ -637,7 +631,7 @@ MIDIdef.cc(\midi_pot9,{ |val, num, chan, src|
 													(
 MIDIdef.cc(\midi_pot10,{ |val, num, chan, src|
 		var pany;
-			pany=val.linlin(0,127,0.0001,1).round(0.0001);
+			pany=val.linlin(0,127,1.neg,0).round(0.0001);
 		pany.postln;
 		if(~synth.isPlaying,{~synth.set(\pany,pany)});
 },10);
@@ -646,7 +640,7 @@ MIDIdef.cc(\midi_pot10,{ |val, num, chan, src|
 														(
 MIDIdef.cc(\midi_pot11,{ |val, num, chan, src|
 		var panz;
-			panz=val.linlin(0,127,0.0001,1).round(0.0001);
+			panz=val.linlin(0,127,1.neg,0).round(0.0001);
 		panz.postln;
 		if(~synth.isPlaying,{~synth.set(\panz,panz)});
 },11);
