@@ -149,7 +149,7 @@ wt = signal.asWavetable;
 		(
 			{
 				var nn=1.neg;
-		~scaleee=28.collect{nn=nn+1;Scale.phrygian.performDegreeToKey(nn,12)};
+		~scaleee=14.collect{nn=nn+1;Scale.phrygian.performDegreeToKey(nn,12)};
 			}.value;
 		);
 
@@ -187,12 +187,12 @@ SynthDef.new(\synth,{
 
 				m = In.kr(~controlBus3).lag(0.1).round(1);
 
-				env=EnvGen.ar(Env.sine(12),doneAction:2,levelScale:1);
+				env=EnvGen.ar(Env.sine(4),doneAction:2,levelScale:1);
 fund=fu*(9/8);
 lamdoma=(x.lag(0.001)+a.lag(0.001))/x.lag(0.001);
 
 
-						sph_object=Spherical(28,az.lag(0.0001),el.lag(0.0001));
+						sph_object=Spherical(14,az.lag(0.0001),el.lag(0.0001));
 				tone1=sph_object.x;
 				tone2=sph_object.y;
 				tone3=sph_object.z;
@@ -512,21 +512,21 @@ m3=m3+1;
 		////////2////sequencer
 		(
 
-			~seq1= Pseq(~dur, inf).asStream;
+			~seq1= Pseq(~dur/3, inf).asStream;
 				~seq2 = Pseq(~dur2, inf).asStream;
 				~seq3 = Pseq(~dur3, inf).asStream;
 		//~system= Pseq(~r,inf).asStream;
-			~tonb=0;
+			~tonb=992*2;
 			~panwidth=1;
           ~detune=1;
-			~pass=992*2;
-			~drive=992*3;
+			~pass=992*1;
+			~drive=992*1;
 			~mox=0.6;
-			~gg=10;
-			~pon=0.5;
-			~sphpan=(992*2).neg;
+			~gg=100;
+			~pon=0.02;
+			~sphpan=(992*5);
 			~bband=(992*16).neg;
-			~drn=0.1;
+			~drn=0;
 		//	thisThread.randSeed = 123;
 
 ~str1 = Routine({
@@ -543,10 +543,10 @@ m3=m3+1;
 							i= ~cart.lag(0.01).size.rand;
 ~detune=1;
 
-	~synth=Synth.new(\synth,[\gain,~gg,\drive,~drive,\fu,32,\sc,14,//~magnitude.lag(0.01).[i].round(1).max(1).asInteger,
+	~synth=Synth.new(\synth,[\gain,~gg,\drive,~drive,\fu,256,\sc,992,//~magnitude.lag(0.01).[i].round(1).max(1).asInteger,
 						\low,~pass,\pan,~bband,\mix,~mox,\room,~rev.lag(0.01),\pann,~sphpan,\x,2,\a,1,\spread,~rev.lag(0.01),
-						\pon,~pon,\pneuma,0,\namp,1,\drone,5.neg,\az,~azimuth.lag(0.01).[i],\el,~elevation.lag(0.01).[i]
-						,\panx,~drn+0.55.rand,\pany,~drn+0.55.rand,\panz,~drn+0.55.rand,\dron,~tonb,
+						\pon,~pon,\pneuma,0,\namp,1,\drone,24.neg,\az,~azimuth.lag(0.01).[i],\el,~elevation.lag(0.01).[i]
+						,\panx,~drn,\pany,~drn,\panz,~drn,\dron,~tonb,
 \xx,~cart.lag(0.01).[i].[0].round(0.00001), \yy,~cart.lag(0.01).[i].[1].round(0.00001),\zz,~cart.lag(0.00001).[i].[2].round(0.00001)]).register;
 
 
