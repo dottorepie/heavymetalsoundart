@@ -31,7 +31,7 @@ Buffer.freeAll;
 {
 var signal,wt;
 	//signal=Env([1,100],[3],[8]);
-		signal=Env([1,2],[3],[5]);
+		signal=Env([0.1,0.5,1],[2.99,0.01],[4,1.neg]);
 	wt = signal.asSignal(1024).asWavetable;
 ~scale2.loadCollection(wt);
 //signal.plot;
@@ -39,16 +39,16 @@ var signal,wt;
 		{
 var signal,wt;
 //	signal=Env([1,10000],[3],[12]);
-			signal=Env([10,1],[3],[5]);
+			signal=Env([0.5,1,0.1],[2.99,0.01],[4,1.neg]);
 	wt = signal.asSignal(1024).asWavetable;
 ~scale1.loadCollection(wt);
-//signal.plot;
+	//	signal.plot;
 		}.value;
 
 	{
 var signal,wt;
 	//signal=Env([0.005,1,0.01],[2,1],[4,2.neg]);
-		signal=Env([10000,800,750,1],[2,0.99,0.01],[5,1.neg]);
+		signal=Env([2000,200,200,0],[2,0.99,0.01],[4,4,1.neg]);
 	wt = signal.asSignal(1024).asWavetable;
 ~scale.loadCollection(wt);
 //signal.plot;
@@ -56,7 +56,7 @@ var signal,wt;
 
 	{
 var signal,wt;
-	signal=Env([1,0.001],[3],[5]);
+	signal=Env([5,0.01],[3],[5]);
 	wt = signal.asSignal(1024).asWavetable;
 ~rotation.loadCollection(wt);
 //signal.plot;
@@ -64,7 +64,7 @@ var signal,wt;
 
 	{
 var signal,wt;
-	signal=Env([100,0,0],[2,1],[8]);
+	signal=Env([10,1,1,10],[2,0.99,0.01],[5,5,1.neg]);
 	wt = signal.asSignal(1024).asWavetable;
 ~harm.loadCollection(wt);
 //signal.plot;
@@ -72,7 +72,7 @@ var signal,wt;
 
 		{
 var signal,wt;
-	signal=Env([1,0],[3],[16]);
+	signal=Env([1,1,0],[2.99,0.01],[16,16]);
 	wt = signal.asSignal(1024).asWavetable;
 ~temp.loadCollection(wt);
 //signal.plot;
@@ -80,7 +80,7 @@ var signal,wt;
 
 			{
 var signal,wt;
-	signal=Env([0,1],[3],[256]);
+	signal=Env([0,0,1],[2.99,0.01],[16,16]);
 	wt = signal.asSignal(1024).asWavetable;
 ~space.loadCollection(wt);
 	//signal.plot;
@@ -90,18 +90,18 @@ var signal,wt;
 (
 SynthDef.new(\player,{
 
-	Out.kr(~controlBus.index, (Osc.kr(~scale.bufnum,(1/50)).abs));
-	Out.kr(~controlBus1.index, (Osc.kr(~scale1.bufnum,(1/50)).abs));
-	Out.kr(~controlBus4.index, (Osc.kr(~scale2.bufnum,(1/50)).abs));
-	Out.kr(~controlBus2.index, (Osc.kr(~rotation.bufnum,(1/50)).abs));
-    Out.kr(~controlBus3.index, (Osc.kr(~harm.bufnum,(1/50)).abs));
-	Out.kr(~controlBus5.index, (LFNoise1.kr(1/50).range(pi.neg,pi)));
-	Out.kr(~controlBus6.index, (Osc.kr(~temp.bufnum,(1/50)).abs));
-	Out.kr(~controlBus7.index, (Osc.kr(~space.bufnum,(1/50)).abs));
+	Out.kr(~controlBus.index, (Osc.kr(~scale.bufnum,(1/30)).abs));
+	Out.kr(~controlBus1.index, (Osc.kr(~scale1.bufnum,(1/30)).abs));
+	Out.kr(~controlBus4.index, (Osc.kr(~scale2.bufnum,(1/30)).abs));
+	Out.kr(~controlBus2.index, (Osc.kr(~rotation.bufnum,(1/30)).abs));
+    Out.kr(~controlBus3.index, (Osc.kr(~harm.bufnum,(1/30)).abs));
+	Out.kr(~controlBus5.index, (LFNoise1.kr(1/30).range(pi.neg,pi)));
+	Out.kr(~controlBus6.index, (Osc.kr(~temp.bufnum,(1/30)).abs));
+	Out.kr(~controlBus7.index, (Osc.kr(~space.bufnum,(1/30)).abs));
 
 
 }).add;
-	);~count=[2,2,2,2,2,2];
+	);~count=[2,3,2,3,2,3];
 }
 )
 
@@ -572,7 +572,7 @@ az6=0;el6=0;
 
 	~azimuth=~az;
 	~elevation=~el;
-	~magnitude=(~magx.[pla].pow(2)+~magy.pow(2)+~magz.pow(2)).sqrt*(14/~detune);
+	//~magnitude=(~magx.[pla].pow(2)+~magy.pow(2)+~magz.pow(2)).sqrt*(14/~detune);
 //~magnitude.postln;
 
 	dota=(~count.[0]*~count.[1]*~count.[2]*~count.[3]*~count.[4]*~count.[5]).collect{
