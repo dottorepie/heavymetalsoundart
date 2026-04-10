@@ -86,43 +86,6 @@ s.meter;
 //);
 
 
-///animation buses
-	//	~controlBus_1a = Bus.control(s, 1);
-	//	~controlBus_2a = Bus.control(s, 1);
-	//	~controlBus_3a = Bus.control(s, 1);
-
-	//	~controlBus_1b = Bus.control(s, 1);
-	//	~controlBus_2b = Bus.control(s, 1);
-	//	~controlBus_3b = Bus.control(s, 1);
-
-	//	~controlBus_1c = Bus.control(s, 1);
-	//	~controlBus_2c = Bus.control(s, 1);
-		//~controlBus_3c = Bus.control(s, 1);
-
-	//	~controlBus_1d = Bus.control(s, 1);
-	//	~controlBus_2d = Bus.control(s, 1);
-	//	~controlBus_3d = Bus.control(s, 1);
-
-	//	~controlBus_1e = Bus.control(s, 1);
-	//	~controlBus_2e = Bus.control(s, 1);
-	//	~controlBus_3e = Bus.control(s, 1);
-
-	//	~controlBus_1f = Bus.control(s, 1);
-	//	~controlBus_2f = Bus.control(s, 1);
-	//	~controlBus_3f = Bus.control(s, 1);
-
-	//	~controlBus_1g = Bus.control(s, 1);
-	//	~controlBus_2g = Bus.control(s, 1);
-	//	~controlBus_3g = Bus.control(s, 1);
-
-	//	~controlBus_1k = Bus.control(s, 1);
-	//	~controlBus_2k = Bus.control(s, 1);
-	//	~controlBus_3k = Bus.control(s, 1);
-
-	///	~controlBus_x = Bus.control(s, 1);
-	//	~controlBus_y = Bus.control(s, 1);
-	//	~controlBus_z = Bus.control(s, 1);
-
 ////// wavetables
 
 		//oscillator table
@@ -1008,7 +971,7 @@ MIDIdef.cc(\midi_slider9,{ |val, num, chan, src|
 		);
 		/////////////sequencer with midi
 ({
-			var m1=1.neg, m2=1.neg, m3=1.neg,a,b,c,n=0,bank=4,time=32.reciprocal,beat=1,r=0;
+			var m1=1.neg, m2=1.neg, m3=1.neg,a,b,c,n=0,bank=4,time=8.reciprocal,beat=1,r=0;
 			~r=0;		~r1=0;		~r2=0;
 				(
 
@@ -1046,8 +1009,9 @@ m3=m3+1;
 (
 						//	~seq = Pseq([1] ,inf).asStream;
 		~seq1= Pseq(~dur1 ,inf).asStream;
-		~seq2= Pseq(~dur2 ,inf).asStream;
-		~seq3= Pseq(~dur3 ,inf).asStream;
+				~seq1= Pseq(~dur ,inf).asStream;
+	///	~seq2= Pseq(~dur2 ,inf).asStream;
+	//	~seq3= Pseq(~dur3 ,inf).asStream;
 
 				//leier string1
 		(
