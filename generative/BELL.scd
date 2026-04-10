@@ -173,7 +173,7 @@ wt = signal.asWavetable;
 (
 SynthDef.new(\synth,{
 
-	arg gain=1,low=992,tone1=0,tone2=0,tone3=0,x=1,pan=1,mix=0.3,a=1,panx=1,pany=1,panz=1,room=0.5,m=2,pon=1,
+	arg gain=1,cur=4.neg,low=992,tone1=0,tone2=0,tone3=0,x=1,pan=1,mix=0.3,a=1,panx=1,pany=1,panz=1,room=0.5,m=2,pon=1,
 				fu=32,drive=1,spread=1,drone_amp=1,pann=0,az=0,el=0,azr=0,dron=0,drone=1,theta=0,rx=0,ry=0,rz=0,
 				pneuma1=0,pneuma2=0,pneuma3=0,namp1=1,namp2=1,namp3=1,sc=14;
 
@@ -199,7 +199,7 @@ ton2=2.pow(Select.kr(tone2.lag(0.01), ~scalee) /12).round(0.0001)*2.pow(dron.lag
 ton3=2.pow(Select.kr(tone3.lag(0.01), ~scalee) /12).round(0.0001)*2.pow(dron.lag(0.01)/992);
 
 		//		ton=2.pow((tone.lag(0.01))/56).round(0.0001)*2.pow(dron.lag(0.01)/56);
-				env=EnvGen.ar(Env.perc(0.0001,32,curve:8.neg),doneAction:2);
+				env=EnvGen.ar(Env.perc(0.0001,32,curve:cur),doneAction:2);
 						lfo=2.pow(pan/992);
 				lfon=2.pow(pann/992);
 					band=pan;
@@ -577,21 +577,21 @@ m3=m3+1;
 
 			(
 		~aa=Pdef(\1, Pbind(\instrument, \synth,
-			\dur,Pseq(~dur*20,inf),
+			\dur,Pseq(~dur*16,inf),
 			\gain,0.1,
-			\drive,992,
-		\fu,256,
-				\tone1,Pseq([0],inf),
-			\tone2,Pseq([0],inf),
-			\tone3,Pseq([0],inf),
-			\low,Pseq([0],inf),
+			\drive,992*2,
+		\fu,128,
+				\tone1,Pbrown(0,10,1,inf),
+			\tone2,Pbrown(0,10,1,inf),
+			\tone3,Pbrown(0,10,1,inf),
+			\low,Pbrown(0,(992*2),496,inf),
 			\pan,(992*16).neg,
-		\mix,Pseq([1],inf),
+		\mix,Pseq([0.3],inf),
 			\drone_amp,1,
 			\room,Pseq([1],inf),
-			\m,2,
-			\pann,992,
-			\pon,0.1,
+				\m,Prand([1,2,3],inf),
+				\pann,Pbrown((992*2),(992*7),992,inf),
+			\pon,0.01,
 			\pneuma1,0,\pneuma2,0,\pneuma3,0,
 			\x,2,
 			\a,1,
@@ -599,11 +599,12 @@ m3=m3+1;
 			\pany,0,
 			\panz,0,
 			\spread,1,\namp1,1,\namp2,1,\namp3,1,
-			\az,Pseq([0],inf),
-			\el,Pseq([0],inf),
+			\az,Pbrown(pi.neg,pi,0.1pi,inf),
+			\el,Pbrown(0.5pi.neg,0.5pi,0.1pi,inf),
 			\dron,0,
+				\cur,4.neg,
 			\drone,24.neg,
-			\sc,992
+			\sc,Pbrown(0,992,992/32,inf)
 	)));
 
 			~aa.play;
