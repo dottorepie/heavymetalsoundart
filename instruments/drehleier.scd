@@ -1,12 +1,7 @@
-(
+
 	~str1.play;
-	~str2.play;
-	~str3.play;
-)
 
 ~str1.stop;
-~str2.stop;
-~sr3.stop
 
 (
 (
@@ -200,9 +195,9 @@ ton3=2.pow(Select.kr(tone3.lag(0.01), ~scalee) /12).round(0.0001)*2.pow(dron.lag
 //b_y=2.pow(Select.kr(polytope.y.round(1).linlin(1, 14, 0, 24), ~scale1) /12);
 //b_z=2.pow(Select.kr(polytope.z.round(1).linlin(1, 14, 0, 24), ~scale1) /12);
 
-b_x=2.pow(polytope.x.round(0.0001) /992).round(0.0001)*lamdoma;
-b_y=2.pow(polytope.y.round(0.0001) /992).round(0.0001)*lamdoma;
-b_z=2.pow(polytope.z.round(0.0001) /992).round(0.0001)*lamdoma;
+b_x=2.pow(polytope.x.round(1) /992).round(0.0001)*lamdoma;
+b_y=2.pow(polytope.y.round(1) /992).round(0.0001)*lamdoma;
+b_z=2.pow(polytope.z.round(1) /992).round(0.0001)*lamdoma;
 
 
 //b_x=laxis.x.round((9/8)/2);
@@ -1006,7 +1001,6 @@ m3=m3+1;
 			~dur=~dur++~dur1++~dur2++~dur3;
 );
 		}.value);
-(
 						//	~seq = Pseq([1] ,inf).asStream;
 		~seq1= Pseq(~dur1 ,inf).asStream;
 				~seq1= Pseq(~dur ,inf).asStream;
@@ -1054,85 +1048,8 @@ m3=m3+1;
 };
 		}));
 
-		///leier string2
-		(
-	~str2= Routine({loop{
 
 
-
-	~synth.set(\tone2, ~s9, \pneuma2,0, \namp2,~ss9)	;
-
-    ~seq2.next.wait;
-
-	~synth.set(\tone2, ~s10, \pneuma2,0, \namp2,~ss10)	;
-
-	    ~seq2.next.wait;
-
-	~synth.set(\tone2, ~s11, \pneuma2,0, \namp2,~ss11)	;
-
-	    ~seq2.next.wait;
-
-	~synth.set(\tone2, ~s12, \pneuma2,0, \namp2,~ss12)	;
-
-	    ~seq2.next.wait;
-
-	~synth.set(\tone2, ~s13, \pneuma2,0, \namp2,~ss14)	;
-
-	    ~seq2.next.wait;
-
-	~synth.set(\tone2, ~s15, \pneuma2,0, \namp2,~ss15)	;
-
-	    ~seq2.next.wait;
-
-	~synth.set(\tone2, ~s16, \pneuma2,0, \namp2,~ss16)	;
-
-	    ~seq2.next.wait;
-
-	~synth.set(\tone2, ~s17, \pneuma2,pi, \namp2,~ss17)	;
-
-	    ~seq2.next.wait;
-};
-		}));
-
-		///leier string2
-		(
-	~str3= Routine({loop{
-
-
-
-	~synth.set(\tone3, ~s18, \pneuma3,0, \namp3,~ss18)	;
-
-    ~seq3.next.wait;
-
-	~synth.set(\tone3, ~s20, \pneuma3,0, \namp3,~ss20)	;
-
-	    ~seq3.next.wait;
-
-	~synth.set(\tone3, ~s21, \pneuma3,0, \namp3,~ss21)	;
-
-	    ~seq3.next.wait;
-
-	~synth.set(\tone3, ~s22, \pneuma3,0, \namp3,~ss22)	;
-
-	    ~seq3.next.wait;
-
-	~synth.set(\tone3, ~s23, \pneuma3,0, \namp3,~ss23)	;
-
-	    ~seq3.next.wait;
-
-	~synth.set(\tone3, ~s24, \pneuma3,0, \namp3,~ss24)	;
-
-	    ~seq3.next.wait;
-
-	~synth.set(\tone3, ~s25, \pneuma3,0, \namp3,~ss25)	;
-
-	    ~seq3.next.wait;
-
-	~synth.set(\tone3, ~s26, \pneuma3,0, \namp3,~ss26)	;
-
-	    ~seq3.next.wait;
-};
-	})));
 
 
 		TempoClock.default.tempo_(2);
@@ -1142,15 +1059,11 @@ m3=m3+1;
 }
 )
 )
-(
+
 	~str1.play;
-	~str2.play;
-	~str3.play;
-)
 
 ~str1.stop;
-~str2.stop;
-~sr3.stop
+
 
 	~r=0;		~r1=0;		~r2=0;
 
