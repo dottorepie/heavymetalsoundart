@@ -539,6 +539,7 @@ pon2=SinOsc.ar(pon*lfon,0.25pi).range(0.0001,1).lag(0.1);
 pon3=SinOsc.ar(pon*lfon,0.5pi).range(0.0001,1).lag(0.1);
 pon4=SinOsc.ar(pon*lfon,0.75pi).range(0.0001,1).lag(0.1);
 
+		/*(
 Out.ar(0,
 Limiter.ar(LeakDC.ar(FreeVerb.ar(
 	sig1* g_ch1.lag(0.1)*pon1,mix.lag(0.01),room.lag(0.01),mul:gain1)),0.9,0.01));
@@ -577,8 +578,15 @@ sig3* g_ch3.lag(0.1)*pon3,mix.lag(0.01),room.lag(0.01),mul:gain3)),0.9,0.01));
 Out.ar(3,
 Limiter.ar(LeakDC.ar(FreeVerb.ar(
 sig3* g_ch4.lag(0.1)*pon4,mix.lag(0.01),room.lag(0.01),mul:gain3)),0.9,0.01));
+		)*/
 
-				Out.ar(0,WhiteNoise.ar(0.00001)!4);
+									Out.ar(0,WhiteNoise.ar(0.00001)!4);
+					///three channel
+Out.ar(0,Pan2.ar(Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.01),room.lag(0.01),mul:gain1*mx.lag(0.01))),0.9,0.01),
+						SinOsc.ar(lfon*pon,0)));
+Out.ar(0,Pan2.ar(Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.01),room.lag(0.01),mul:gain2*my.lag(0.01))),0.9,0.01),
+						SinOsc.ar(lfon*pon,90.degrad)));
+Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.01),room.lag(0.01),mul:gain3*mz.lag(0.01))),0.9,0.01)!2);
 //
 						//azf = (azf+(2pi-(2pi/s))).wrap(pi.neg,pi);
 		azf=0;
@@ -590,15 +598,15 @@ nn=nn+1;
 }).add;);
 (
 (
-	~synth=Synth.new(\synth,[\gain,1,\drive,992*2,\fu,16,\sc,992*4,\low,992*1.5,
-	\pan,(992*16).neg,\mix,0.8,\room,0.6,\mm,0,\m,3,\tone1,3,\tone2,5,\tone3,6,
-	\pann,(992*8.neg).neg,\x,3,\a,1,\spread,1,\pon,1/32,
-	\pneuma,0,\namp,1,\drone,12.neg,\panx,0.3,\pany,0.4,\panz,0.5,\dron,0]).register;);
+	~synth=Synth.new(\synth,[\gain,1,\drive,992*3,\fu,256,\sc,992*1,\low,992*1,
+	\pan,(992*16).neg,\mix,0.6,\room,0.6,\mm,0,\m,2,\tone1,3,\tone2,5,\tone3,6,
+	\pann,(992*1.neg).neg,\x,1,\a,1,\spread,1,\pon,5,
+	\pneuma,0,\namp,1,\drone,36.neg,\panx,0,\pany,0,\panz,0,\dron,0]).register;);
 
 (
 ~r1 = Routine({
     var i,m,l=0;
-    500.do{
+    2.do{
 					//	thisThread.randSeed = ~val.asInteger;
 						//	TempoClock.default.tempo_(1);
 
@@ -606,7 +614,7 @@ nn=nn+1;
 
 l=l+1;
       //  ~seq1.next.wait;
-		(1/4).wait;
+		(4).wait;
 
     }
 		});
