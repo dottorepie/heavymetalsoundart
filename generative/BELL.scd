@@ -11,7 +11,7 @@
 (
 (
 s.options.numWireBufs  = 1024*2;
-s.options.numOutputBusChannels=4;
+s.options.numOutputBusChannels=8;
 s.options.numInputBusChannels=0;
 s.options.memSize = 8192*4;
 s.options.blockSize = 64;
@@ -327,13 +327,13 @@ sig3=(LPF.ar((Osc.ar(~w1.bufnum,freq3,phase:phasez,mul:level).abs*SinOsc.ar(freq
 	sig3=Select.ar(band.linlin((992*16).neg,((992*16).neg+1),0,1).round(1).asInteger,
 						[sig3,BPF.ar(BRF.ar(sig3,band_osc3.lag(0.1),rq3),band_osc6.lag(0.1),rq6)]);
 
-threshold1=(((343/0.1)/fund).reciprocal.ampdb/2.sqrt).dbamp;
-threshold2=(((343/0.1)/fund).reciprocal.ampdb/2.sqrt).dbamp;
-threshold3=(((343/0.1)/fund).reciprocal.ampdb/2.sqrt).dbamp;
+threshold1=(((343/0.15)/fund).reciprocal.ampdb/2.sqrt).dbamp;
+threshold2=(((343/0.15)/fund).reciprocal.ampdb/2.sqrt).dbamp;
+threshold3=(((343/0.15)/fund).reciprocal.ampdb/2.sqrt).dbamp;
 
-		sig1=HPF.ar(sig1,80);
-		sig2=HPF.ar(sig2, 80);
-		sig3=HPF.ar(sig3, 80);
+		sig1=HPF.ar(sig1,60);
+		sig2=HPF.ar(sig2, 60);
+		sig3=HPF.ar(sig3, 60);
 
 		sig1=Compander.ar(sig1,control1,threshold1,1.2,1/3,0.03,0.15)+BrownNoise.ar(0.00001);
 		sig2=Compander.ar(sig2,control2,threshold2,1.2,1/3,0.03,0.15)+BrownNoise.ar(0.00001);
@@ -447,12 +447,11 @@ Out.ar(3,
 Limiter.ar(LeakDC.ar(FreeVerb.ar(
 sig3* g_ch4.lag(0.1)*pon4,mix.lag(0.01),room.lag(0.01),mul:gain3)),0.9,0.01)/cloud);
 
-					Out.ar(0,WhiteNoise.ar(0.00001)/cloud);
+		Out.ar(0,WhiteNoise.ar(0.00001)!4);
 					///three channel
-				//	Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.01),room.lag(0.01),mul:gain1*loc1.abs)),0.9,0.01));
-				//	Out.ar(1,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.01),room.lag(0.01),mul:gain2*loc2.abs)),0.9,0.01));
-				//	Out.ar(2,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.01),room.lag(0.01),mul:gain3*loc3.abs)),0.9,0.01));
-
+Out.ar(5,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.01),room.lag(0.01),mul:gain1*mx.lag(0.01))),0.9,0.01));
+Out.ar(6,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.01),room.lag(0.01),mul:gain2*my.lag(0.01))),0.9,0.01));
+Out.ar(7,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.01),room.lag(0.01),mul:gain3*mz.lag(0.01))),0.9,0.01));
 					////azimuthal multichannel expansion
 
 //Out.ar(0,PanAz.ar(2,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.01),room.lag(0.01),mul:gain1*loc1.abs)),0.9,0.01),SinOsc.ar(panx,phasex),width:spread));	//Out.ar(0,PanAz.ar(2,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.01),room.lag(0.01),mul:gain2*loc2.abs)),0.9,0.01),SinOsc.ar(pany,phasey),width:spread));
@@ -546,20 +545,20 @@ m3=m3+1;
 			(
 		~aa=Pdef(\1, Pbind(\instrument, \synth,
 			\dur,Pseq(~dur*16,inf),
-			\gain,1,
+			\gain,1/1.2,
 			\drive,992*2,
 		\fu,256,
 				\tone1,Pbrown(0,5,1,inf),
 			\tone2,Pbrown(0,5,1,inf),
 			\tone3,Pbrown(0,5,1,inf),
-			\low,Pbrown(0,(992*2),496/4,inf),
+			\low,Pbrown(0,(992*3),496/4,inf),
 			\pan,(992*16).neg,
-		\mix,Prand([0.5,0.6,0.8],inf),
+		\mix,Pexprand(0.6,1,inf),
 			\drone_amp,1,
-			\room,Prand([0.7,0.8,0.9],inf),
-				\m,Prand([1,2],inf),
-				\pann,Pbrown((992*5).neg,(992*7),992/2,inf),
-			\pon,Pbrown(0.001,2,0.1,inf),
+			\room,Pexprand(0.6,1,inf),
+				\m,Prand([1,2,3],inf),
+				\pann,Pbrown((992*5).neg,(992*7),992/4,inf),
+			\pon,Pbrown(0.001,10,0.999,inf),
 			\pneuma1,0,\pneuma2,0,\pneuma3,0,
 			\x,2,
 			\a,1,
@@ -569,9 +568,9 @@ m3=m3+1;
 			\spread,1,\namp1,1,\namp2,1,\namp3,1,
 			\az,Pbrown(pi.neg,pi,0.2pi,inf),
 			\el,Pbrown(0.5pi.neg,0.5pi,0.1pi,inf),
-			\dron,0,
+			\dron,496,
 				\cur,Pbrown(2.neg,8.neg,1,inf),
-			\drone,24.neg,
+			\drone,36.neg,
 			\sc,Pbrown(0,992,992/32,inf)
 	)));
 
@@ -580,7 +579,7 @@ m3=m3+1;
 
 
 
-		TempoClock.default.tempo_(8);
+		TempoClock.default.tempo_(2);
 
 	});
 	Tdef(\drone).play;
