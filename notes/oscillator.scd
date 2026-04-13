@@ -87,6 +87,31 @@ Out.ar(1,LPF.ar((Osc.ar(~w.bufnum,freq,phase:90.degrad,mul:rz).abs*SinOsc.ar(fre
 )
 
 
+(
+{
+	var freq=28*16, b=1,f=1,rz=1000,amp=1;
+
+	Out.ar(0,LeakDC.ar(LPF.ar((Osc.ar(~w.bufnum,freq,phase:0.degrad,mul:rz).abs*
+	(BPF.ar(BrownNoise.ar(0.00000001.sqrt.reciprocal),freq,0.00000001,mul:100))),freq*f.round(1),amp)));
+		Out.ar(1,LeakDC.ar(LPF.ar((Osc.ar(~w.bufnum,freq,phase:90.degrad,mul:rz).abs*
+		(BPF.ar(BrownNoise.ar(0.00000001.sqrt.reciprocal),freq,0.00000001,mul:100))),freq*f.round(1),amp)));
+}.play;
+)
+
+
+(
+{
+	var freq=6*32, b=1,f=2,rz=100,amp=1;
+
+	Out.ar(0,LPF.ar((Osc.ar(~w.bufnum,freq,phase:0.degrad,mul:rz).abs*SinOsc.ar(freq,phase:0.degrad)),freq*f.round(1),amp)+
+		(BPF.ar(BrownNoise.ar(0.00001.sqrt.reciprocal),SinOsc.ar(1).range(6*8,6*128),0.00001))
+	);
+
+}.play;
+)
+
+
+
 /*///additive synthesis
 
 (
