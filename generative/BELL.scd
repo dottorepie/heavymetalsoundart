@@ -596,8 +596,10 @@ m3=m3+1;
 
 
 
-
-		TempoClock.default.tempo_(2);
+(
+		TempoClock.default.tempo_(1.5);
+			TempoClock.default.tempo.round(1/7);
+		)
 
 	});
 	Tdef(\drone).play;
