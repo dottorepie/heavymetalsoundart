@@ -221,14 +221,14 @@ phase3=(Complex(1,anglez).theta+spirit).wrap(2pi.neg,2pi);
 //mod_angley=SinOsc.ar(lfon,phase2).range(pi.neg,pi).lag(0.01);
 //mod_anglez=SinOsc.ar(lfon,phase3).range(35.264390.degrad,35.264390.degrad.neg).lag(0.01);
 
-mod_anglex=(LPF.ar((Osc.ar(~w1.bufnum,lfon,phase:phase1,mul:level).abs*SinOsc.ar(lfon,phase:phase1)),lfon,1).range(panx*1,1)+
-(LPF.ar((Osc.ar(~w1.bufnum,lfon/8,phase:phase1,mul:level).abs*SinOsc.ar(lfon/8,phase:phase1)),(lfon/8)*2.pow(low.lag(0.01)/992),(lfon/8).reciprocal))).range(pi.neg,pi).lag(0.01);
+mod_anglex=(LPF.ar((Osc.ar(~w1.bufnum,lfon,phase:phase1,mul:level).abs*
+					SinOsc.ar(lfon*2.pow(low.lag(0.01)/992),phase:phase1)),lfon,1).range(panx*1,1)).range(pi.neg,pi).lag(0.01);
 
-	mod_angley=(LPF.ar((Osc.ar(~w1.bufnum,lfon,phase:phase2,mul:level).abs*SinOsc.ar(lfon,phase:phase2)),lfon,1).range(pany*1,1)+
-(LPF.ar((Osc.ar(~w1.bufnum,lfon/8,phase:phase2,mul:level).abs*SinOsc.ar(lfon/8,phase:phase2)),(lfon/8)*2.pow(low.lag(0.01)/992),(lfon/8).reciprocal))).range(pi.neg,pi).lag(0.01);
+	mod_angley=(LPF.ar((Osc.ar(~w1.bufnum,lfon,phase:phase2,mul:level).abs*
+					SinOsc.ar(lfon,phase:phase2)),lfon*2.pow(low.lag(0.01)/992),1).range(pany*1,1)).range(pi.neg,pi).lag(0.01);
 
-mod_anglez=(LPF.ar((Osc.ar(~w1.bufnum,lfon,phase:phase3,mul:level).abs*SinOsc.ar(lfon,phase:phase3)),lfon,1).range(panz*1,1)+
-(LPF.ar((Osc.ar(~w1.bufnum,lfon/8,phase:phase3,mul:level).abs*SinOsc.ar(lfon/8,phase:phase3)),(lfon/8)*2.pow(low.lag(0.01)/992),(lfon/8).reciprocal))).range(35.264390.degrad,35.264390.degrad.neg).lag(0.01);
+mod_anglez=(LPF.ar((Osc.ar(~w1.bufnum,lfon,phase:phase3,mul:level).abs*
+					SinOsc.ar(lfon,phase:phase3)),lfon*2.pow(low.lag(0.01)/992),1).range(panz*1,1)).range(35.264390.degrad,35.264390.degrad.neg).lag(0.01);
 
 
 					(
@@ -315,7 +315,7 @@ control3=SinOsc.ar(freq3,phase:phasez,mul:amp3);
 
 
 				//rectifier mod
-ds1=((LPF.ar((Osc.ar(~w1.bufnum,f1,phase:phasex,mul:level).abs*
+/*ds1=((LPF.ar((Osc.ar(~w1.bufnum,f1,phase:phasex,mul:level).abs*
 					SinOsc.ar(f1,phase:phasex)),f1,g1)).range(panx*g1,g1)
 					+BPF.ar(BrownNoise.ar(qq.sqrt.reciprocal),f1/2,qq,g1*2));
 ds2=((LPF.ar((Osc.ar(~w1.bufnum,f2,phase:phasey,mul:level).abs*
@@ -323,7 +323,15 @@ ds2=((LPF.ar((Osc.ar(~w1.bufnum,f2,phase:phasey,mul:level).abs*
 					+BPF.ar(BrownNoise.ar(qq.sqrt.reciprocal),f2/2,qq,g2*2));
 ds3=((LPF.ar((Osc.ar(~w1.bufnum,f3,phase:phasez,mul:level).abs*
 					SinOsc.ar(f3,phase:phasez)),f3,g3)).range(panz*g3,g3)
+					+BPF.ar(BrownNoise.ar(qq.sqrt.reciprocal),f3/2,qq,g3*2));*/
+
+ds1=(SinOsc.ar(f1,phase:phasex).range(panx*g1,g1)
+					+BPF.ar(BrownNoise.ar(qq.sqrt.reciprocal),f1/2,qq,g1*2));
+ds2=(SinOsc.ar(f2,phase:phasey).range(pany*g2,g2)
+					+BPF.ar(BrownNoise.ar(qq.sqrt.reciprocal),f2/2,qq,g2*2));
+ds3=(SinOsc.ar(f3,phase:phasez).range(panz*g3,g3)
 					+BPF.ar(BrownNoise.ar(qq.sqrt.reciprocal),f3/2,qq,g3*2));
+
 
 
 ds1 = (tanh((ds1*2.pow(drive/992)).softclip)) / (1 + (tanh((ds1*2.pow(drive/992)).softclip)).abs);
