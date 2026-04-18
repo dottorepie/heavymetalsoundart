@@ -118,21 +118,21 @@ wt = signal.asWavetable;
 		//	~transfer_function.plot;
 			~dist=Buffer.loadCollection(s,~transfer_function.asWavetableNoWrap);
 		);
-/*(
+(
 			{
 				var nn=1.neg;
-		~scalee=10.collect{nn=nn+6.neg;Scale.majorPentatonic.performDegreeToKey(nn,12)};
+		~scalee=10.collect{nn=nn+1;Scale.majorPentatonic.performDegreeToKey(nn,12)};
 			}.value;
 		);
 
 		(
 			{
 				var nn=1.neg;
-		~scaleee=10.collect{nn=nn+6.neg;Scale.minorPentatonic.performDegreeToKey(nn,12)};
+		~scaleee=10.collect{nn=nn+1;Scale.minorPentatonic.performDegreeToKey(nn,12)};
 			}.value;
 		);
 
-		~sc=[~scalee,~scaleee];*/
+		~sc=[~scalee,~scaleee];
 		////sound
 (
 SynthDef.new(\synth,{
@@ -163,13 +163,17 @@ lamdoma=(x.lag(0.01)+a.lag(0.01))/x.lag(0.01);
 //ton2=2.pow(Select.kr(tone2.lag(0.01), Select.kr(qqq.lag(0.01),~sc)) /12).round(0.0001)*2.pow(dron.lag(0.01)/992);
 //ton3=2.pow(Select.kr(tone3.lag(0.01), Select.kr(qqq.lag(0.01),~sc)) /12).round(0.0001)*2.pow(dron.lag(0.01)/992);
 
-ton1=2.pow(tone1.lag(0.01) /992).round(0.0001)*2.pow(dron.lag(0.01)/992);
-ton2=2.pow(tone2.lag(0.01)/992).round(0.0001)*2.pow(dron.lag(0.01)/992);
-ton3=2.pow(tone3.lag(0.01) /992).round(0.0001)*2.pow(dron.lag(0.01)/992);
+//ton1=2.pow(tone1.lag(0.01) /992).round(0.0001)*2.pow(dron.lag(0.01)/992);
+//ton2=2.pow(tone2.lag(0.01)/992).round(0.0001)*2.pow(dron.lag(0.01)/992);
+//ton3=2.pow(tone3.lag(0.01) /992).round(0.0001)*2.pow(dron.lag(0.01)/992);
 		//		ton=2.pow((tone.lag(0.01))/56).round(0.0001)*2.pow(dron.lag(0.01)/56);
 
-//	env=EnvGen.ar(Env.sine(decay),gate:gate);
-				env=1;
+ton1=2.pow(Select.kr(tone1.lag(0.01), Select.kr(qqq.lag(0.01),~sc)) /12).round(0.0001)*2.pow(dron.lag(0.01)/992);
+ton2=2.pow(Select.kr(tone2.lag(0.01), Select.kr(qqq.lag(0.01),~sc)) /12).round(0.0001)*2.pow(dron.lag(0.01)/992);
+ton3=2.pow(Select.kr(tone3.lag(0.01), Select.kr(qqq.lag(0.01),~sc)) /12).round(0.0001)*2.pow(dron.lag(0.01)/992);
+
+	env=EnvGen.ar(Env.perc(attack,decay,curve:curve),gate:gate);
+			//	env=1;
 
 						lfo=2.pow(pan/992);
 				lfon=2.pow(pann/992);
@@ -945,7 +949,7 @@ Out.ar(6,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.01),room.lag(0.01),mul:
 );
 (
 
-~synth=Synth.new(\synth,[\gain,1,\drive,992*2,\fu,512,\tone1,0,\tone2,0,\tone3,0,\low,992*0,\pan,(992*16).neg,
+~synth=Synth.new(\synth,[\gain,1,\drive,992*2,\fu,256,\tone1,0,\tone2,0,\tone3,0,\low,992*0,\pan,(992*16).neg,
 		\mix,0.3,\drone_amp,1,\room,0.5,\m,1,\pann,(992*16).neg,\pon,0.001,\pneuma,0, \namp,1,
 			\x,1,\a,1,\panx,0.01,\pany,0.01,\panz,0.01,\spread,1,\attack,0.01,\decay,4,\curve,2.neg,\gate,1,
 			\az,pi/4,\el,pi/8,\azr,992,\dron,0,\drone,1,\sc,1]).register;
@@ -1333,10 +1337,11 @@ MIDIdef.cc(\midi_slider2,{ |val, num, chan, src|
 	);
 														(
 MIDIdef.cc(\midi_slider3,{ |val, num, chan, src|
-		var th;
-	th=val.linlin(0,127,0.5pi.neg,0.5pi).round(0.0001);
-	th.postln;
-						~mel=th;
+	var spread;
+			spread=val.linlin(0,127,1,8.neg,4).round(0.0001);
+		spread.postln;
+							~attacka=spread;
+		if(~synth.isPlaying,{~synth.set(\curve,spread)});
 
 },26);
 	);
@@ -1353,7 +1358,7 @@ MIDIdef.cc(\midi_slider4,{ |val, num, chan, src|
 
 				(
 MIDIdef.cc(\midi_slider5,{ |val, num, chan, src|
-	var spread;
+								var spread;
 			spread=val.linlin(0,127,0.01,32).round(0.0001);
 		spread.postln;
 		if(~synth.isPlaying,{~synth.set(\decay,spread)});
@@ -1376,16 +1381,16 @@ MIDIdef.cc(\midi_slider6,{ |val, num, chan, src|
 				(
 MIDIdef.cc(\midi_slider7,{ |val, num, chan, src|
 	var spread;
-			spread=val.linlin(0,127,0.01,32).round(0.0001);
+			spread=val.linlin(0,127,0,1).round(1);
 		spread.postln;
-		if(~synth.isPlaying,{~synth.set(\decay,spread)});
+		if(~synth.isPlaying,{~synth.set(\qqq,spread)});
 },30);
 	);
 
 (
 MIDIdef.cc(\midi_slider8,{ |val, num, chan, src|
 		var th;
-	th=val.linlin(0,127,0.000001,0.001).round(0.0000000001);
+	th=val.linlin(0,127,0.0000000001,0.00001).round(0.0000000001);
 		th.postln;
 	if(~synth.isPlaying,{~synth.set(\qq,th)});
 							if(~synthd.isPlaying,{~synthd.set(\qq,th)});
@@ -1396,7 +1401,7 @@ MIDIdef.cc(\midi_slider8,{ |val, num, chan, src|
 	(
 MIDIdef.cc(\midi_slider9,{ |val, num, chan, src|
 		var th;
-	th=val.linlin(0,127,1/4,128).round(0.007)+0.1.rand;
+	th=val.linlin(0,127,1/4,512).round(0.007)+0.1.rand;
 		th.postln;
 	~tempo=th;
 							TempoClock.default.tempo=~tempo;
@@ -1410,15 +1415,16 @@ MIDIdef.cc(\midi_slider9,{ |val, num, chan, src|
 		~val=1234;
 		(
 	~str1= Routine({
-			var m1,m2,m3,r1,r2,r3,sphm,sphr,time=1/32,melody,rhythm,az,el;
+			var m1,m2,m3,r1,r2,r3,sphm,sphr,time=1/4,melody,rhythm,az,el;
 
 				loop{
 						thisThread.randSeed = ~val;
 		//	rhythm=Spherical(2,((1/992)*pi)*992.rand2,((1/496)*pi)*992.rand2);
 					//melody=Spherical(10,(0.2pi)*5.rand2,(0.1pi)*5.rand2);
-					rhythm=exp(Complex(0,1)*((1/992)*2pi)*992.rand2);
+					rhythm=exp(Complex(0,1)*((1/992)*2pi)*992.rand);
 					az=Complex(1,rhythm.real).theta*4;   el=Complex(1,rhythm.imag).theta*2;
-					melody=Spherical(16256,az,el);
+					//melody=Spherical(16256,az,el);
+					melody=Spherical(5,az,el);
 				r1=2.pow(rhythm.real.abs).round(time);  r2=2.pow(rhythm.imag.abs).round(time); // r3=2.pow(rhythm.z).round(time);
 					m1=melody.x.round(1);  	m2=melody.y.round(1);  	m3=melody.z.round(1);
 					sphm=[m1.abs,m2.abs,m3.abs];   sphr=[r1,r2];
@@ -1427,16 +1433,16 @@ MIDIdef.cc(\midi_slider9,{ |val, num, chan, src|
 		~synth.set(\tone1,sphm.[0], \gate,1);
 ~synth.set(\tone2,sphm.[1],\gate,1);
 	~synth.set(\tone3,sphm.[2], \gate,1);
-				//~attacka.wait;
-					//~synth.set(\gate,0);
+				0.01.wait;
+					~synth.set(\gate,0);
 					sphr.[0].wait;
 
 
 		~synth.set(\tone1,sphm.[0], \gate,1);
 ~synth.set(\tone2,sphm.[1],\gate,1);
 	~synth.set(\tone3,sphm.[2], \gate,1);
-					//~attacka.wait;
-					//~synth.set(\gate,0);
+					0.01.wait;
+					~synth.set(\gate,0);
 	sphr.[1].wait;
 
 };
@@ -1484,7 +1490,7 @@ m3=m3+1;
 		(
 	~tempi= Routine({
 				loop{
-				 TempoClock.default.tempo = ~tempo * (~seqi.next);
+				 TempoClock.default.tempo = ~tempo + (~seqi.next);
 			//		~seqi.next.wait;
 					(~yt/15).wait;
 };
@@ -1514,6 +1520,8 @@ m3=m3+1;
 
 
 ~synthd.free;
+~synthd.set(\fu,256);
+~synth.set(\fu,256);
 
 
 
