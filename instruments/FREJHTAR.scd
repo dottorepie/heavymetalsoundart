@@ -136,7 +136,7 @@ SynthDef.new(\synth,{
 
 	arg gain=1,low=992,tone1=0,tone2=0,tone3=0,x=1,pan=1,mix=0.3,a=1,panx=1,pany=1,panz=1,room=0.5,m=2,pon=1,
 				fu=32,drive=1,spread=1,drone_amp=1,pann=0,az=0,el=0,azr=0,dron=0,drone=1,theta=0,rx=0,ry=0,rz=0,
-				pneuma1=0,pneuma2=0,pneuma3=0,namp1=1,namp2=1,namp3=1,sc=14,qq=0.0000001,qqq=0,spirit=1,
+				pneuma1=0,pneuma2=0,pneuma3=0,namp1=1,namp2=1,namp3=1,sc=14,qq=0.0000001,qqq=0,spirit=0,
 				attack=0.01,decay=4,curve=2.neg,gate=1;
 
 	var rq=1,cloud=1,band,azf=0,elf=0,q,r1,r2,r3,sq1,sq2,sq3,rotationx,rotationy,rotationz,core=(9/8).rand;
@@ -216,9 +216,9 @@ anglex=(exp(Complex(0,1)*polytope.theta).real*exp(Complex(0,1)*polytope.phi).rea
 angley=(exp(Complex(0,1)*polytope.theta).imag*exp(Complex(0,1)*polytope.phi).real).round(0.00001);
 anglez=(exp(Complex(0,1)*polytope.phi).imag).round(0.00001);
 
-phase1=(Complex(1,anglex).theta+spirit).wrap(2pi.neg,2pi);
-phase2=(Complex(1,angley).theta+spirit).wrap(2pi.neg,2pi);
-phase3=(Complex(1,anglez).theta+spirit).wrap(2pi.neg,2pi);
+phase1=(Complex(1,anglex).theta*4).wrap(2pi.neg,2pi);
+phase2=(Complex(1,angley).theta*4).wrap(2pi.neg,2pi);
+phase3=(Complex(1,anglez).theta*2).wrap(2pi.neg,2pi);
 
 
 //mod_anglex=SinOsc.ar(lfon,phase1).range(pi.neg,pi).lag(0.01);
@@ -266,9 +266,9 @@ cos((polytope.phi.round(0.00001)).wrap((pi/2).neg,(pi/2))))))).rho/(2.sqrt));
 
 loc1=mx;  loc2=magy;  loc3=magz;
 
-phasex=Complex(1,sph.x).theta;
-phasey=Complex(1,sph.y).theta;
-phasez=Complex(1,sph.z).theta;
+phasex=Complex(1,sph.x).theta*4;
+phasey=Complex(1,sph.y).theta*4;
+phasez=Complex(1,sph.z).theta*2;
 
 
 freq1=(fund*ton1)*b_x.lag(0.01);
@@ -539,7 +539,7 @@ SynthDef.new(\synthd,{
 
 	arg gain=1,low=992,tone1=0,tone2=0,tone3=0,x=1,pan=1,mix=0.3,a=1,panx=1,pany=1,panz=1,room=0.5,m=2,pon=1,
 				fu=32,drive=1,spread=1,drone_amp=1,pann=0,az=0,el=0,azr=0,dron=0,drone=1,theta=0,rx=0,ry=0,rz=0,
-				pneuma1=0,pneuma2=0,pneuma3=0,namp1=1,namp2=1,namp3=1,sc=14,qq=0.0000001,qqq=0,spirit=1;
+				pneuma1=0,pneuma2=0,pneuma3=0,namp1=1,namp2=1,namp3=1,sc=14,qq=0.0000001,qqq=0,spirit=0;
 
 	var rq=1,cloud=1,attack,decay,curve,band,azf=0,elf=0,q,r1,r2,r3,sq1,sq2,sq3,rotationx,rotationy,rotationz,core=(9/8).rand;
 	var lamdoma,freq1,freq2,freq3,fund,amp1,amp2,amp3,alpha,cell_az,cell_el,x_pos,y_pos,control1,control2,control3;
@@ -558,9 +558,9 @@ SynthDef.new(\synthd,{
 fund=fu*(9/8);
 lamdoma=(x.lag(0.01)+a.lag(0.01))/x.lag(0.01);
 
-ton1=2.pow(Select.kr(tone1.lag(0.01), Select.kr(qqq.lag(0.01),~sc)) /12).round(0.0001)*2.pow(dron.lag(0.01)/992);
-ton2=2.pow(Select.kr(tone2.lag(0.01), Select.kr(qqq.lag(0.01),~sc)) /12).round(0.0001)*2.pow(dron.lag(0.01)/992);
-ton3=2.pow(Select.kr(tone3.lag(0.01), Select.kr(qqq.lag(0.01),~sc)) /12).round(0.0001)*2.pow(dron.lag(0.01)/992);
+ton1=2.pow(0 /16256).round(0.0001)*2.pow(dron.lag(0.01)/992);
+ton2=2.pow(0/16256).round(0.0001)*2.pow(dron.lag(0.01)/992);
+ton3=2.pow(0 /16256).round(0.0001)*2.pow(dron.lag(0.01)/992);
 
 		//		ton=2.pow((tone.lag(0.01))/56).round(0.0001)*2.pow(dron.lag(0.01)/56);
 
@@ -614,9 +614,9 @@ anglex=(exp(Complex(0,1)*polytope.theta).real*exp(Complex(0,1)*polytope.phi).rea
 angley=(exp(Complex(0,1)*polytope.theta).imag*exp(Complex(0,1)*polytope.phi).real).round(0.00001);
 anglez=(exp(Complex(0,1)*polytope.phi).imag).round(0.00001);
 
-phase1=(Complex(1,anglex).theta+spirit).wrap(2pi.neg,2pi);
-phase2=(Complex(1,angley).theta+spirit).wrap(2pi.neg,2pi);
-phase3=(Complex(1,anglez).theta+spirit).wrap(2pi.neg,2pi);
+phase1=(Complex(1,anglex).theta*4);
+phase2=(Complex(1,angley).theta*4);
+phase3=(Complex(1,anglez).theta*2);
 
 
 //mod_anglex=SinOsc.ar(lfon,phase1).range(pi.neg,pi).lag(0.01);
@@ -664,9 +664,9 @@ cos((polytope.phi.round(0.00001)).wrap((pi/2).neg,(pi/2))))))).rho/(2.sqrt));
 
 loc1=mx;  loc2=magy;  loc3=magz;
 
-phasex=Complex(1,sph.x).theta;
-phasey=Complex(1,sph.y).theta;
-phasez=Complex(1,sph.z).theta;
+phasex=Complex(1,sph.x).theta*4;
+phasey=Complex(1,sph.y).theta*4;
+phasez=Complex(1,sph.z).theta*2;
 
 
 freq1=(fund*ton1)*b_x.lag(0.01);
@@ -931,22 +931,21 @@ Out.ar(6,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.01),room.lag(0.01),mul:
 }).add;);
 2.wait;
 
-(
-
-~synth=Synth.new(\synth,[\gain,1,\drive,992*2,\fu,256,\tone1,0,\tone2,0,\tone3,0,\low,992*0,\pan,(992*16).neg,
-		\mix,0.3,\drone_amp,1,\room,0.5,\m,1,\pann,(992*16).neg,\pon,0.001,\pneuma,0, \namp,1,
-			\x,1,\a,1,\panx,0.01,\pany,0.01,\panz,0.01,\spread,1,\attack,0.01,\decay,4,\curve,2.neg,\gate,1,
-			\az,pi/4,\el,pi/8,\azr,992,\dron,0,\drone,1,\sc,1]).register;
-);
 
 		(
 
-~synthd=Synth.new(\synthd,[\gain,1,\drive,992*2,\fu,128,\tone1,0,\tone2,0,\tone3,0,\low,992*0,\pan,(992*16).neg,
+~synthd=Synth.new(\synthd,[\gain,1,\drive,992*2,\fu,256,\tone1,0,\tone2,0,\tone3,0,\low,992*0,\pan,(992*16).neg,
 		\mix,0.3,\drone_amp,1,\room,0.5,\m,1,\pann,(992*16).neg,\pon,0.001,\pneuma,0, \namp,1,
 			\x,1,\a,1,\panx,0.01,\pany,0.01,\panz,0.01,\spread,1,
 			\az,pi/4,\el,pi/8,\azr,992,\dron,0,\drone,1,\sc,1]).register;
 );
+(
 
+~synth=Synth.new(\synth,[\gain,1,\drive,992*2,\fu,1024,\tone1,0,\tone2,0,\tone3,0,\low,992*0,\pan,(992*16).neg,
+		\mix,0.3,\drone_amp,1,\room,0.5,\m,1,\pann,(992*16).neg,\pon,0.001,\pneuma,0, \namp,1,
+			\x,1,\a,1,\panx,0.01,\pany,0.01,\panz,0.01,\spread,1,\attack,0.01,\decay,4,\curve,2.neg,\gate,1,
+			\az,pi/4,\el,pi/8,\azr,992,\dron,0,\drone,1,\sc,1]).register;
+);
 
 		(
 MIDIClient.init;
@@ -1311,7 +1310,7 @@ a.postln;
 			(
 MIDIdef.cc(\midi_slider1,{ |val, num, chan, src|
 		var gain;
-	gain=val.linlin(0,127,0,4).round(0.0001);
+	gain=val.linlin(0,127,0.00001,1).round(0.00001);
 		gain.postln;
 		if(~synth.isPlaying,{~synth.set(\gain,gain)});
 							if(~synthd.isPlaying,{~synthd.set(\gain,gain)});
@@ -1376,9 +1375,10 @@ MIDIdef.cc(\midi_slider7,{ |val, num, chan, src|
 (
 MIDIdef.cc(\midi_slider8,{ |val, num, chan, src|
 		var th;
-	th=val.linlin(0,127,0.000001,0.0001).round(0.0000000001);
+	th=val.linlin(0,127,0.000001,0.001).round(0.0000000001);
 		th.postln;
 	if(~synth.isPlaying,{~synth.set(\qq,th)});
+							if(~synthd.isPlaying,{~synthd.set(\qq,th)});
 },31);
 	);
 
@@ -1386,7 +1386,7 @@ MIDIdef.cc(\midi_slider8,{ |val, num, chan, src|
 	(
 MIDIdef.cc(\midi_slider9,{ |val, num, chan, src|
 		var th;
-	th=val.linlin(0,127,1/4,8).round(0.007)+0.1.rand;
+	th=val.linlin(0,127,1/4,32).round(0.007)+0.1.rand;
 		th.postln;
 	~tempo=th;
 							TempoClock.default.tempo=~tempo;
@@ -1399,139 +1399,36 @@ MIDIdef.cc(\midi_slider9,{ |val, num, chan, src|
 		////rhythm
 ///melody
 ~attacka=0.01;
-
 		(
 	~str1= Routine({
-			var m1,m2,m3,r1,r2,r3,sphm,sphr,time=1/32,melody,rhythm;
+			var m1,m2,m3,r1,r2,r3,sphm,sphr,time=1/32,melody,rhythm,az,el;
 
 				loop{
-
-				//	rhythm=Spherical(2,((1/992)*pi)*992.rand2,((1/496)*pi)*992.rand2);
+		//	rhythm=Spherical(2,((1/992)*pi)*992.rand2,((1/496)*pi)*992.rand2);
 					//melody=Spherical(10,(0.2pi)*5.rand2,(0.1pi)*5.rand2);
 					rhythm=exp(Complex(0,1)*((1/16256)*2pi)*16256.rand2);
-					melody=Spherical(16256,rhythm.theta,rhythm.theta/2);
+					az=Complex(1,rhythm.real).theta*4;   el=Complex(1,rhythm.imag).theta*2;
+					melody=Spherical(16256,az,el);
 					r1=2.pow(rhythm.real).round(time);  r2=2.pow(rhythm.imag).round(time); // r3=2.pow(rhythm.z).round(time);
 					m1=melody.x.round(1);  	m2=melody.y.round(1);  	m3=melody.z.round(1);
-					sphm=[m1,m2,m3];   sphr=[r1,r2];
+					sphm=[m1.abs,m2.abs,m3.abs];   sphr=[r1,r2];
 
 //~synth.set(\gate,0);
 		~synth.set(\tone1,sphm.[0], \gate,1);
-~synth.set(\tone2,sphm.[0],\gate,1);
-	~synth.set(\tone3,sphm.[0], \gate,1);
-				~attacka.wait;
-					~synth.set(\gate,0);
-					sphr.[0].wait;
-
-
-	~synth.set(\tone1,sphm.[1],\gate,1);
 ~synth.set(\tone2,sphm.[1],\gate,1);
-	~synth.set(\tone3,sphm.[1], \gate,1);
-					~attacka.wait;
-					~synth.set(\gate,0);
-	sphr.[1].wait;
-
-
-						~synth.set(\tone1,sphm.[2], \gate,1);
-~synth.set(\tone2,sphm.[2],\gate,1);
 	~synth.set(\tone3,sphm.[2], \gate,1);
 				~attacka.wait;
 					~synth.set(\gate,0);
 					sphr.[0].wait;
-				//	rhythm=Spherical(2,((1/992)*pi)*992.rand2,((1/496)*pi)*992.rand2);
-					//melody=Spherical(10,(0.2pi)*5.rand2,(0.1pi)*5.rand2);
-					rhythm=exp(Complex(0,1)*((1/16256)*2pi)*16256.rand2);
-					melody=Spherical(16256,rhythm.theta,rhythm.theta/2);
-					r1=2.pow(rhythm.real).round(time);  r2=2.pow(rhythm.imag).round(time); // r3=2.pow(rhythm.z).round(time);
-					m1=melody.x.round(1);  	m2=melody.y.round(1);  	m3=melody.z.round(1);
-					sphm=[m1,m2,m3];   sphr=[r1,r2];
-
-	~synth.set(\tone1,sphm.[0],\gate,1);
-~synth.set(\tone2,sphm.[0],\gate,1);
-	~synth.set(\tone3,sphm.[0], \gate,1);
-					~attacka.wait;
-					~synth.set(\gate,0);
-	sphr.[1].wait;
 
 
-						~synth.set(\tone1,sphm.[1], \gate,1);
+		~synth.set(\tone1,sphm.[0], \gate,1);
 ~synth.set(\tone2,sphm.[1],\gate,1);
-	~synth.set(\tone3,sphm.[1], \gate,1);
-				~attacka.wait;
-					~synth.set(\gate,0);
-					sphr.[0].wait;
-
-						~synth.set(\tone1,sphm.[2], \gate,1);
-~synth.set(\tone2,sphm.[2], \gate,1);
-	~synth.set(\tone3,sphm.[2],\gate,1);
+	~synth.set(\tone3,sphm.[2], \gate,1);
 					~attacka.wait;
 					~synth.set(\gate,0);
 	sphr.[1].wait;
 
-
-						//	rhythm=Spherical(2,((1/992)*pi)*992.rand2,((1/496)*pi)*992.rand2);
-					//melody=Spherical(10,(0.2pi)*5.rand2,(0.1pi)*5.rand2);
-					rhythm=exp(Complex(0,1)*((1/16256)*2pi)*16256.rand2);
-					melody=Spherical(16256,rhythm.theta,rhythm.theta/2);
-					r1=2.pow(rhythm.real).round(time);  r2=2.pow(rhythm.imag).round(time); // r3=2.pow(rhythm.z).round(time);
-					m1=melody.x.round(1);  	m2=melody.y.round(1);  	m3=melody.z.round(1);
-					sphm=[m1,m2,m3];   sphr=[r1,r2];
-
-									~synth.set(\tone1,sphm.[0], \gate,1);
-~synth.set(\tone2,sphm.[0],\gate,1);
-	~synth.set(\tone3,sphm.[0], \gate,1);
-				~attacka.wait;
-					~synth.set(\gate,0);
-					sphr.[0].wait;
-
-
-	~synth.set(\tone1,sphm.[1],\gate,1);
-~synth.set(\tone2,sphm.[1],\gate,1);
-	~synth.set(\tone3,sphm.[1], \gate,1);
-					~attacka.wait;
-					~synth.set(\gate,0);
-	sphr.[1].wait;
-
-	~synth.set(\tone1,sphm.[2], \gate,1);
-~synth.set(\tone2,sphm.[2], \gate,1);
-	~synth.set(\tone3,sphm.[2],\gate,1);
-				~attacka.wait;
-					~synth.set(\gate,0);
-	sphr.[0].wait;
-
-
-
-							//	rhythm=Spherical(2,((1/992)*pi)*992.rand2,((1/496)*pi)*992.rand2);
-					//melody=Spherical(10,(0.2pi)*5.rand2,(0.1pi)*5.rand2);
-					rhythm=exp(Complex(0,1)*((1/16256)*2pi)*16256.rand2);
-					melody=Spherical(16256,rhythm.theta,rhythm.theta/2);
-					r1=2.pow(rhythm.real).round(time);  r2=2.pow(rhythm.imag).round(time); // r3=2.pow(rhythm.z).round(time);
-					m1=melody.x.round(1);  	m2=melody.y.round(1);  	m3=melody.z.round(1);
-					sphm=[m1,m2,m3];   sphr=[r1,r2];
-
-									~synth.set(\tone1,sphm.[0], \gate,1);
-~synth.set(\tone2,sphm.[0],\gate,1);
-	~synth.set(\tone3,sphm.[0], \gate,1);
-				~attacka.wait;
-					~synth.set(\gate,0);
-					sphr.[0].wait;
-
-
-	~synth.set(\tone1,sphm.[1],\gate,1);
-~synth.set(\tone2,sphm.[1],\gate,1);
-	~synth.set(\tone3,sphm.[1], \gate,1);
-					~attacka.wait;
-					~synth.set(\gate,0);
-	sphr.[1].wait;
-
-	~synth.set(\tone1,sphm.[2], \gate,1);
-~synth.set(\tone2,sphm.[2], \gate,1);
-	~synth.set(\tone3,sphm.[2],\gate,1);
-				~attacka.wait;
-					~synth.set(\gate,0);
-	sphr.[0].wait;
-
-
-					TempoClock.default.tempo=~tempo+(1/7).rand;
 };
 		}));
 ~tempo=1;
@@ -1571,7 +1468,7 @@ m3=m3+1;
 
 }.value;
 		);
-		~seqi= Pseq(~dur ,inf).asStream;
+		~seqi= Pseq(~dur/7 ,inf).asStream;
 		(
 	~tempi= Routine({
 				loop{
@@ -1580,7 +1477,7 @@ m3=m3+1;
 					0.01.wait;
 };
 	}));
-	~str1.play;
+	//~str1.play;
 			~tempi.play;
 	});
 	Tdef(\drone).play;
@@ -1593,7 +1490,7 @@ m3=m3+1;
 ~str1.stop;
 
 
-~dynth.set(\sc,256);
+~dynth.set(\fu,256);
 
 
 
