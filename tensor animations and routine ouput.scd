@@ -1,7 +1,7 @@
 
 (
 s.options.numWireBufs = 1024*4;
-s.options.numOutputBusChannels=4;
+s.options.numOutputBusChannels=8;
 s.options.numInputBusChannels=1;
 s.options.memSize = 8192*16;
 s.options.blockSize = 64;
@@ -570,11 +570,6 @@ az6=0;el6=0;
 }.value;
 );
 
-	~azimuth=~az;
-	~elevation=~el;
-	~magnitude=(~magx.[pla].pow(2)+~magy.pow(2)+~magz.pow(2)).sqrt*(14/~detune);
-//~magnitude.postln;
-
 	dota=(~count.[0]*~count.[1]*~count.[2]*~count.[3]*~count.[4]*~count.[5]).collect{
 
 	az=~az.[pla];
@@ -649,6 +644,8 @@ r.play;
 
 )
 
+
+/////dac noise rremoval for generative instalation
 
 Routine({
     loop {

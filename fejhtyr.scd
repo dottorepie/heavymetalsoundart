@@ -163,7 +163,7 @@ SynthDef.new(\synth,{
 				pneuma1=0,pneuma2=0,pneuma3=0,namp1=1,namp2=1,namp3=1,qq=0.0000001,qqq=0,spirit=0,
 				attack=0.01,decay=4,curve=2.neg,gate=1,xx=1,yy=1,zz=1;
 
-	var rq=1,cloud=1,band,azf=0,elf=0,q,r1,r2,r3,sq1,sq2,sq3,rotationx,rotationy,rotationz,core=(9/8).rand;
+	var rq=1,cloud=3,band,azf=0,elf=0,q,r1,r2,r3,sq1,sq2,sq3,rotationx,rotationy,rotationz,core=(9/8).rand;
 	var lamdoma,freq1,freq2,freq3,fund,amp1,amp2,amp3,alpha,cell_az,cell_el,x_pos,y_pos,control1,control2,control3;
 	var sig1,sig2,bank=6,out1,out2,band_osc1,band_osc2,threshold1,threshold2,threshold3,phase1,phase2,phase3;
 	var band_osc3,band_osc4,band_osc5,band_osc6,sig3,out3,cell_tria,b_x,b_y,b_z,polytope,gain1,gain2,gain3,env,azimuth,elevation;
@@ -191,7 +191,7 @@ ton1=2.pow(Select.kr(tonality.x, Select.kr(qqq.lag(0.01),~sc)) /12).round(0.0001
 ton2=2.pow(Select.kr(tonality.y, Select.kr(qqq.lag(0.01),~sc)) /12).round(0.0001)*2.pow(dron.lag(0.01)/992);
 ton3=2.pow(Select.kr(tonality.z, Select.kr(qqq.lag(0.01),~sc)) /12).round(0.0001)*2.pow(dron.lag(0.01)/992);
 
-	env=EnvGen.ar(Env.sine(decay),gate:gate,doneAction:2);
+	env=EnvGen.ar(Env.sine(decay),gate:gate,doneAction:0);
 			//	env=1;
 
 						lfo=2.pow(pan/992);
@@ -474,7 +474,7 @@ Limiter.ar(LeakDC.ar(FreeVerb.ar(
 sig3* g_ch4.lag(0.1)*pon4,mix.lag(0.01),room.lag(0.01),mul:gain3)),0.9,0.01)/cloud);
 				);
 
-					Out.ar(0,WhiteNoise.ar(0.00001)!4);
+					Out.ar(0,WhiteNoise.ar(0.000001)!4);
 
 					////stereo
 					/*(
@@ -557,35 +557,35 @@ m3=m3+1;
 			~sphpan=(992*4);
 			~bband=(992*16).neg;
 			~rect=0;
-			~strech=16;
+			~strech=32;
 			~detune=1;
 
 ////music parameters
-			~attacka=0.1;
 			~val=1234;
-			~expansion=1;
 					~seq= Pseq(1 *~dur, inf).asStream;
 
 ~str = Routine({
-    var i,m,l;
+    var i=0,m,l,az=0,el=0,expansion;
 	var m1,m2,m3,r1,r2,r3,sphm,sphr,time=1/8,melody,rhythm;
 
 					~synth=Synth.new(\synth,[\gain,~gg,\drive,~drive,\fu,256,\decay,~strech,
 						\low,~drive,\pan,~bband,\mix,~mox,\room,~room,\pann,~sphpan,\x,~lx,\a,~la,\spread,~panwidth,
-						\pon,~panner,\pneuma,0,\namp,1,\drone,~oct,\az,~azimuth.lag(0.01).[i],\el,~elevation.lag(0.01).[i],
+						\pon,~panner,\pneuma,0,\namp,1,\drone,~oct,\az,az,\el,el,
 						\panx,~rect,\pany,~rect,\panz,~rect,\dron,~ton,\qq,~feed,\qqq,~scalar,\gate,1,
 						\xx,~cart.lag(0.01).[i].[0].round(0.00001),
 				        \yy,~cart.lag(0.01).[i].[1].round(0.00001),
-						\zz,~cart.lag(0.00001).[i].[2].round(0.00001)]).register;
+						\zz,~cart.lag(0.01).[i].[2].round(0.00001)]).register;
 
     loop {
 
 								thisThread.randSeed = ~val;
 							i= ~cart.lag(0.01).size.rand;
 				//	i=0;
-					~expansion=Cartesian(~magnitude.[0],~magnitude.[1],~magnitude.[2]).rho;
-					rhythm=Spherical(~expansion,~azimuth.lag(0.01).[i],~elevation.lag(0.01).[i]);
-					melody=Spherical(5,~azimuth.lag(0.01).[i],~elevation.lag(0.01).[i]);
+	expansion=Cartesian(~cart.lag(0.01).[i].[0].round(0.00001),
+						~cart.lag(0.01).[i].[1].round(0.00001),
+						~cart.lag(0.00001).[i].[2].round(0.00001));
+					rhythm=Spherical(1,expansion.theta,expansion.phi);
+					melody=Spherical(5,expansion.theta,expansion.phi);
 				r1=2.pow(rhythm.x.abs).round(time);
 				r2=2.pow(rhythm.y.abs).round(time);
 				r3=2.pow(rhythm.z.abs).round(time);
@@ -595,9 +595,18 @@ m3=m3+1;
 					sphm=[m1,m2,m3];
 					sphr=[r1,r2,r3];
 
-~synth.set(\tone1,sphm.[0], \gate,1);
-~synth.set(\tone2,sphm.[1],\gate,1);
-~synth.set(\tone3,sphm.[2], \gate,1);
+~synth.set(\tone1,sphm.[0],
+						\xx,~cart.lag(0.01).[i].[0].round(0.00001),
+				        \yy,~cart.lag(0.01).[i].[1].round(0.00001),
+						\zz,~cart.lag(0.01).[i].[2].round(0.00001),\gate,1);
+~synth.set(\tone2,sphm.[1],
+						\xx,~cart.lag(0.01).[i].[0].round(0.00001),
+				        \yy,~cart.lag(0.01).[i].[1].round(0.00001),
+						\zz,~cart.lag(0.01).[i].[2].round(0.00001),\gate,1);
+~synth.set(\tone3,sphm.[2],
+						\xx,~cart.lag(0.01).[i].[0].round(0.00001),
+				        \yy,~cart.lag(0.01).[i].[1].round(0.00001),
+						\zz,~cart.lag(0.01).[i].[2].round(0.00001),\gate,1);
 				0.001.wait;
 		~synth.set(\gate,0);
 	sphr.[0].wait;
@@ -607,17 +616,29 @@ m3=m3+1;
 
 (
 	~temp= Routine({
+					   var i=0,expansion,matter;
 				loop{
+						i= ~cart.lag(0.01).size.rand;
+	expansion=Cartesian(~cart.lag(0.01).[i].[0].round(0.00001),
+						~cart.lag(0.01).[i].[1].round(0.00001),
+						~cart.lag(0.00001).[i].[2].round(0.00001));
+						matter=Spherical(12,expansion.theta,expansion.phi).x;
 				 TempoClock.default.tempo =  (~seq.next);
-			//		~seqi.next.wait;
-					(~expansion).wait;
+					(matter).wait;
 };
 	}))
 		) ;
 (
-			~rand= Routine({loop{
+			~rand= Routine({
+						   var i=0,expansion,matter;
+				loop{
+					i= ~cart.lag(0.01).size.rand;
+						expansion=Cartesian(~cart.lag(0.01).[i].[0].round(0.00001),
+						~cart.lag(0.01).[i].[1].round(0.00001),
+						~cart.lag(0.00001).[i].[2].round(0.00001));
+						matter=Spherical(20,expansion.theta,expansion.phi).y;
 ~val=1234.rand;
-				(~expansion/60).wait;
+				(matter).wait;
 };
 });
 	)
