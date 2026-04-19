@@ -31,7 +31,7 @@ Buffer.freeAll;
 {
 var signal,wt;
 	//signal=Env([1,100],[3],[8]);
-		signal=Env([1,1000],[3],[10]);
+		signal=Env([1,1000,1],[2.99,0.01],[10,2.neg]);
 	wt = signal.asSignal(1024).asWavetable;
 ~scale2.loadCollection(wt);
 //signal.plot;
@@ -39,7 +39,7 @@ var signal,wt;
 		{
 var signal,wt;
 //	signal=Env([1,10000],[3],[12]);
-			signal=Env([1,500],[3],[16]);
+			signal=Env([1,500,1],[2.99,0.01],[16,2.neg]);
 	wt = signal.asSignal(1024).asWavetable;
 ~scale1.loadCollection(wt);
 //signal.plot;
@@ -48,7 +48,7 @@ var signal,wt;
 	{
 var signal,wt;
 	//signal=Env([0.005,1,0.01],[2,1],[4,2.neg]);
-		signal=Env([1,20000,1],[2.95,0.05],[5,1.neg]);
+		signal=Env([1,16256,1],[2.95,0.05],[5,2.neg]);
 	wt = signal.asSignal(1024).asWavetable;
 ~scale.loadCollection(wt);
 //signal.plot;
@@ -90,23 +90,26 @@ var signal,wt;
 (
 SynthDef.new(\player,{
 
-	Out.kr(~controlBus.index, (Osc.kr(~scale.bufnum,(1/30)).abs));
-	Out.kr(~controlBus1.index, (Osc.kr(~scale1.bufnum,(1/30)).abs));
-	Out.kr(~controlBus4.index, (Osc.kr(~scale2.bufnum,(1/30)).abs));
-	Out.kr(~controlBus2.index, (Osc.kr(~rotation.bufnum,(1/30)).abs));
-    Out.kr(~controlBus3.index, (Osc.kr(~harm.bufnum,(1/30)).abs));
+	Out.kr(~controlBus.index, (Osc.kr(~scale.bufnum,(1/60)).abs));
+	Out.kr(~controlBus1.index, (Osc.kr(~scale1.bufnum,(1/60)).abs));
+	Out.kr(~controlBus4.index, (Osc.kr(~scale2.bufnum,(1/60)).abs));
+	Out.kr(~controlBus2.index, (Osc.kr(~rotation.bufnum,(1/60)).abs));
+    Out.kr(~controlBus3.index, (Osc.kr(~harm.bufnum,(1/60)).abs));
 	Out.kr(~controlBus5.index, (LFNoise1.kr(1/100).range(pi.neg,pi)));
-	Out.kr(~controlBus6.index, (Osc.kr(~temp.bufnum,(1/30)).abs));
-	Out.kr(~controlBus7.index, (Osc.kr(~space.bufnum,(1/30)).abs));
+	Out.kr(~controlBus6.index, (Osc.kr(~temp.bufnum,(1/60)).abs));
+	Out.kr(~controlBus7.index, (Osc.kr(~space.bufnum,(1/60)).abs));
 
 
 }).add;
-	);~count=[2,2,2,3,2,4];
+	);~count=[2,2,2,4,2,6];
 }
 )
 
-
-
+(
+~bspeed=1;
+ ~bfreq=2;
+~bamp=3;
+)
 //Server.freeAll
 //smoothing
 //az1 = az1 + (targetAz1 - az1) * 0.1;
@@ -159,7 +162,9 @@ b.background = Color.clear;
 
   r= Routine({loop{
 
-
+ waveSpeed = ~bspeed;
+ waveFreq = ~bfreq;
+ amp=~bamp;
 
 		scale=~controlBus.getSynchronous;
 	scale1=~controlBus1.getSynchronous;
@@ -581,12 +586,28 @@ az6=0;el6=0;
     val * wave;
 };
 
+		~magyb = ~magy.collect { |val, i|
+
+	 theta = ~az[i];
+     phi = ~el[i];
+	wave = amp*sin((waveFreq * theta) + (waveFreq * phi )- waveSpeed);
+    val * wave;
+};
+
+		~magzb = ~magz.collect { |val, i|
+
+	 theta = ~az[i];
+     phi = ~el[i];
+	wave = amp*sin((waveFreq * theta) + (waveFreq * phi )- waveSpeed);
+    val * wave;
+};
+
 	dota=(~count.[0]*~count.[1]*~count.[2]*~count.[3]*~count.[4]*~count.[5]).collect{
 
 	az=~az.[pla];
 	el=~el.[pla];
 	//mag=1000;
-			mag=(Cartesian(~magxb.[pla],~magy.[pla],~magz.[pla]).rho)/2.sqrt;
+			mag=(Cartesian(~magxb.[pla],~magyb.[pla],~magzb.[pla]).rho)/2.sqrt;
 	//	mag=mag+(Cartesian(~magqx.[pla],0,0).rho);
 	pla=pla+1;
 			//mk=(mk+(1-(1/1.6180339887499))).wrap(0,1);
@@ -605,7 +626,7 @@ az6=0;el6=0;
 			~v.background_(Color(space,space,space));
             ~v.refresh;
           //  0;               // keep AppClock loop going
-        }); /*~cart.postln;*/ (1/4).wait;
+        }); /*~cart.postln;*/ (1/8).wait;
 };};
 
 );

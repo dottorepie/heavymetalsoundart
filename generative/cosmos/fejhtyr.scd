@@ -163,7 +163,7 @@ SynthDef.new(\synth,{
 				pneuma1=0,pneuma2=0,pneuma3=0,namp1=1,namp2=1,namp3=1,qq=0.0000001,qqq=0,spirit=0,
 				attack=0.01,decay=4,curve=2.neg,gate=1,xx=1,yy=1,zz=1;
 
-	var rq=1,cloud=1,band,azf=0,elf=0,q,r1,r2,r3,sq1,sq2,sq3,rotationx,rotationy,rotationz,core=(9/8).rand;
+	var rq=1,cloud=5,band,azf=0,elf=0,q,r1,r2,r3,sq1,sq2,sq3,rotationx,rotationy,rotationz,core=(9/8).rand;
 	var lamdoma,freq1,freq2,freq3,fund,amp1,amp2,amp3,alpha,cell_az,cell_el,x_pos,y_pos,control1,control2,control3;
 	var sig1,sig2,bank=6,out1,out2,band_osc1,band_osc2,threshold1,threshold2,threshold3,phase1,phase2,phase3;
 	var band_osc3,band_osc4,band_osc5,band_osc6,sig3,out3,cell_tria,b_x,b_y,b_z,polytope,gain1,gain2,gain3,env,azimuth,elevation;
@@ -191,7 +191,7 @@ ton1=2.pow(Select.kr(tonality.x, Select.kr(qqq.lag(0.01),~sc)) /12).round(0.0001
 ton2=2.pow(Select.kr(tonality.y, Select.kr(qqq.lag(0.01),~sc)) /12).round(0.0001)*2.pow(dron.lag(0.01)/992);
 ton3=2.pow(Select.kr(tonality.z, Select.kr(qqq.lag(0.01),~sc)) /12).round(0.0001)*2.pow(dron.lag(0.01)/992);
 
-	env=EnvGen.ar(Env.sine(decay),gate:gate,doneAction:0);
+	env=EnvGen.ar(Env.sine(decay),gate:gate,doneAction:2);
 			//	env=1;
 
 						lfo=2.pow(pan/992);
@@ -433,7 +433,7 @@ pon2=SinOsc.ar(pon*lfon,0.25pi).range(0.0001,1).lag(0.1);
 pon3=SinOsc.ar(pon*lfon,0.5pi).range(0.0001,1).lag(0.1);
 pon4=SinOsc.ar(pon*lfon,0.75pi).range(0.0001,1).lag(0.1);
 
-(
+/*(
 Out.ar(0,
 Limiter.ar(LeakDC.ar(FreeVerb.ar(
 	sig1* g_ch1.lag(0.1)*pon1,mix.lag(0.01),room.lag(0.01),mul:gain1)),0.9,0.01)/cloud);
@@ -472,7 +472,7 @@ sig3* g_ch3.lag(0.1)*pon3,mix.lag(0.01),room.lag(0.01),mul:gain3)),0.9,0.01)/clo
 Out.ar(3,
 Limiter.ar(LeakDC.ar(FreeVerb.ar(
 sig3* g_ch4.lag(0.1)*pon4,mix.lag(0.01),room.lag(0.01),mul:gain3)),0.9,0.01)/cloud);
-				);
+				)*/
 
 					Out.ar(0,WhiteNoise.ar(0.000001)!4);
 
@@ -487,9 +487,9 @@ Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.01),room.lag(0.01),mul:
 
 	///three channel
 					(
-Out.ar(4,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.01),room.lag(0.01),mul:gain1*mx.lag(0.01))),0.9,0.01));
-Out.ar(5,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.01),room.lag(0.01),mul:gain2*my.lag(0.01))),0.9,0.01));
-Out.ar(6,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.01),room.lag(0.01),mul:gain3*mz.lag(0.01))),0.9,0.01));
+Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.01),room.lag(0.01),mul:gain1*mx.lag(0.01))),0.9,0.01));
+Out.ar(1,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.01),room.lag(0.01),mul:gain2*my.lag(0.01))),0.9,0.01));
+Out.ar(2,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.01),room.lag(0.01),mul:gain3*mz.lag(0.01))),0.9,0.01));
 					);
 
 						azf = (azf+(2pi-(2pi/s))).wrap(pi.neg,pi);
@@ -542,22 +542,22 @@ m3=m3+1;
 		(
 
 ////synth parameters
-			~gg=1;
+			~gg=0.1;
 			~panwidth=1;
 			~feed=0.00001;
 			~scalar=1;
 			~ton=496*2;
 			~oct=36.neg;
 			~lx=1;
-			~la=5;
-			~drive=992*1.5;
+			~la=6;
+			~drive=992*1;
 			~mox=0.5;
-			~room=1;
-			~panner=0.1;
-			~sphpan=(992*0);
+			~room=0.8;
+			~panner=0.01;
+			~sphpan=(992*4).neg;
 			~bband=(992*16).neg;
 			~rect=0;
-			~strech=6;
+			~strech=16;
 			~detune=1;
 
 ////music parameters
@@ -567,14 +567,6 @@ m3=m3+1;
 ~str = Routine({
     var i=0,m,l,az=0,el=0,expansion;
 	var m1,m2,m3,r1,r2,r3,sphm,sphr,time=1/32,melody,rhythm;
-
-					~synth=Synth.new(\synth,[\gain,~gg,\drive,~drive,\fu,64,\decay,~strech,
-						\low,~drive,\pan,~bband,\mix,~mox,\room,~room,\pann,~sphpan,\x,~lx,\a,~la,\spread,~panwidth,
-						\pon,~panner,\pneuma,0,\namp,1,\drone,~oct,\az,az,\el,el,
-						\panx,~rect,\pany,~rect,\panz,~rect,\dron,~ton,\qq,~feed,\qqq,~scalar,\gate,1,
-						\xx,~cart.lag(0.01).[i].[0].round(0.00001),
-				        \yy,~cart.lag(0.01).[i].[1].round(0.00001),
-						\zz,~cart.lag(0.01).[i].[2].round(0.00001)]).register;
 
     loop {
 ~val=1234.rand;
@@ -595,22 +587,32 @@ m3=m3+1;
 					sphm=[m1,m2,m3];
 					sphr=[r1,r2,r3];
 
-~synth.set(\tone1,sphm.[0],
+		~synth=Synth.new(\synth,[\gain,~gg,\drive,~drive,\fu,32,\decay,~strech,
+						\low,~drive,\pan,~bband,\mix,~mox,\room,~room,\pann,~sphpan,\x,~lx,\a,~la,\spread,~panwidth,
+						\pon,~panner,\pneuma,0,\namp,1,\drone,~oct,\az,az,\el,el,
+						\panx,~rect,\pany,~rect,\panz,~rect,\dron,~ton,\qq,~feed,\qqq,~scalar,\gate,1,
 						\xx,~cart.lag(0.01).[i].[0].round(0.00001),
 				        \yy,~cart.lag(0.01).[i].[1].round(0.00001),
-						\zz,~cart.lag(0.01).[i].[2].round(0.00001),\gate,1);
-~synth.set(\tone2,sphm.[1],
-						\xx,~cart.lag(0.01).[i].[0].round(0.00001),
-				        \yy,~cart.lag(0.01).[i].[1].round(0.00001),
-						\zz,~cart.lag(0.01).[i].[2].round(0.00001),\gate,1);
-~synth.set(\tone3,sphm.[2],
-						\xx,~cart.lag(0.01).[i].[0].round(0.00001),
-				        \yy,~cart.lag(0.01).[i].[1].round(0.00001),
-						\zz,~cart.lag(0.01).[i].[2].round(0.00001),\gate,1);
-				0.01.wait;
-		~synth.set(\gate,0);
+						\zz,~cart.lag(0.01).[i].[2].round(0.00001)]).register;
 	sphr.[0].wait;
 
+		~synth=Synth.new(\synth,[\gain,~gg,\drive,~drive,\fu,32,\decay,~strech,
+						\low,~drive,\pan,~bband,\mix,~mox,\room,~room,\pann,~sphpan,\x,~lx,\a,~la,\spread,~panwidth,
+						\pon,~panner,\pneuma,0,\namp,1,\drone,~oct,\az,az,\el,el,
+						\panx,~rect,\pany,~rect,\panz,~rect,\dron,~ton,\qq,~feed,\qqq,~scalar,\gate,1,
+						\xx,~cart.lag(0.01).[i].[0].round(0.00001),
+				        \yy,~cart.lag(0.01).[i].[1].round(0.00001),
+						\zz,~cart.lag(0.01).[i].[2].round(0.00001)]).register;
+	sphr.[1].wait;
+
+		~synth=Synth.new(\synth,[\gain,~gg,\drive,~drive,\fu,32,\decay,~strech,
+						\low,~drive,\pan,~bband,\mix,~mox,\room,~room,\pann,~sphpan,\x,~lx,\a,~la,\spread,~panwidth,
+						\pon,~panner,\pneuma,0,\namp,1,\drone,~oct,\az,az,\el,el,
+						\panx,~rect,\pany,~rect,\panz,~rect,\dron,~ton,\qq,~feed,\qqq,~scalar,\gate,1,
+						\xx,~cart.lag(0.01).[i].[0].round(0.00001),
+				        \yy,~cart.lag(0.01).[i].[1].round(0.00001),
+						\zz,~cart.lag(0.01).[i].[2].round(0.00001)]).register;
+						sphr.[2].wait;
     }
 		});
 
