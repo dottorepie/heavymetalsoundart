@@ -77,9 +77,9 @@ OSCdef(\ampt4, { |msg|
 	Pen.fillRect(Rect(wx+0,wy+0,300,300));
 	Pen.fillColor = Color(~amp2, ~amp2, ~amp2);
 	Pen.fillRect(Rect(wx+300,wy+0,300,300));
-	Pen.fillColor = Color(~amp3, ~amp3, ~amp3);
-	Pen.fillRect(Rect(wx+0,wy+300,300,300));
 	Pen.fillColor = Color(~amp4, ~amp4, ~amp4);
+	Pen.fillRect(Rect(wx+0,wy+300,300,300));
+	Pen.fillColor = Color(~amp3, ~amp3, ~amp3);
 	Pen.fillRect(Rect(wx+300,wy+300,300,300));
 	}
 };
