@@ -30,18 +30,21 @@ Window.closeAll;
 ~amp1 = 0;
 ~amp2 = 0;
 ~amp3 = 0;
+~amp4= 0;
 
-win = Window("RGB Audio Visualizer", Rect(100, 100, 300, 300));
-~v1 = UserView(win, Rect(0,0,300,300));
+win = Window("RGB Audio Visualizer", Rect(10, 10, 900, 900));
+~v1 = UserView(win, Rect(0,0,1200,1200));
 
 a = {
-	var amp1 = Amplitude.ar(InFeedback.ar(4,100));
-	var amp2 = Amplitude.ar(InFeedback.ar(5,100));
-	var amp3 = Amplitude.ar(InFeedback.ar(6,100));
+	var amp1 = Amplitude.ar(InFeedback.ar(3,100));
+	var amp2 = Amplitude.ar(InFeedback.ar(4,100));
+	var amp3 = Amplitude.ar(InFeedback.ar(5,100));
+	var amp4 = Amplitude.ar(InFeedback.ar(6,100));
 
-	SendReply.ar(Impulse.ar(120), '/amp1', amp1);
-	SendReply.ar(Impulse.ar(120), '/amp2', amp2);
-	SendReply.ar(Impulse.ar(120), '/amp3', amp3);
+	SendReply.ar(Impulse.ar(60), '/amp1', amp1);
+	SendReply.ar(Impulse.ar(60), '/amp2', amp2);
+	SendReply.ar(Impulse.ar(60), '/amp3', amp3);
+	SendReply.ar(Impulse.ar(60), '/amp4', amp4);
 }.play;
 
 // OSC
@@ -60,12 +63,24 @@ OSCdef(\ampt3, { |msg|
 	defer { ~v1.refresh };
 }, '/amp3');
 
+OSCdef(\ampt4, { |msg|
+	~amp4 = msg[3];
+	defer { ~v1.refresh };
+}, '/amp4');
+
 // ONE drawFunc
 ~v1.drawFunc = {
 	1.do{
 
-	Pen.fillColor = Color(~amp1, ~amp2, ~amp3);
-	Pen.fillRect(Rect(wx,wy,300,300));
+		Pen.translate(150,150);
+	Pen.fillColor = Color(~amp1, ~amp1, ~amp1);
+	Pen.fillRect(Rect(wx+0,wy+0,300,300));
+	Pen.fillColor = Color(~amp2, ~amp2, ~amp2);
+	Pen.fillRect(Rect(wx+300,wy+0,300,300));
+	Pen.fillColor = Color(~amp3, ~amp3, ~amp3);
+	Pen.fillRect(Rect(wx+0,wy+300,300,300));
+	Pen.fillColor = Color(~amp4, ~amp4, ~amp4);
+	Pen.fillRect(Rect(wx+300,wy+300,300,300));
 	}
 };
 

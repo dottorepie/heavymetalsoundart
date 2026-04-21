@@ -7,7 +7,7 @@
 ~rand.stop;
 s.record;
 Server.killAll
-~synthd.set(\fu,16,\gain,10)
+~synthd.set(\fu,64,\gain,50)
 (
 (
 s.options.numWireBufs = 1024*2;
@@ -849,46 +849,46 @@ pon2=SinOsc.ar(pon*lfon,0.25pi).range(0.0001,1).lag(0.1);
 pon3=SinOsc.ar(pon*lfon,0.5pi).range(0.0001,1).lag(0.1);
 pon4=SinOsc.ar(pon*lfon,0.75pi).range(0.0001,1).lag(0.1);
 
-/*(
-Out.ar(0,
+(
+Out.ar(3,
 Limiter.ar(LeakDC.ar(FreeVerb.ar(
 	sig1* g_ch1.lag(0.1)*pon1,mix.lag(0.01),room.lag(0.01),mul:gain1)),0.9,0.01)/cloud);
-Out.ar(1,
+Out.ar(4,
 Limiter.ar(LeakDC.ar(FreeVerb.ar(
 sig1* g_ch2.lag(0.1)*pon2,mix.lag(0.01),room.lag(0.01),mul:gain1)),0.9,0.01)/cloud);
-Out.ar(2,
+Out.ar(5,
 Limiter.ar(LeakDC.ar(FreeVerb.ar(
 sig1* g_ch3.lag(0.1)*pon3,mix.lag(0.01),room.lag(0.01),mul:gain1)),0.9,0.01)/cloud);
-Out.ar(3,
+Out.ar(6,
 Limiter.ar(LeakDC.ar(FreeVerb.ar(
 sig1* g_ch4.lag(0.1)*pon4,mix.lag(0.01),room.lag(0.01),mul:gain1)),0.9,0.01)/cloud);
 
-Out.ar(0,
+Out.ar(3,
 Limiter.ar(LeakDC.ar(FreeVerb.ar(
 sig2* g_ch1.lag(0.1)*pon1,mix.lag(0.01),room.lag(0.01),mul:gain2)),0.9,0.01)/cloud);
-Out.ar(1,
+Out.ar(4,
 Limiter.ar(LeakDC.ar(FreeVerb.ar(
 sig2* g_ch2.lag(0.1)*pon2,mix.lag(0.01),room.lag(0.01),mul:gain2)),0.9,0.01)/cloud);
-Out.ar(2,
+Out.ar(5,
 Limiter.ar(LeakDC.ar(FreeVerb.ar(
 sig2* g_ch3.lag(0.1)*pon3,mix.lag(0.01),room.lag(0.01),mul:gain2)),0.9,0.01)/cloud);
-Out.ar(3,
+Out.ar(6,
 Limiter.ar(LeakDC.ar(FreeVerb.ar(
 sig2* g_ch4.lag(0.1)*pon4,mix.lag(0.01),room.lag(0.01),mul:gain2)),0.9,0.01)/cloud);
 
-Out.ar(0,
-Limiter.ar(LeakDC.ar(FreeVerb.ar(
-sig3* g_ch1.lag(0.1)*pon1,mix.lag(0.01),room.lag(0.01),mul:gain3)),0.9,0.01)/cloud);
-Out.ar(1,
-Limiter.ar(LeakDC.ar(FreeVerb.ar(
-sig3* g_ch2.lag(0.1)*pon2,mix.lag(0.01),room.lag(0.01),mul:gain3)),0.9,0.01)/cloud);
-Out.ar(2,
-Limiter.ar(LeakDC.ar(FreeVerb.ar(
-sig3* g_ch3.lag(0.1)*pon3,mix.lag(0.01),room.lag(0.01),mul:gain3)),0.9,0.01)/cloud);
 Out.ar(3,
 Limiter.ar(LeakDC.ar(FreeVerb.ar(
+sig3* g_ch1.lag(0.1)*pon1,mix.lag(0.01),room.lag(0.01),mul:gain3)),0.9,0.01)/cloud);
+Out.ar(4,
+Limiter.ar(LeakDC.ar(FreeVerb.ar(
+sig3* g_ch2.lag(0.1)*pon2,mix.lag(0.01),room.lag(0.01),mul:gain3)),0.9,0.01)/cloud);
+Out.ar(5,
+Limiter.ar(LeakDC.ar(FreeVerb.ar(
+sig3* g_ch3.lag(0.1)*pon3,mix.lag(0.01),room.lag(0.01),mul:gain3)),0.9,0.01)/cloud);
+Out.ar(6,
+Limiter.ar(LeakDC.ar(FreeVerb.ar(
 sig3* g_ch4.lag(0.1)*pon4,mix.lag(0.01),room.lag(0.01),mul:gain3)),0.9,0.01)/cloud);
-				)*/
+				);
 
 					Out.ar(0,WhiteNoise.ar(0.00001)!4);
 					///three channel
@@ -899,11 +899,11 @@ sig3* g_ch4.lag(0.1)*pon4,mix.lag(0.01),room.lag(0.01),mul:gain3)),0.9,0.01)/clo
 		SinOsc.ar(lfon*pon,90.degrad)));
 	Out.ar(0,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.01),room.lag(0.01),mul:gain3*mz.lag(0.01))),0.9,0.01)!2);
 					)*/
-(
+/*(
 Out.ar(4,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.01),room.lag(0.01),mul:gain1*mx.lag(0.01))),0.9,0.01));
 Out.ar(5,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.01),room.lag(0.01),mul:gain2*my.lag(0.01))),0.9,0.01));
 Out.ar(6,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.01),room.lag(0.01),mul:gain3*mz.lag(0.01))),0.9,0.01));
-					);
+					)*/
 					////azimuthal multichannel expansion
 
 //Out.ar(0,PanAz.ar(2,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig1,mix.lag(0.01),room.lag(0.01),mul:gain1*loc1.abs)),0.9,0.01),SinOsc.ar(panx,phasex),width:spread));	//Out.ar(0,PanAz.ar(2,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig2,mix.lag(0.01),room.lag(0.01),mul:gain2*loc2.abs)),0.9,0.01),SinOsc.ar(pany,phasey),width:spread));
