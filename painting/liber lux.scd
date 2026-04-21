@@ -25,7 +25,7 @@ green = ~controlBus1.getSynchronous;
 a.free
 (
 var win,wx=0,wy=0;
-Window.closeAll;
+//Window.closeAll;
 
 ~amp1 = 0;
 ~amp2 = 0;
@@ -36,10 +36,10 @@ win = Window("RGB Audio Visualizer", Rect(10, 10, 900, 900));
 ~v1 = UserView(win, Rect(0,0,1200,1200));
 
 a = {
-	var amp1 = Amplitude.ar(InFeedback.ar(3,100));
-	var amp2 = Amplitude.ar(InFeedback.ar(4,100));
-	var amp3 = Amplitude.ar(InFeedback.ar(5,100));
-	var amp4 = Amplitude.ar(InFeedback.ar(6,100));
+	var amp1 = Amplitude.kr(In.kr(3,100));
+	var amp2 = Amplitude.kr(In.kr(4,100));
+	var amp3 = Amplitude.kr(In.kr(5,100));
+	var amp4 = Amplitude.kr(In.kr(6,100));
 
 	SendReply.ar(Impulse.ar(60), '/amp1', amp1);
 	SendReply.ar(Impulse.ar(60), '/amp2', amp2);

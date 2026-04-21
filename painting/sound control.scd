@@ -7,7 +7,7 @@
 ~rand.stop;
 s.record;
 Server.killAll
-~synthd.set(\fu,64,\gain,50)
+~synthd.set(\fu,1)
 (
 (
 s.options.numWireBufs = 1024*2;
@@ -1346,7 +1346,7 @@ MIDIdef.cc(\midi_slider1,{ |val, num, chan, src|
 	gain=val.linlin(0,127,0.00001,1).round(0.00001);
 		gain.postln;
 		if(~synth.isPlaying,{~synth.set(\gain,gain)});
-							if(~synthd.isPlaying,{~synthd.set(\gain,gain)});
+							if(~synthd.isPlaying,{~synthd.set(\gain,gain*100000)});
 },49);
 			);
 
