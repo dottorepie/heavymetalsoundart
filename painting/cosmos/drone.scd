@@ -367,10 +367,6 @@ threshold1=(((343/0.15)/fund).reciprocal.ampdb/2.sqrt).dbamp;
 threshold2=(((343/0.15)/fund).reciprocal.ampdb/2.sqrt).dbamp;
 threshold3=(((343/0.15)/fund).reciprocal.ampdb/2.sqrt).dbamp;
 
-				sig1=AllpassC.ar(sig1,2.sqrt,mx,decay*mx);
-		sig2=AllpassC.ar(sig2,2.sqrt,my,decay*my);
-		sig3=AllpassC.ar(sig3,2.sqrt,mz,decay*mz);
-
 		sig1=HPF.ar(sig1,80);
 		sig2=HPF.ar(sig2, 80);
 		sig3=HPF.ar(sig3, 80);
@@ -573,7 +569,7 @@ m3=m3+1;
 			~rect=0;
 			~strech=12;
 			~detune=1;
-			~cmp=50
+			~cmp=50;
 
 			(
 MIDIClient.init;
@@ -826,8 +822,8 @@ MIDIdef.cc(\midi_slider1,{ |val, num, chan, src|
 
 (
 			~str.play;
-		~temp.play;
-		~rand.play;
+	//	~temp.play;
+		//~rand.play;
 )
 
 TempoClock.default.tempo =  (1);
