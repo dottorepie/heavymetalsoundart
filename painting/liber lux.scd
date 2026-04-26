@@ -36,6 +36,7 @@ s.options.maxNodes = 1024 * 2;
 //s.recChannels = 8;
 s.boot;
 s.meter;
+
 )
 (
 {Out.ar(2,WhiteNoise.ar(1/10))}.play;
@@ -67,13 +68,13 @@ win = Window("RGB Audio Visualizer", Rect(10, 10, 700, 700));
 
 SynthDef(\painting, {
 	arg lag=0.1,gain1=5,gain2=100;
-	var amp1 = (InFeedback.ar(2).abs*gain1).lag(lag);
-	var amp2 = (InFeedback.ar(3).abs*gain1).lag(lag);
-	var amp3 = (InFeedback.ar(4).abs*gain1).lag(lag);
-	var amp4 = (InFeedback.ar(5).abs*gain1).lag(lag);
+	var amp1 = ((InFeedback.ar(2)+InFeedback.ar(2))*gain1).lag(lag);
+	var amp2 = ((InFeedback.ar(3)+InFeedback.ar(3))*gain1).lag(lag);
+	var amp3 = ((InFeedback.ar(4)+InFeedback.ar(4))*gain1).lag(lag);
+	var amp4 = ((InFeedback.ar(5)+InFeedback.ar(5))*gain1).lag(lag);
 	var amp5 = (InFeedback.ar(6)*gain2).lag(lag);
 	var amp6 = (InFeedback.ar(7)*gain2).lag(lag);
-    var amp7 = (InFeedback.ar(8).abs*gain2).lag(lag);
+    var amp7 = ((InFeedback.ar(8)+InFeedback.ar(8))*gain2).lag(lag);
 
 	SendReply.ar(Impulse.ar(60), '/amp1', amp1);
 	SendReply.ar(Impulse.ar(60), '/amp2', amp2);
@@ -122,7 +123,7 @@ OSCdef(\ampt7, { |msg|
 
 // ONE drawFunc
 ~v1.drawFunc = {
-    Pen.translate(25, 25);
+    Pen.translate(100, 100);
 
     25.do { |y|
         25.do { |x|
