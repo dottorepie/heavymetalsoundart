@@ -52,7 +52,7 @@ s.meter;
 ////////////////////////////////////////////painter
 
 (
-var win,wx=0,wy=0,g=((1+5.sqrt)/2),s=(1+2.sqrt), posit=0,size=500,scale=100;
+var win,wx=0,wy=0,g=((1+5.sqrt)/2),s=(1+2.sqrt), posit=0,size=500,scale=150;
 var xPos,yPos, ax,ay;
 //Window.closeAll;
 
@@ -126,24 +126,25 @@ OSCdef(\ampt7, { |msg|
 ~v1.drawFunc = {
     Pen.translate(size/2, size/2);
 
-    250.do { |y|
+    992.do { |y|
      //   1.do { |x|
 			ax=exp(Complex(0,1)*posit).real;
 			ay=exp(Complex(0,1)*posit).imag;
 
-		xPos = ((y/2)*ax) * (size/scale) + (~amp5);
-	yPos = ((y/2)*ay) * (size/scale) + (~amp6);
+		xPos = ((y/15)*ax) * (size/scale) + (~amp5.rand);
+	yPos = ((y/15)*ay) * (size/scale) + (~amp6.rand);
 
 Pen.fillColor = Color(2.pow(~amp1/992.neg),
-			2.pow(~amp2/992.neg),2.pow(~amp3/992.neg),1);
+			2.pow(~amp2/992.neg),2.pow(~amp3/992.neg),2.pow(~amp4/992.neg));
 
-     Pen.fillOval(Rect.aboutPoint(xPos @ yPos,
-				//2.pow(~amp7/12.neg)*(size/scale/2),
-			(size/scale),
-				//2.pow(~amp7/12.neg)*(size/scale/2)));
-			(size/scale)));
+     Pen.fillRect(Rect.aboutPoint(xPos @ yPos,
+			~amp7.pow(0.1)*(size/scale),
+			//(size/scale),
+				~amp7.pow(0.1)*(size/scale)));
+			//(size/scale)));
 
-						posit = (posit+(2pi-(2pi/g))).wrap(0,2pi);
+					//	posit = (posit+(2pi-(2pi/g))).wrap(0,2pi);
+		posit=(posit+(2pi/56)).wrap(0,2pi);
       //  };
     };
 };
@@ -167,7 +168,7 @@ MIDIIn.connectAll;
 					(
 MIDIdef.cc(\midi_pot1,{ |val, num, chan, src|
 		var k;
-			k=val.linlin(0,127,1,992*2).round(0.00001);
+			k=val.linlin(0,127,0,992*5).round(0.00001);
 		k.postln;
 		if(~a.isPlaying,{~a.set(\gain1,k)});
 
@@ -177,7 +178,7 @@ MIDIdef.cc(\midi_pot1,{ |val, num, chan, src|
 				(
 MIDIdef.cc(\midi_pot2,{ |val, num, chan, src|
          var k;
-		k=val.linlin(0,127,0.0001,10).round(0.00001);
+		k=val.linlin(0,127,0.001,10).round(0.00001);
 		k.postln;
 		if(~a.isPlaying,{~a.set(\lag,k)});
 
@@ -186,7 +187,7 @@ MIDIdef.cc(\midi_pot2,{ |val, num, chan, src|
 				(
 MIDIdef.cc(\midi_pot3,{ |val, num, chan, src|
 		var k;
-			k=val.linlin(0,127,1,1000).round(0.00001);
+			k=val.linlin(0,127,1,100).round(0.00001);
 		k.postln;
 		if(~a.isPlaying,{~a.set(\gain2,k)});
 },3);
