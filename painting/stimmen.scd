@@ -32,6 +32,11 @@ s.meter;
 	 ~b = Buffer.loadCollection(s, ~a.getSetsAndMatrices);
 );*/
 
+					//tetr
+		(
+~az=[45.degrad,135.neg.degrad,45.neg.degrad,135.degrad];
+~el=[35.264390.neg.degrad,35.264390.neg.degrad,35.264390.degrad,35.264390.degrad];
+);
 ////// wavetables
 
 		//oscillator table
@@ -74,7 +79,7 @@ spirit=0,amp=1,waveFreq=1,waveSpeed=1;
 	var amb_w,amb_x,amb_y,amb_z,out,amb_sig1,amb_sig2,amb_sig3,axisx,axisy,axisz,cx,cy,cz;
 	var axi1,axi2,axi3,ds1,ds2,ds3,f1,f2,f3,g1,g2,g3,sph_object,lfon,axis;
 	var r_axis, r_v, r, axisr,spr,rot,i,j,k,level=200,spx,spy,spz;
-	var g_ch1,g_ch2,g_ch3,g_ch4,chan=~chan;
+	var g_ch1,g_ch2,g_ch3,g_ch4,chan=4;
 	var gn ,g_sum,g_avg ,ton1,ton2,ton3,laxis,sp,spl,g11,g22,g33,g44;
 	var pon1,pon2,pon3,pon4,wave,angphi,angtheta;
 
@@ -244,9 +249,9 @@ ds2 =  (ds2*2.pow(drive/992)).softclip;
 ds3 =  (ds3*2.pow(drive/992)).softclip;
 
 				//sig
-sig1=(LPF.ar((Osc.ar(~w1.bufnum,freq1,phase:phasex,mul:level).abs*SinOsc.ar(freq1,phase:phasex)),freq1*2.pow(low.lag(0.01)/992),amp1).range(panx*amp1,amp1)+(ds1));
-sig2=(LPF.ar((Osc.ar(~w1.bufnum,freq2,phase:phasey,mul:level).abs*SinOsc.ar(freq2,phase:phasey)),freq2*2.pow(low.lag(0.01)/992),amp2).range(pany*amp2,amp2)+(ds2));
-sig3=(LPF.ar((Osc.ar(~w1.bufnum,freq3,phase:phasez,mul:level).abs*SinOsc.ar(freq3,phase:phasez)),freq3*2.pow(low.lag(0.01)/992),amp3).range(panz*amp3,amp3)+(ds3));
+sig1=(LPF.ar((Osc.ar(~w1.bufnum,freq1,phase:phasex,mul:level).abs*SinOsc.ar(freq1,phase:phasex)),freq1*2.pow(low.lag(0.01)/992),amp1).range(panx*amp1,amp1)*(ds1));
+sig2=(LPF.ar((Osc.ar(~w1.bufnum,freq2,phase:phasey,mul:level).abs*SinOsc.ar(freq2,phase:phasey)),freq2*2.pow(low.lag(0.01)/992),amp2).range(pany*amp2,amp2)*(ds2));
+sig3=(LPF.ar((Osc.ar(~w1.bufnum,freq3,phase:phasez,mul:level).abs*SinOsc.ar(freq3,phase:phasez)),freq3*2.pow(low.lag(0.01)/992),amp3).range(panz*amp3,amp3)*(ds3));
 
 	sig1=Select.ar(band.linlin((992*16).neg,((992*16).neg+1),0,1).round(1).asInteger,
 						[sig1,BPF.ar(BRF.ar(sig1,band_osc1.lag(0.1),rq1),band_osc4.lag(0.1),rq4)]);
@@ -427,7 +432,7 @@ Out.ar(6,Limiter.ar(LeakDC.ar(FreeVerb.ar(sig3,mix.lag(0.01),room.lag(0.01),mul:
 
 		(
 
-~synthd=Synth.new(\synthd,[\gain,1,\drive,992*2,\fu,256,\tone1,0,\tone2,0,\tone3,0,\low,992*0,\pan,(992*16).neg,
+~synthd=Synth.new(\synthd,[\gain,1,\drive,992*2,\fu,32,\tone1,0,\tone2,0,\tone3,0,\low,992*0,\pan,(992*16).neg,
 		\mix,0.3,\drone_amp,1,\room,0.5,\m,1,\pann,(992*16).neg,\pon,0.001,\pneuma,0, \namp,1,
 			\x,1,\a,1,\panx,0.01,\pany,0.01,\panz,0.01,\spread,1,
 			\az,pi/4,\el,pi/8,\azr,992,\dron,0,\drone,1,\sc,1]).register;
