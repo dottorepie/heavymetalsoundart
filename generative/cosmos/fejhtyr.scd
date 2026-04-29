@@ -347,9 +347,9 @@ ds2 =  (ds2*2.pow(drive/992)).softclip;
 ds3 =  (ds3*2.pow(drive/992)).softclip;
 
 				//sig
-sig1=(LPF.ar((Osc.ar(~w1.bufnum,freq1,phase:phasex,mul:level).abs*SinOsc.ar(freq1,phase:phasex)),freq1*2.pow(low.lag(0.01)/992),amp1).range(panx*amp1,amp1)+(ds1));
-sig2=(LPF.ar((Osc.ar(~w1.bufnum,freq2,phase:phasey,mul:level).abs*SinOsc.ar(freq2,phase:phasey)),freq2*2.pow(low.lag(0.01)/992),amp2).range(pany*amp2,amp2)+(ds2));
-sig3=(LPF.ar((Osc.ar(~w1.bufnum,freq3,phase:phasez,mul:level).abs*SinOsc.ar(freq3,phase:phasez)),freq3*2.pow(low.lag(0.01)/992),amp3).range(panz*amp3,amp3)+(ds3));
+sig1=(LPF.ar((Osc.ar(~w1.bufnum,freq1,phase:phasex,mul:level).abs*SinOsc.ar(freq1,phase:phasex)),freq1*2.pow(low.lag(0.01)/992),amp1).range(panx*amp1,amp1)*(ds1));
+sig2=(LPF.ar((Osc.ar(~w1.bufnum,freq2,phase:phasey,mul:level).abs*SinOsc.ar(freq2,phase:phasey)),freq2*2.pow(low.lag(0.01)/992),amp2).range(pany*amp2,amp2)*(ds2));
+sig3=(LPF.ar((Osc.ar(~w1.bufnum,freq3,phase:phasez,mul:level).abs*SinOsc.ar(freq3,phase:phasez)),freq3*2.pow(low.lag(0.01)/992),amp3).range(panz*amp3,amp3)*(ds3));
 
 	sig1=Select.ar(band.linlin((992*16).neg,((992*16).neg+1),0,1).round(1).asInteger,
 						[sig1,BPF.ar(BRF.ar(sig1,band_osc1.lag(0.1),rq1),band_osc4.lag(0.1),rq4)]);
@@ -552,22 +552,22 @@ m3=m3+1;
 		(
 
 ////synth parameters
-			~gg=0.1;
+			~gg=1;
 			~panwidth=1;
-			~feed=0.00001;
-			~scalar=1;
-			~ton=496*2;
+			~feed=0.000001;
+			~scalar=0;
+			~ton=496*3;
 			~oct=36.neg;
 			~lx=1;
 			~la=6;
-			~drive=992*1;
+			~drive=992*0.5;
 			~mox=0.5;
-			~room=0.8;
-			~panner=0.01;
-			~sphpan=(992*4).neg;
+			~room=0.5;
+			~panner=1;
+			~sphpan=(992*1);
 			~bband=(992*16).neg;
 			~rect=0;
-			~strech=16;
+			~strech=12;
 			~detune=1;
 
 ////music parameters
