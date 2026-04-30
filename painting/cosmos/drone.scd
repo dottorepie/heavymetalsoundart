@@ -161,7 +161,7 @@ SynthDef.new(\synth,{
 	arg gain=1,low=992,tone1=0,tone2=0,tone3=0,x=1,pan=1,mix=0.3,a=1,panx=1,pany=1,panz=1,room=0.5,pon=1,cmp=50,limit=1,
 				fu=32,drive=1,spread=1,drone_amp=1,pann=0,az=0,el=0,azr=0,dron=0,drone=1,theta=0,rx=0,ry=0,rz=0,
 				pneuma1=0,pneuma2=0,pneuma3=0,namp1=1,namp2=1,namp3=1,qq=0.0000001,qqq=0,spirit=0,
-				attack=0.01,decay=4,curve=2.neg,gate=1,xx=1,yy=1,zz=1;
+				attack=0.01,decay=4,curve=2.neg,gate=1,xx=1,yy=1,zz=1,rlx=1,rla1=1,rla2=1,rph=0;
 
 	var rq=1,cloud=1,band,azf=0,elf=0,q,r1,r2,r3,sq1,sq2,sq3,rotationx,rotationy,rotationz,core=(9/8).rand;
 	var lamdoma,freq1,freq2,freq3,fund,amp1,amp2,amp3,alpha,cell_az,cell_el,x_pos,y_pos,control1,control2,control3;
@@ -331,16 +331,16 @@ ds3=((LPF.ar((Osc.ar(~w1.bufnum,f3,phase:phasez,mul:level).abs*
 					+BPF.ar(BrownNoise.ar(qq.sqrt.reciprocal),f3*dr,qq,g3/dr));
 				)*/
 
-				(
-ds1=((LPF.ar((Osc.ar(~w1.bufnum,f1,phase:phasex,mul:level).abs*
-					SinOsc.ar(f1,phase:phasex)),f1*2.pow(low.lag(0.01)/992),g1)).range(panx*g1,g1)
-					+BPF.ar(LPF.ar((SoundIn.ar(0,cmp)*qq.sqrt.reciprocal),fund*dr),f1*dr,qq,g1/dr));
-ds2=((LPF.ar((Osc.ar(~w1.bufnum,f2,phase:phasey,mul:level).abs*
-					SinOsc.ar(f2,phase:phasey)),f2*2.pow(low.lag(0.01)/992),g2)).range(pany*g2,g2)
-					+BPF.ar(LPF.ar((SoundIn.ar(0,cmp)*qq.sqrt.reciprocal),fund*dr),f2*dr,qq,g2/dr));
-ds3=((LPF.ar((Osc.ar(~w1.bufnum,f3,phase:phasez,mul:level).abs*
-					SinOsc.ar(f3,phase:phasez)),f3*2.pow(low.lag(0.01)/992),g3)).range(panz*g3,g3)
-					+BPF.ar(LPF.ar((SoundIn.ar(0,cmp)*qq.sqrt.reciprocal),fund*dr),f3*dr,qq,g3/dr));
+						(
+ds1=((LPF.ar((Osc.ar(~w1.bufnum,f1*dr1.reciprocal,phase:phasex+rph,mul:level).abs*
+					SinOsc.ar(f1*dr1.reciprocal,phase:phasex+rph)),f1*dr1.reciprocal*2.pow(low.lag(0.01)/992),g1*dr1)).abs
+					*BPF.ar((SoundIn.ar(0,gain)*qq.sqrt.reciprocal),f1*dr2.reciprocal,qq,g1*dr2));
+ds2=((LPF.ar((Osc.ar(~w1.bufnum,f2*dr1.reciprocal,phase:phasey+rph,mul:level).abs*
+						SinOsc.ar(f2*dr1.reciprocal,phase:phasey+rph)),f2*dr1.reciprocal*2.pow(low.lag(0.01)/992),g2*dr1)).abs
+					*BPF.ar((SoundIn.ar(0,gain)*qq.sqrt.reciprocal),f2*dr2.reciprocal,qq,g2*dr2));
+ds3=((LPF.ar((Osc.ar(~w1.bufnum,f3*dr1.reciprocal,phase:phasez+rph,mul:level).abs*
+					SinOsc.ar(f3*dr1.reciprocal,phase:phasez+rph)),f3*dr1.reciprocal*2.pow(low.lag(0.01)/992),g3*dr1)).abs
+					*BPF.ar((SoundIn.ar(0,gain)*qq.sqrt.reciprocal),f3*dr2.reciprocal,qq,g3*dr2));
 				);
 
 ds1 = (ds1*2.pow(drive/992)).softclip;
@@ -348,9 +348,9 @@ ds2 =  (ds2*2.pow(drive/992)).softclip;
 ds3 =  (ds3*2.pow(drive/992)).softclip;
 
 				//sig
-sig1=(LPF.ar((Osc.ar(~w1.bufnum,freq1,phase:phasex,mul:level).abs*SinOsc.ar(freq1,phase:phasex)),freq1*2.pow(low.lag(0.01)/992),amp1).range(panx*amp1,amp1)*(ds1));
-sig2=(LPF.ar((Osc.ar(~w1.bufnum,freq2,phase:phasey,mul:level).abs*SinOsc.ar(freq2,phase:phasey)),freq2*2.pow(low.lag(0.01)/992),amp2).range(pany*amp2,amp2)*(ds2));
-sig3=(LPF.ar((Osc.ar(~w1.bufnum,freq3,phase:phasez,mul:level).abs*SinOsc.ar(freq3,phase:phasez)),freq3*2.pow(low.lag(0.01)/992),amp3).range(panz*amp3,amp3)*(ds3));
+sig1=(LPF.ar((Osc.ar(~w1.bufnum,freq1,phase:phasex,mul:level).abs*SinOsc.ar(freq1,phase:phasex)),freq1*2.pow(low.lag(0.01)/992),amp1).abs*(ds1));
+sig2=(LPF.ar((Osc.ar(~w1.bufnum,freq2,phase:phasey,mul:level).abs*SinOsc.ar(freq2,phase:phasey)),freq2*2.pow(low.lag(0.01)/992),amp2).abs*(ds2));
+sig3=(LPF.ar((Osc.ar(~w1.bufnum,freq3,phase:phasez,mul:level).abs*SinOsc.ar(freq3,phase:phasez)),freq3*2.pow(low.lag(0.01)/992),amp3).abs*(ds3));
 
 	sig1=Select.ar(band.linlin((992*16).neg,((992*16).neg+1),0,1).round(1).asInteger,
 						[sig1,BPF.ar(BRF.ar(sig1,band_osc1.lag(0.1),rq1),band_osc4.lag(0.1),rq4)]);
@@ -572,6 +572,10 @@ m3=m3+1;
 			~detune=1;
 			~cmp=50;
 				~limit=1;
+			~rph=0;
+			~rlx=1;
+			~rla1=1;
+			~rla2=3;
 
 			(
 MIDIClient.init;
@@ -580,7 +584,7 @@ MIDIIn.connectAll;
 												(
 MIDIdef.cc(\midi_pot4,{ |val, num, chan, src|
 		var gain;
-			gain=val.linlin(0,127,0.001,5).round(0.0001);
+			gain=val.linlin(0,127,0,100).round(0.0001);
 		gain.postln;
 		~gg=gain;
 },4);
@@ -720,6 +724,33 @@ MIDIdef.cc(\midi_seq_pot2,{ |val, num, chan, src|
 				~strech=decay;
 },18);
 	);
+
+									(
+MIDIdef.cc(\midi_seq_pot3,{ |val, num, chan, src|
+		var s3;
+			s3=val.linlin(0,127,1,11).round(1).asInteger;
+		s3.postln;
+		~rlx=se3
+},19);
+	);
+
+												(
+MIDIdef.cc(\midi_seq_pot4,{ |val, num, chan, src|
+		var s4;
+			s4=val.linlin(0,127,1,11).round(1).asInteger;
+		s4.postln;
+		~rla1=s4;
+},20);
+	);
+
+														(
+MIDIdef.cc(\midi_seq_pot5,{ |val, num, chan, src|
+		var s5;
+			s5=val.linlin(0,127,0,10).round(1).asInteger;
+		s5.postln;
+		~rla2=s5;
+},21);
+	);
 			(
 MIDIdef.cc(\midi_slider1,{ |val, num, chan, src|
 		var gain;
@@ -735,6 +766,14 @@ MIDIdef.cc(\midi_slider2,{ |val, num, chan, src|
 		th.postln;
 		~limit=th;
 },25);
+	);
+												(
+MIDIdef.cc(\midi_slider7,{ |val, num, chan, src|
+	var spread;
+			spread=val.linlin(0,127,0,137.5.degrad).round(0.00001);
+		spread.postln;
+		~rph=spread;
+},30);
 	);
 	);
 );
@@ -767,29 +806,29 @@ MIDIdef.cc(\midi_slider2,{ |val, num, chan, src|
 					sphm=[m1,m2,m3];
 					sphr=[r1,r2,r3];
 
-		~synth=Synth.new(\synth,[\gain,~gg,\drive,~drive,\fu,32,\decay,~strech,
+		~synth=Synth.new(\synth,[\gain,~gg,\drive,~drive,\fu,16,\decay,~strech,
 						\low,~drive,\pan,~bband,\mix,~mox,\room,~room,\pann,~sphpan,\x,~lx,\a,~la,\spread,~panwidth,\limit,~limit,
 						\pon,~panner,\pneuma,0,\namp,1,\drone,~oct,\az,az,\el,el,
 						\panx,~rect,\pany,~rect,\panz,~rect,\dron,~ton,\qq,~feed,\qqq,~scalar,\gate,1,\cmp,~cmp,
-						\xx,~cart.lag(0.01).[i].[0].round(0.00001),
+						\xx,~cart.lag(0.01).[i].[0].round(0.00001),\rph,~rph,\rlx,~rlx,\rla1,~rla1,\rla2,~rla2,
 				        \yy,~cart.lag(0.01).[i].[1].round(0.00001),
 						\zz,~cart.lag(0.01).[i].[2].round(0.00001)]).register;
 					(~speed*sphr.[0]).wait;
 
-		~synth=Synth.new(\synth,[\gain,~gg,\drive,~drive,\fu,32,\decay,~strech,
+		~synth=Synth.new(\synth,[\gain,~gg,\drive,~drive,\fu,16,\decay,~strech,
 						\low,~drive,\pan,~bband,\mix,~mox,\room,~room,\pann,~sphpan,\x,~lx,\a,~la,\spread,~panwidth,\limit,~limit,
 						\pon,~panner,\pneuma,0,\namp,1,\drone,~oct,\az,az,\el,el,
 						\panx,~rect,\pany,~rect,\panz,~rect,\dron,~ton,\qq,~feed,\qqq,~scalar,\gate,1,\cmp,~cmp,
-						\xx,~cart.lag(0.01).[i].[0].round(0.00001),
+						\xx,~cart.lag(0.01).[i].[0].round(0.00001),\rph,~rph,\rlx,~rlx,\rla1,~rla1,\rla2,~rla2,
 				        \yy,~cart.lag(0.01).[i].[1].round(0.00001),
 						\zz,~cart.lag(0.01).[i].[2].round(0.00001)]).register;
 	(~speed*sphr.[1]).wait;
 
-		~synth=Synth.new(\synth,[\gain,~gg,\drive,~drive,\fu,32,\decay,~strech,
+		~synth=Synth.new(\synth,[\gain,~gg,\drive,~drive,\fu,16,\decay,~strech,
 						\low,~drive,\pan,~bband,\mix,~mox,\room,~room,\pann,~sphpan,\x,~lx,\a,~la,\spread,~panwidth,\limit,~limit,
 						\pon,~panner,\pneuma,0,\namp,1,\drone,~oct,\az,az,\el,el,
 						\panx,~rect,\pany,~rect,\panz,~rect,\dron,~ton,\qq,~feed,\qqq,~scalar,\gate,1,\cmp,~cmp,
-						\xx,~cart.lag(0.01).[i].[0].round(0.00001),
+						\xx,~cart.lag(0.01).[i].[0].round(0.00001),\rph,~rph,\rlx,~rlx,\rla1,~rla1,\rla2,~rla2,
 				        \yy,~cart.lag(0.01).[i].[1].round(0.00001),
 						\zz,~cart.lag(0.01).[i].[2].round(0.00001)]).register;
 						(~speed*sphr.[2]).wait;
