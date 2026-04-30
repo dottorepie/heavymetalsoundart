@@ -323,25 +323,25 @@ control3=SinOsc.ar(freq3,phase:phasez,mul:amp3);
 				//rectifier mod
 				/*(
 ds1=((LPF.ar((Osc.ar(~w1.bufnum,f1,phase:phasex,mul:level).abs*
-					SinOsc.ar(f1,phase:phasex)),f1*2.pow(low.lag(0.01)/992),g1)).range(panx*g1,g1)
+					SinOsc.ar(f1,phase:phasex)),f1*2.pow(low.lag(0.01)/992),g1)).abs
 					+BPF.ar(BrownNoise.ar(qq.sqrt.reciprocal),f1*dr,qq,g1/dr));
 ds2=((LPF.ar((Osc.ar(~w1.bufnum,f2,phase:phasey,mul:level).abs*
-					SinOsc.ar(f2,phase:phasey)),f2*2.pow(low.lag(0.01)/992),g2)).range(pany*g2,g2)
+					SinOsc.ar(f2,phase:phasey)),f2*2.pow(low.lag(0.01)/992),g2)).abs
 					+BPF.ar(BrownNoise.ar(qq.sqrt.reciprocal),f2*dr,qq,g2/dr));
 ds3=((LPF.ar((Osc.ar(~w1.bufnum,f3,phase:phasez,mul:level).abs*
-					SinOsc.ar(f3,phase:phasez)),f3*2.pow(low.lag(0.01)/992),g3)).range(panz*g3,g3)
+					SinOsc.ar(f3,phase:phasez)),f3*2.pow(low.lag(0.01)/992),g3)).abs
 					+BPF.ar(BrownNoise.ar(qq.sqrt.reciprocal),f3*dr,qq,g3/dr));
 				)*/
 
 				(
 ds1=((LPF.ar((Osc.ar(~w1.bufnum,f1,phase:phasex,mul:level).abs*
-					SinOsc.ar(f1,phase:phasex)),f1*2.pow(low.lag(0.01)/992),g1)).range(panx*g1,g1)
+					SinOsc.ar(f1,phase:phasex)),f1*2.pow(low.lag(0.01)/992),g1)).abs
 					*BPF.ar(LPF.ar((SoundIn.ar(0,50)*qq.sqrt.reciprocal),fund*dr),f1*dr,qq,g1/dr));
 ds2=((LPF.ar((Osc.ar(~w1.bufnum,f2,phase:phasey,mul:level).abs*
-					SinOsc.ar(f2,phase:phasey)),f2*2.pow(low.lag(0.01)/992),g2)).range(pany*g2,g2)
+					SinOsc.ar(f2,phase:phasey)),f2*2.pow(low.lag(0.01)/992),g2)).abs
 					*BPF.ar(LPF.ar((SoundIn.ar(0,50)*qq.sqrt.reciprocal),fund*dr),f2*dr,qq,g2/dr));
 ds3=((LPF.ar((Osc.ar(~w1.bufnum,f3,phase:phasez,mul:level).abs*
-					SinOsc.ar(f3,phase:phasez)),f3*2.pow(low.lag(0.01)/992),g3)).range(panz*g3,g3)
+					SinOsc.ar(f3,phase:phasez)),f3*2.pow(low.lag(0.01)/992),g3)).abs
 					*BPF.ar(LPF.ar((SoundIn.ar(0,50)*qq.sqrt.reciprocal),fund*dr),f3*dr,qq,g3/dr));
 				);
 
@@ -350,9 +350,9 @@ ds2 =  (ds2*2.pow(drive/992)).softclip;
 ds3 =  (ds3*2.pow(drive/992)).softclip;
 
 				//sig
-sig1=(LPF.ar((Osc.ar(~w1.bufnum,freq1,phase:phasex,mul:level).abs*SinOsc.ar(freq1,phase:phasex)),freq1*2.pow(low.lag(0.01)/992),amp1).range(panx*amp1,amp1)*(ds1));
-sig2=(LPF.ar((Osc.ar(~w1.bufnum,freq2,phase:phasey,mul:level).abs*SinOsc.ar(freq2,phase:phasey)),freq2*2.pow(low.lag(0.01)/992),amp2).range(pany*amp2,amp2)*(ds2));
-sig3=(LPF.ar((Osc.ar(~w1.bufnum,freq3,phase:phasez,mul:level).abs*SinOsc.ar(freq3,phase:phasez)),freq3*2.pow(low.lag(0.01)/992),amp3).range(panz*amp3,amp3)*(ds3));
+sig1=(LPF.ar((Osc.ar(~w1.bufnum,freq1,phase:phasex,mul:level).abs*SinOsc.ar(freq1,phase:phasex)),freq1*2.pow(low.lag(0.01)/992),amp1).abs*(ds1));
+sig2=(LPF.ar((Osc.ar(~w1.bufnum,freq2,phase:phasey,mul:level).abs*SinOsc.ar(freq2,phase:phasey)),freq2*2.pow(low.lag(0.01)/992),amp2).abs*(ds2));
+sig3=(LPF.ar((Osc.ar(~w1.bufnum,freq3,phase:phasez,mul:level).abs*SinOsc.ar(freq3,phase:phasez)),freq3*2.pow(low.lag(0.01)/992),amp3).abs*(ds3));
 
 	sig1=Select.ar(band.linlin((992*16).neg,((992*16).neg+1),0,1).round(1).asInteger,
 						[sig1,BPF.ar(BRF.ar(sig1,band_osc1.lag(0.1),rq1),band_osc4.lag(0.1),rq4)]);
@@ -734,25 +734,25 @@ control3=SinOsc.ar(freq3,phase:phasez,mul:amp3);
 				//rectifier mod
 				/*(
 ds1=((LPF.ar((Osc.ar(~w1.bufnum,f1,phase:phasex,mul:level).abs*
-					SinOsc.ar(f1,phase:phasex)),f1*2.pow(low.lag(0.01)/992),g1)).range(panx*g1,g1)
+					SinOsc.ar(f1,phase:phasex)),f1*2.pow(low.lag(0.01)/992),g1)).abs
 					+BPF.ar(BrownNoise.ar(qq.sqrt.reciprocal),f1*dr,qq,g1/dr));
 ds2=((LPF.ar((Osc.ar(~w1.bufnum,f2,phase:phasey,mul:level).abs*
-					SinOsc.ar(f2,phase:phasey)),f2*2.pow(low.lag(0.01)/992),g2)).range(pany*g2,g2)
+					SinOsc.ar(f2,phase:phasey)),f2*2.pow(low.lag(0.01)/992),g2)).abs
 					+BPF.ar(BrownNoise.ar(qq.sqrt.reciprocal),f2*dr,qq,g2/dr));
 ds3=((LPF.ar((Osc.ar(~w1.bufnum,f3,phase:phasez,mul:level).abs*
-					SinOsc.ar(f3,phase:phasez)),f3*2.pow(low.lag(0.01)/992),g3)).range(panz*g3,g3)
+					SinOsc.ar(f3,phase:phasez)),f3*2.pow(low.lag(0.01)/992),g3)).abs
 					+BPF.ar(BrownNoise.ar(qq.sqrt.reciprocal),f3*dr,qq,g3/dr));
 				)*/
 
 				(
 ds1=((LPF.ar((Osc.ar(~w1.bufnum,f1,phase:phasex,mul:level).abs*
-					SinOsc.ar(f1,phase:phasex)),f1*2.pow(low.lag(0.01)/992),g1)).range(panx*g1,g1)
+					SinOsc.ar(f1,phase:phasex)),f1*2.pow(low.lag(0.01)/992),g1)).abs
 					*BPF.ar(LPF.ar((SoundIn.ar(0,50)*qq.sqrt.reciprocal),fund*dr),f1*dr,qq,g1/dr));
 ds2=((LPF.ar((Osc.ar(~w1.bufnum,f2,phase:phasey,mul:level).abs*
-					SinOsc.ar(f2,phase:phasey)),f2*2.pow(low.lag(0.01)/992),g2)).range(pany*g2,g2)
+					SinOsc.ar(f2,phase:phasey)),f2*2.pow(low.lag(0.01)/992),g2)).abs
 					*BPF.ar(LPF.ar((SoundIn.ar(0,50)*qq.sqrt.reciprocal),fund*dr),f2*dr,qq,g2/dr));
 ds3=((LPF.ar((Osc.ar(~w1.bufnum,f3,phase:phasez,mul:level).abs*
-					SinOsc.ar(f3,phase:phasez)),f3*2.pow(low.lag(0.01)/992),g3)).range(panz*g3,g3)
+					SinOsc.ar(f3,phase:phasez)),f3*2.pow(low.lag(0.01)/992),g3)).abs
 					*BPF.ar(LPF.ar((SoundIn.ar(0,50)*qq.sqrt.reciprocal),fund*dr),f3*dr,qq,g3/dr));
 				);
 
@@ -761,9 +761,9 @@ ds2 =  (ds2*2.pow(drive/992)).softclip;
 ds3 =  (ds3*2.pow(drive/992)).softclip;
 
 				//sig
-sig1=(LPF.ar((Osc.ar(~w1.bufnum,freq1,phase:phasex,mul:level).abs*SinOsc.ar(freq1,phase:phasex)),freq1*2.pow(low.lag(0.01)/992),amp1).range(panx*amp1,amp1)*(ds1));
-sig2=(LPF.ar((Osc.ar(~w1.bufnum,freq2,phase:phasey,mul:level).abs*SinOsc.ar(freq2,phase:phasey)),freq2*2.pow(low.lag(0.01)/992),amp2).range(pany*amp2,amp2)*(ds2));
-sig3=(LPF.ar((Osc.ar(~w1.bufnum,freq3,phase:phasez,mul:level).abs*SinOsc.ar(freq3,phase:phasez)),freq3*2.pow(low.lag(0.01)/992),amp3).range(panz*amp3,amp3)*(ds3));
+sig1=(LPF.ar((Osc.ar(~w1.bufnum,freq1,phase:phasex,mul:level).abs*SinOsc.ar(freq1,phase:phasex)),freq1*2.pow(low.lag(0.01)/992),amp1).abs*(ds1));
+sig2=(LPF.ar((Osc.ar(~w1.bufnum,freq2,phase:phasey,mul:level).abs*SinOsc.ar(freq2,phase:phasey)),freq2*2.pow(low.lag(0.01)/992),amp2).abs*(ds2));
+sig3=(LPF.ar((Osc.ar(~w1.bufnum,freq3,phase:phasez,mul:level).abs*SinOsc.ar(freq3,phase:phasez)),freq3*2.pow(low.lag(0.01)/992),amp3).abs*(ds3));
 
 	sig1=Select.ar(band.linlin((992*16).neg,((992*16).neg+1),0,1).round(1).asInteger,
 						[sig1,BPF.ar(BRF.ar(sig1,band_osc1.lag(0.1),rq1),band_osc4.lag(0.1),rq4)]);
