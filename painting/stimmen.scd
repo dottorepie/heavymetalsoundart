@@ -883,6 +883,67 @@ MIDIdef.cc(\midi_slider8,{ |val, num, chan, src|
 },31);
 	);
 
+
+				(
+MIDIdef.cc(\midi_seq_pot6,{ |val, num, chan, src|
+		var s6;
+						s6=val.linlin(0,127,0,10).round(1).asInteger;
+		s6.postln;
+		~s1=s6;
+},22);
+	);
+
+														(
+MIDIdef.cc(\midi_seq_pot7,{ |val, num, chan, src|
+		var s7;
+			s7=val.linlin(0,127,0,10).round(1).asInteger;
+		s7.postln;
+		~s2=s7;
+},23);
+	);
+
+																	(
+MIDIdef.cc(\midi_seq_pot8,{ |val, num, chan, src|
+		var s8;
+			s8=val.linlin(0,127,0,10).round(1).asInteger;
+		s8.postln;
+		~s3=s8;
+},24);
+	);
+			(
+MIDIdef.cc(\midi_slider2,{ |val, num, chan, src|
+		var th;
+	th=val.linlin(0,127,0,10).round(1).asInteger;
+		th.postln;
+~s4=th;
+},25);
+	);
+
+														(
+MIDIdef.cc(\midi_slider3,{ |val, num, chan, src|
+		var th;
+	th=val.linlin(0,127,0,10).round(1).asInteger;
+		th.postln;
+~s5=th;
+
+},26);
+	);
+(
+MIDIdef.cc(\midi_slider4,{ |val, num, chan, src|
+		var th;
+	th=val.linlin(0,127,0,10).round(1).asInteger;
+		th.postln;
+~s6=th;
+},27);
+	);
+			(
+MIDIdef.cc(\midi_slider9,{ |val, num, chan, src|
+		var th;
+	th=val.linlin(0,127,0,10).round(1).asInteger;
+		th.postln;
+~s7=th;
+},32);
+			)
 		);
 
 
@@ -899,9 +960,139 @@ MIDIdef.cc(\midi_slider8,{ |val, num, chan, src|
 
 s.record(numChannels:4)
 
+(
+	TempoClock.default.tempo_(1);
+///sequencer
+({
+			var m1=1.neg, m2=1.neg, m3=1.neg,a,b,c,n=0,bank=4,time=8.reciprocal,beat=1,r=0;
+			~r=0;		~r1=0;		~r2=0;
+				(
+
+			~dur1=[];~dur2=[];~dur3=[]; ~dx=[];~dy=[]; ~dz=[]; ~durx=[]; ~dury=[]; ~durz=[]; ~dur=[];
+
+					1.do{
+~x=bank.collect{
+m1=m1+1;
+					b=Spherical(beat,~az.[m1],~el.[m1]).rotate(~r).tilt(~r1).tumble(~r2).x.round(0.00001);
+	2.pow(b).round(time);
+};
+~y=bank.collect{
+m2=m2+1;
+	c=Spherical(beat,~az.[m2],~el.[m2]).rotate(~r).tilt(~r1).tumble(~r2).y.round(0.00001);
+	2.pow(c).round(time);
+};
+~z=bank.collect{
+m3=m3+1;
+	d=Spherical(beat,~az.[m3],~el.[m3]).rotate(~r).tilt(~r1).tumble(~r2).z.round(0.00001);
+	2.pow(d).round(time);
+}; m1=1.neg; m2=1.neg; m3=1.neg; ~dx=~dx++~x; ~dy=~dy++~y;  ~dz=~dz++~z;   ~x=[]; ~y=[]; ~z=[];  r=r+90.degrad; };
+
+				bank.do{ ~dur1=~dur1++~dx.[n];n=n+1;};n=0;
+		//	~durx = ~dur1.collect { |x| if (x == 0) { Rest(2) } { x }};
+
+		bank.do{ ~dur2=~dur2++~dy.[n];n=n+1;};n=0;
+			//	~dury = ~dur2.collect { |x| if (x == 0) { Rest(2) } { x }};
+
+		bank.do{ ~dur3=~dur3++~dz.[n];n=n+1;};n=0;
+			//	~durz = ~dur3.collect { |x| if (x == 0) { Rest(2) } { x }};
+
+			~dur=~dur++~dur1++~dur2++~dur3;
+);
+		}.value);
+
+				~seqen= Pseq(~dur ,inf).asStream;
+
+
+				//leier string1
+		(
+	~str1= Routine({loop{
 
 
 
+	~synthd.set(\tone1, ~s1);
+~synthd.set(\tone2, ~s1);
+	~synthd.set(\tone3, ~s1);
+    ~seqen.next.wait;
+
+		~synthd.set(\tone1, ~s2);
+~synthd.set(\tone2, ~s2);
+	~synthd.set(\tone3, ~s2);
+
+	    ~seqen.next.wait;
+
+	~synthd.set(\tone1, ~s3);
+~synthd.set(\tone2, ~s3);
+	~synthd.set(\tone3, ~s3);
+
+	    ~seqen.next.wait;
+
+	~synthd.set(\tone1, ~s4);
+~synthd.set(\tone2, ~s4);
+	~synthd.set(\tone3, ~s4);
+
+	    ~seqen.next.wait;
+
+				~synthd.set(\tone1, ~s5);
+~synthd.set(\tone2, ~s5);
+	~synthd.set(\tone3, ~s5);
+
+	    ~seqen.next.wait;
+
+	~synthd.set(\tone1, ~s6);
+~synthd.set(\tone2, ~s6);
+		~synthd.set(\tone3, ~s6);
+
+	    ~seqen.next.wait;
+
+	~synthd.set(\tone1, ~s7);
+~synthd.set(\tone2, ~s7);
+	~synthd.set(\tone3, ~s7);
+
+	    ~seqen.next.wait;
+
+};
+		}));
+
+)
+	~str1.p.lay;
+
+
+////musical automaton
+
+(
+	TempoClock.default.tempo_(1);
+		~val=1234;
+		(
+	~str1= Routine({
+			var m1,m2,m3,r1,r2,r3,sphm,sphr,time=1/4,melody,rhythm,az,el;
+
+				loop{
+						thisThread.randSeed = ~val;
+					rhythm=exp(Complex(0,1)*((1/992)*2pi)*992.rand);
+					az=Complex(1,rhythm.real).theta*4;   el=Complex(1,rhythm.imag).theta*2;
+					melody=Spherical(5,az,el);
+				r1=2.pow(rhythm.real.abs).round(time);  r2=2.pow(rhythm.imag.abs).round(time); // r3=2.pow(rhythm.z).round(time);
+					m1=melody.x.round(1);  	m2=melody.y.round(1);  	m3=melody.z.round(1);
+					sphm=[m1.abs,m2.abs,m3.abs];   sphr=[r1,r2];
+
+		~synth.set(\tone1,sphm.[0]);
+~synth.set(\tone2,sphm.[1]);
+	~synth.set(\tone3,sphm.[2]);
+
+					sphr.[0].wait;
+
+		~synth.set(\tone1,sphm.[0]);
+~synth.set(\tone2,sphm.[1]);
+	~synth.set(\tone3,sphm.[2]);
+
+	sphr.[1].wait;
+
+};
+		}));
+
+)
+
+			~str1.play;
 
 
 /*
