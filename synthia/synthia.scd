@@ -116,7 +116,7 @@ var g_ch23,g_ch24,g_ch25,g_ch26,g_ch27,g_ch28,g_ch29,g_ch30,g_ch31;
 var s5,s6,s7,s8,s9,s10,s11,s12,s13,s14,s15,s16,s17,s18,s19,s20,s21,s22;
 var s23,s24,s25,s26,s27,s28,s29,s30,s31;
 var a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20;
-var a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31;
+var a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,mpf;
 
 s1=~vertices.rand;s2=~vertices.rand;s3=~vertices.rand;s4=~vertices.rand;
 s5=~vertices.rand;s6=~vertices.rand;s7=~vertices.rand;s8=~vertices.rand;
@@ -141,6 +141,7 @@ polytope=Cartesian(Select.kr(xx,~cx),Select.kr(yy,~cy),Select.kr(zz,~cz));
 
 mp=Spherical(sc,polytope.theta, polytope.phi);
 mps=Spherical(ssc,polytope.theta, polytope.phi);
+mpf=Spherical(1,polytope.theta, polytope.phi);
 
 b_x=2.pow(mp.x.round(1)/16256);
 b_y=2.pow(mp.y.round(1)/16256);
@@ -149,9 +150,9 @@ s_x=2.pow(Select.kr(mps.x.round(1),~scale) /12);
 s_y=2.pow(Select.kr(mps.y.round(1),~scale) /12);
 s_z=2.pow(Select.kr(mps.z.round(1),~scale) /12);
 
-mod_x=polytope.x;
-mod_y=polytope.y;
-mod_z=polytope.z;
+mod_x=mpf.x;
+mod_y=mpf.y;
+mod_z=mpf.z;
 phasex=(Complex(1,mod_x).theta*2);
 phasey=(Complex(1,mod_y).theta*2);
 phasez=(Complex(1,mod_z).theta*2);
@@ -163,11 +164,11 @@ amp1=b_x.reciprocal*expansion.reciprocal*s_x.reciprocal;
 amp2=b_y.reciprocal*expansion.reciprocal*s_y.reciprocal;
 amp3=b_z.reciprocal*expansion.reciprocal*s_z.reciprocal;
 
-sig1=FreeVerb.ar(LPF.ar((Osc.ar(~wt.bufnum,freq1,phase:phasex,mul:1000).abs*
+sig1=FreeVerb.ar(LPF.ar((Osc.ar(~wt.bufnum,freq1,phase:phasex,mul:1024).abs*
 SinOsc.ar(freq1,phase:phasex)),freq1*heavy,amp1),mix,1);
-sig2=FreeVerb.ar(LPF.ar((Osc.ar(~wt.bufnum,freq2,phase:phasey,mul:1000).abs*
+sig2=FreeVerb.ar(LPF.ar((Osc.ar(~wt.bufnum,freq2,phase:phasey,mul:1024).abs*
 SinOsc.ar(freq2,phase:phasey)),freq2*heavy,amp2),mix,1);
-sig3=FreeVerb.ar(LPF.ar((Osc.ar(~wt.bufnum,freq3,phase:phasez,mul:1000).abs*
+sig3=FreeVerb.ar(LPF.ar((Osc.ar(~wt.bufnum,freq3,phase:phasez,mul:1024).abs*
 SinOsc.ar(freq3,phase:phasez)),freq3*heavy,amp3),mix,1);
 
 /*a1=(1/4).rand2;a2=(1/4).rand2;a3=(1/4).rand2;a4=(1/4).rand2;
