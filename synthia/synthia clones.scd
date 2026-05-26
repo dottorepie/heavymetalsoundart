@@ -930,15 +930,15 @@ Pfunc { ~gain }, \sc, Pfunc { ~sc },\drive, Pfunc { ~drive },
 \attack,  Pfunc { ~attack }, \dicay, Pfunc { ~decay }, \ssc, Pfunc{~ssc};
 ));
 ~pattern1 = Pdef(\2,
-Pbind(\instrument1, \synth1,\dur, ~seq,\gain,
+Pbind(\instrument, \synth1,\dur, ~seq,\gain,
 Pfunc { ~gain1 }, \sc, Pfunc { ~sc1 },\drive, Pfunc { ~drive1 },
 \c, Pfunc { ~c1 },\mix, Pfunc{~mix1},
 \az, Pseries(0, Pfunc{~incr11}, inf).collect(_.wrap(pi.neg, pi)).asStream,
 \el, Pseries(0, Pfunc{~incr21}, inf).collect(_.wrap(0.5pi.neg, 0.5pi)).asStream,
 \attack,  Pfunc { ~attack1}, \dicay, Pfunc { ~decay1 }, \ssc, Pfunc{~ssc1};
 ));
-~pattern1.play(~clock1);
-~pattern.play(~clock2);
+~pattern.play(~clock1);
+~pattern1.play(~clock2);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////gui
 (
@@ -1046,7 +1046,7 @@ value=obj.value.linexp(0,1,0.001,1).postln;
 {
 var size,sk,compass,n,scl,r;
 size=700; sk=(size/30); n=(2pi/9).neg; scl=(size/4); r=2;
-w = Window("synthf", Rect(200, 50, size, size)).front;
+w = Window("synthf1", Rect(200, 50, size, size)).front;
 ~vw1 = UserView(w, w.view.bounds).drawFunc_({ ~img_print.drawInRect(~vw1.bounds)});
 
 
