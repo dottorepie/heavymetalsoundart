@@ -580,7 +580,7 @@ value=obj.value.linexp(0,1,0.01,4).postln;
 });
 );
 (
-~sl3=Knob.new(~vw, Rect.aboutPoint((compass.[3].real+(size/r)) @ (compass.[3].imag+(size/r)), sk, sk)).
+~sl4=Knob.new(~vw, Rect.aboutPoint((compass.[3].real+(size/r)) @ (compass.[3].imag+(size/r)), sk, sk)).
 background_(Color.black).action_({
 arg obj;
 var value;
