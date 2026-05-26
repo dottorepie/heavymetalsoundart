@@ -104,7 +104,8 @@ var nn=1.neg;
 /////////////////////////////////////////////////////////////////////////////////////////////////////sound
 (
 SynthDef.new(\synth,{
-arg gain=1,drive=0,c=0,az=0,el=0,dicay=0.5,attack=0.01,sc=20,ssc=1,mix=0;
+arg gain=1,drive=0,c=0,az=0,el=0,dicay=0.5,attack=0.01,sc=20,ssc=1,mix=0,
+				out = #[0,1,2,3,4,5,6,7,8,9,10];
 var fund,fu=32,n=0,mod_x,mod_y,mod_z,phasex,phasey,phasez,low=0;
 var freq1,freq2,freq3,amp1,amp2,amp3,sig1,sig2,sig3,heavy;
 var b_x,b_y,b_z,polytope,env,expansion,sph1,sph2,xx,yy,zz;
@@ -117,9 +118,6 @@ var s5,s6,s7,s8,s9,s10,s11,s12,s13,s14,s15,s16,s17,s18,s19,s20,s21,s22;
 var s23,s24,s25,s26,s27,s28,s29,s30,s31;
 var a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20;
 var a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,mpf;
-var out;
-
-out=Rand(0, 30 ! 31).round.asInteger;
 
 s1=~vertices.rand;s2=~vertices.rand;s3=~vertices.rand;s4=~vertices.rand;
 s5=~vertices.rand;s6=~vertices.rand;s7=~vertices.rand;s8=~vertices.rand;
@@ -286,7 +284,7 @@ Spherical(sig2.range(0.001,1),~az[s11]*a11,~el[s11]*a11).y)+
 (Spherical(sig3.abs.range(0.001,1),(polytope.theta),(polytope.phi)).z *
 Spherical(sig3.range(0.001,1),~az[s11]*a11,~el[s11]*a11).z)
 );
-g_ch12 = (
+/*g_ch12 = (
 (Spherical(sig1.abs.range(0.001,1),(polytope.theta),(polytope.phi)).x *
 Spherical(sig1.range(0.001,1),~az[s12]*a12,~el[s12]*a12).x) +
 (Spherical(sig2.abs.range(0.001,1),(polytope.theta),(polytope.phi)).y *
@@ -445,14 +443,15 @@ Spherical(sig1.range(0.001,1),~az[s31]*a31,~el[s31]*a31).x) +
 Spherical(sig2.range(0.001,1),~az[s31]*a31,~el[s31]*a31).y)+
 (Spherical(sig3.abs.range(0.001,1),(polytope.theta),(polytope.phi)).z *
 Spherical(sig3.range(0.001,1),~az[s31]*a31,~el[s31]*a31).z)
-);
+);*/
 (
 Out.ar(out.[0],sig1*env*g_ch1);Out.ar(out.[1],sig1*env*g_ch2);
 Out.ar(out.[2],sig1*env*g_ch3);Out.ar(out.[3],sig1*env*g_ch4);
 Out.ar(out.[4],sig1*env*g_ch5);Out.ar(out.[5],sig1*env*g_ch6);
 Out.ar(out.[6],sig1*env*g_ch7);Out.ar(out.[7],sig1*env*g_ch8);
 Out.ar(out.[8],sig1*env*g_ch9);Out.ar(out.[9],sig1*env*g_ch10);
-Out.ar(out.[10],sig1*env*g_ch11);Out.ar(out.[11],sig1*env*g_ch12);
+Out.ar(out.[10],sig1*env*g_ch11);
+					/*Out.ar(out.[11],sig1*env*g_ch12);
 Out.ar(out.[12],sig1*env*g_ch13);Out.ar(out.[13],sig1*env*g_ch14);
 Out.ar(out.[14],sig1*env*g_ch15);Out.ar(out.[15],sig1*env*g_ch16);
 Out.ar(out.[16],sig1*env*g_ch17);Out.ar(out.[17],sig1*env*g_ch18);
@@ -462,13 +461,14 @@ Out.ar(out.[22],sig1*env*g_ch23);Out.ar(out.[23],sig1*env*g_ch24);
 Out.ar(out.[24],sig1*env*g_ch25);Out.ar(out.[25],sig1*env*g_ch26);
 Out.ar(out.[26],sig1*env*g_ch27);Out.ar(out.[27],sig1*env*g_ch28);
 Out.ar(out.[28],sig1*env*g_ch29);Out.ar(out.[29],sig1*env*g_ch30);Out.ar(out.[30],sig1*env*g_ch31);
-
+*/
 Out.ar(out.[0],sig2*env*g_ch1);Out.ar(out.[1],sig2*env*g_ch2);
 Out.ar(out.[2],sig2*env*g_ch3);Out.ar(out.[3],sig2*env*g_ch4);
 Out.ar(out.[4],sig2*env*g_ch5);Out.ar(out.[5],sig2*env*g_ch6);
 Out.ar(out.[6],sig2*env*g_ch7);Out.ar(out.[7],sig2*env*g_ch8);
 Out.ar(out.[8],sig2*env*g_ch9);Out.ar(out.[9],sig2*env*g_ch10);
-Out.ar(out.[10],sig2*env*g_ch11);Out.ar(out.[11],sig2*env*g_ch12);
+Out.ar(out.[10],sig2*env*g_ch11);
+					/*Out.ar(out.[11],sig2*env*g_ch12);
 Out.ar(out.[12],sig2*env*g_ch13);Out.ar(out.[13],sig2*env*g_ch14);
 Out.ar(out.[14],sig2*env*g_ch15);Out.ar(out.[15],sig2*env*g_ch16);
 Out.ar(out.[16],sig2*env*g_ch17);Out.ar(out.[17],sig2*env*g_ch18);
@@ -477,14 +477,15 @@ Out.ar(out.[20],sig2*env*g_ch21);Out.ar(out.[21],sig2*env*g_ch22);
 Out.ar(out.[22],sig2*env*g_ch23);Out.ar(out.[23],sig2*env*g_ch24);
 Out.ar(out.[24],sig2*env*g_ch25);Out.ar(out.[25],sig2*env*g_ch26);
 Out.ar(out.[26],sig2*env*g_ch27);Out.ar(out.[27],sig2*env*g_ch28);
-Out.ar(out.[28],sig2*env*g_ch29);Out.ar(out.[29],sig2*env*g_ch30);Out.ar(out.[30],sig2*env*g_ch31);
+Out.ar(out.[28],sig2*env*g_ch29);Out.ar(out.[29],sig2*env*g_ch30);Out.ar(out.[30],sig2*env*g_ch31);*/
 
 Out.ar(out.[0],sig3*env*g_ch1);Out.ar(out.[1],sig3*env*g_ch2);
 Out.ar(out.[2],sig3*env*g_ch3);Out.ar(out.[3],sig3*env*g_ch4);
 Out.ar(out.[4],sig3*env*g_ch5);Out.ar(out.[5],sig3*env*g_ch6);
 Out.ar(out.[6],sig3*env*g_ch7);Out.ar(out.[7],sig3*env*g_ch8);
 Out.ar(out.[8],sig3*env*g_ch9);Out.ar(out.[9],sig3*env*g_ch10);
-Out.ar(out.[10],sig3*env*g_ch11);Out.ar(out.[11],sig3*env*g_ch12);
+Out.ar(out.[10],sig3*env*g_ch11);
+				/*	Out.ar(out.[11],sig3*env*g_ch12);
 Out.ar(out.[12],sig3*env*g_ch13);Out.ar(out.[13],sig3*env*g_ch14);
 Out.ar(out.[14],sig3*env*g_ch15);Out.ar(out.[15],sig3*env*g_ch16);
 Out.ar(out.[16],sig3*env*g_ch17);Out.ar(out.[17],sig3*env*g_ch18);
@@ -493,7 +494,7 @@ Out.ar(out.[20],sig3*env*g_ch21);Out.ar(out.[21],sig3*env*g_ch22);
 Out.ar(out.[22],sig3*env*g_ch23);Out.ar(out.[23],sig3*env*g_ch24);
 Out.ar(out.[24],sig3*env*g_ch25);Out.ar(out.[25],sig3*env*g_ch26);
 Out.ar(out.[26],sig3*env*g_ch27);Out.ar(out.[27],sig3*env*g_ch28);
-Out.ar(out.[28],sig3*env*g_ch29);Out.ar(out.[29],sig3*env*g_ch30);Out.ar(out.[30],sig3*env*g_ch31);
+Out.ar(out.[28],sig3*env*g_ch29);Out.ar(out.[29],sig3*env*g_ch30);Out.ar(out.[30],sig3*env*g_ch31);*/
 )
 
 }).add;
@@ -544,7 +545,8 @@ TempoClock.default.tempo_(0.01);
 
 ~pattern = Pdef(\1,
 Pbind(\instrument, \synth,\dur, ~seq,\gain,
-Pfunc { ~gain }, \sc, Pfunc { ~sc },\drive, Pfunc { ~drive },
+	Pfunc { ~gain }, \sc, Pfunc { ~sc },\drive, Pfunc { ~drive },
+	\out,Pfunc{[0,1,2,3,4,5,6,7,8,9,10].scramble},
 \c, Pfunc { ~c },\mix, Pfunc{~mix},
 \az, Pseries(0, Pfunc{~incr1}, inf).collect(_.wrap(pi.neg, pi)).asStream,
 \el, Pseries(0, Pfunc{~incr2}, inf).collect(_.wrap(0.5pi.neg, 0.5pi)).asStream,
