@@ -109,15 +109,15 @@ var fund,fu=32,n=0,mod_x,mod_y,mod_z,phasex,phasey,phasez,low=0;
 var freq1,freq2,freq3,amp1,amp2,amp3,sig1,sig2,sig3,heavy;
 var b_x,b_y,b_z,polytope,env,expansion,sph1,sph2,xx,yy,zz;
 var g_ch1,g_ch2,g_ch3,g_ch4,s1,s2,s3,s4,a1,a2,a3,a4,mp,mps,mpf;
-var s_x,s_y,s_z;
+var s_x,s_y,s_z,sig4,sig5,sig6,w1,w2,w3,w4,w5,w6;
 
 s1=Rand(0, ~vertices-1).round(1).asInteger;s2=Rand(0, ~vertices-1).round(1).asInteger;
 s3=Rand(0, ~vertices-1).round(1).asInteger;s4=Rand(0, ~vertices-1).round(1).asInteger;
 env=EnvGen.ar(Env.perc(attack,dicay,gain),doneAction:2);
 
-expansion=2.pow(c.lag(0.1)/16256);
+expansion=2.pow(c.lag(0.001)/16256);
 fund=(fu*(9/8))*expansion;
-heavy=2.pow(drive.lag(0.1)/16256);
+heavy=2.pow(drive.lag(0.001)/16256);
 
 xx=Spherical(~vertices,az,el).x.round(1).asInteger;
 yy=Spherical(~vertices,az,el).y.round(1).asInteger;
@@ -128,12 +128,12 @@ mp=Spherical(sc,polytope.theta, polytope.phi);
 mps=Spherical(ssc,polytope.theta, polytope.phi);
 mpf=Spherical(1,polytope.theta, polytope.phi);
 
-b_x=2.pow(mp.x.round(1)/16256);
-b_y=2.pow(mp.y.round(1)/16256);
-b_z=2.pow(mp.z.round(1)/16256);
-s_x=2.pow(Select.kr(mps.x.round(1),~scale) /12);
-s_y=2.pow(Select.kr(mps.y.round(1),~scale) /12);
-s_z=2.pow(Select.kr(mps.z.round(1),~scale) /12);
+b_x=2.pow(mp.x.round(1).asInteger/16256);
+b_y=2.pow(mp.y.round(1).asInteger/16256);
+b_z=2.pow(mp.z.round(1).asInteger/16256);
+s_x=2.pow(Select.kr(mps.x.round(1).asInteger,~scale).asInteger /12);
+s_y=2.pow(Select.kr(mps.y.round(1).asInteger,~scale).asInteger /12);
+s_z=2.pow(Select.kr(mps.z.round(1).asInteger,~scale).asInteger /12);
 
 mod_x=mpf.x;
 mod_y=mpf.y;
@@ -145,7 +145,6 @@ phasex = atan(mod_x);
 phasey = atan(mod_y);
 phasez = atan(mod_z);
 
-
 freq1=(fund)*b_x*s_x;
 freq2=(fund)*b_y*s_y;
 freq3=(fund)*b_z*s_z;
@@ -153,18 +152,34 @@ amp1=b_x.reciprocal*expansion.reciprocal*s_x.reciprocal;
 amp2=b_y.reciprocal*expansion.reciprocal*s_y.reciprocal;
 amp3=b_z.reciprocal*expansion.reciprocal*s_z.reciprocal;
 
-sig1=FreeVerb.ar(BPF.ar((Osc.ar(~wt.bufnum,freq1,phase:phasex,mul:1200).abs*
-SinOsc.ar(freq1,phase:phasex)),freq1,heavy,amp1),mix,0.6);
-sig2=FreeVerb.ar(BPF.ar((Osc.ar(~wt.bufnum,freq2,phase:phasey,mul:1200).abs*
-SinOsc.ar(freq2,phase:phasey)),freq2,heavy,amp2),mix,0.6);
-sig3=FreeVerb.ar(BPF.ar((Osc.ar(~wt.bufnum,freq3,phase:phasez,mul:1200).abs*
-SinOsc.ar(freq3,phase:phasez)),freq3,heavy,amp3),mix,0.6);
+w1=Rand(0, pi).round(pi/56);
+w2=Rand(0, 0.5pi).round(0.5pi/56);
+w3=Rand(0, pi).round(pi/56);
+w4=Rand(0, 0.5pi).round(0.5pi/56);
+w5=Rand(0, pi).round(pi/56);
+w6=Rand(0, 0.5pi).round(0.5pi/56);
 
-sig1=(sig1*mix.linlin(0,1,0.01,32)).softclip;
-sig2=(sig2*mix.linlin(0,1,0.01,32)).softclip;
-sig3=(sig3*mix.linlin(0,1,0.01,32)).softclip;
+sig1=FreeVerb.ar(BPF.ar((Osc.ar(~wt.bufnum,freq1,phase:phasex+w1,mul:1200).abs*
+SinOsc.ar(freq1,phase:phasex+w1)),freq1,heavy,amp1),mix,0.5);
+sig2=FreeVerb.ar(BPF.ar((Osc.ar(~wt.bufnum,freq1,phase:phasex+w2,mul:1200).abs*
+SinOsc.ar(freq1,phase:phasex+w2)),freq1,heavy,amp1),mix,0.5);
+sig3=FreeVerb.ar(BPF.ar((Osc.ar(~wt.bufnum,freq2,phase:phasey+w3,mul:1200).abs*
+SinOsc.ar(freq2,phase:phasey+w3)),freq2,heavy,amp2),mix,0.5);
+sig4=FreeVerb.ar(BPF.ar((Osc.ar(~wt.bufnum,freq2,phase:phasey+w4,mul:1200).abs*
+SinOsc.ar(freq2,phase:phasey+w4)),freq2,heavy,amp2),mix,0.5);
+sig5=FreeVerb.ar(BPF.ar((Osc.ar(~wt.bufnum,freq3,phase:phasez+w5,mul:1200).abs*
+SinOsc.ar(freq3,phase:phasez+w5)),freq3,heavy,amp3),mix,0.5);
+sig6=FreeVerb.ar(BPF.ar((Osc.ar(~wt.bufnum,freq3,phase:phasez+w6,mul:1200).abs*
+SinOsc.ar(freq3,phase:phasez+w6)),freq3,heavy,amp3),mix,0.5);
 
-				a1=a2=a3=a4=1;
+sig1=(sig1*mix.linlin(0,1,0.1,32)).softclip;
+sig2=(sig2*mix.linlin(0,1,0.1,32)).softclip;
+sig3=(sig3*mix.linlin(0,1,0.1,32)).softclip;
+sig4=(sig4*mix.linlin(0,1,0.1,32)).softclip;
+sig5=(sig5*mix.linlin(0,1,0.1,32)).softclip;
+sig6=(sig6*mix.linlin(0,1,0.1,32)).softclip;
+
+a1=a2=a3=a4=1;
 
 g_ch1 = (
 (Spherical(sig1.abs.range(0.001,1),(polytope.theta),(polytope.phi)).x *
@@ -200,12 +215,12 @@ Spherical(sig3.range(0.001,1),Select.kr(s4, ~az)*a4,Select.kr(s4, ~el)*a4).z)
 );
 
 (
-Out.ar(busArray.[0],LeakDC.ar(sig1*env*g_ch1));Out.ar(busArray.[1],LeakDC.ar(sig1*env*g_ch2));
-Out.ar(busArray.[2],LeakDC.ar(sig1*env*g_ch3));Out.ar(busArray.[3],LeakDC.ar(sig1*env*g_ch4));
-Out.ar(busArray.[0],LeakDC.ar(sig2*env*g_ch1));Out.ar(busArray.[1],LeakDC.ar(sig2*env*g_ch2));
-Out.ar(busArray.[2],LeakDC.ar(sig2*env*g_ch3));Out.ar(busArray.[3],LeakDC.ar(sig2*env*g_ch4));
-Out.ar(busArray.[0],LeakDC.ar(sig3*env*g_ch1));Out.ar(busArray.[1],LeakDC.ar(sig3*env*g_ch2));
-Out.ar(busArray.[2],LeakDC.ar(sig3*env*g_ch3));Out.ar(busArray.[3],LeakDC.ar(sig3*env*g_ch4));
+Out.ar(busArray.[0],LeakDC.ar(sig1*env*g_ch1));Out.ar(busArray.[1],LeakDC.ar(sig2*env*g_ch2));
+Out.ar(busArray.[2],LeakDC.ar(sig2*env*g_ch3));Out.ar(busArray.[3],LeakDC.ar(sig1*env*g_ch4));
+Out.ar(busArray.[0],LeakDC.ar(sig3*env*g_ch1));Out.ar(busArray.[1],LeakDC.ar(sig4*env*g_ch2));
+Out.ar(busArray.[2],LeakDC.ar(sig4*env*g_ch3));Out.ar(busArray.[3],LeakDC.ar(sig3*env*g_ch4));
+Out.ar(busArray.[0],LeakDC.ar(sig5*env*g_ch1));Out.ar(busArray.[1],LeakDC.ar(sig6*env*g_ch2));
+Out.ar(busArray.[2],LeakDC.ar(sig6*env*g_ch3));Out.ar(busArray.[3],LeakDC.ar(sig5*env*g_ch4));
 )
 
 }).add;
